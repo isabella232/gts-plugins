@@ -1,0 +1,21 @@
+.gts-calendar {
+	padding: 2px;
+}
+
+.gts-calendar .month-label {
+	text-align: center;
+	font-size: 110%;
+
+	padding-top: 5px;
+}
+
+.gts-calendar .week-label {
+	text-align: center;
+	font-weight: bold;
+	font-size: 90%;
+}
+
+.gts-calendar .onyx-dark {
+	background-color: #666666;
+	color: #f1f1f1;
+}
