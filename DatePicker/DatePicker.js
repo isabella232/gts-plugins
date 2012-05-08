@@ -55,7 +55,7 @@ enyo.kind({
 					kind: "onyx.Button",
 					content: "<<",
 
-					onclick: "monthBack"
+					ontap: "monthBack"
 				}, {
 					name: "monthLabel",
 					tag: "strong",
@@ -66,7 +66,7 @@ enyo.kind({
 					kind: "onyx.Button",
 					content: ">>",
 
-					onclick: "monthForward"
+					ontap: "monthForward"
 				}
 			]
 		},
@@ -115,31 +115,31 @@ enyo.kind({
 				{
 					name: "row0col0",
 					kind: "onyx.Button",
-					onclick: "dateHandler"
+					ontap: "dateHandler"
 				}, {
 					name: "row0col1",
 					kind: "onyx.Button",
-					onclick: "dateHandler"
+					ontap: "dateHandler"
 				}, {
 					name: "row0col2",
 					kind: "onyx.Button",
-					onclick: "dateHandler"
+					ontap: "dateHandler"
 				}, {
 					name: "row0col3",
 					kind: "onyx.Button",
-					onclick: "dateHandler"
+					ontap: "dateHandler"
 				}, {
 					name: "row0col4",
 					kind: "onyx.Button",
-					onclick: "dateHandler"
+					ontap: "dateHandler"
 				}, {
 					name: "row0col5",
 					kind: "onyx.Button",
-					onclick: "dateHandler"
+					ontap: "dateHandler"
 				}, {
 					name: "row0col6",
 					kind: "onyx.Button",
-					onclick: "dateHandler"
+					ontap: "dateHandler"
 				}
 			]
 		}, {
@@ -148,31 +148,31 @@ enyo.kind({
 				{
 					name: "row1col0",
 					kind: "onyx.Button",
-					onclick: "dateHandler"
+					ontap: "dateHandler"
 				}, {
 					name: "row1col1",
 					kind: "onyx.Button",
-					onclick: "dateHandler"
+					ontap: "dateHandler"
 				}, {
 					name: "row1col2",
 					kind: "onyx.Button",
-					onclick: "dateHandler"
+					ontap: "dateHandler"
 				}, {
 					name: "row1col3",
 					kind: "onyx.Button",
-					onclick: "dateHandler"
+					ontap: "dateHandler"
 				}, {
 					name: "row1col4",
 					kind: "onyx.Button",
-					onclick: "dateHandler"
+					ontap: "dateHandler"
 				}, {
 					name: "row1col5",
 					kind: "onyx.Button",
-					onclick: "dateHandler"
+					ontap: "dateHandler"
 				}, {
 					name: "row1col6",
 					kind: "onyx.Button",
-					onclick: "dateHandler"
+					ontap: "dateHandler"
 				}
 			]
 		}, {
@@ -181,31 +181,31 @@ enyo.kind({
 				{
 					name: "row2col0",
 					kind: "onyx.Button",
-					onclick: "dateHandler"
+					ontap: "dateHandler"
 				}, {
 					name: "row2col1",
 					kind: "onyx.Button",
-					onclick: "dateHandler"
+					ontap: "dateHandler"
 				}, {
 					name: "row2col2",
 					kind: "onyx.Button",
-					onclick: "dateHandler"
+					ontap: "dateHandler"
 				}, {
 					name: "row2col3",
 					kind: "onyx.Button",
-					onclick: "dateHandler"
+					ontap: "dateHandler"
 				}, {
 					name: "row2col4",
 					kind: "onyx.Button",
-					onclick: "dateHandler"
+					ontap: "dateHandler"
 				}, {
 					name: "row2col5",
 					kind: "onyx.Button",
-					onclick: "dateHandler"
+					ontap: "dateHandler"
 				}, {
 					name: "row2col6",
 					kind: "onyx.Button",
-					onclick: "dateHandler"
+					ontap: "dateHandler"
 				}
 			]
 		}, {
@@ -214,31 +214,31 @@ enyo.kind({
 				{
 					name: "row3col0",
 					kind: "onyx.Button",
-					onclick: "dateHandler"
+					ontap: "dateHandler"
 				}, {
 					name: "row3col1",
 					kind: "onyx.Button",
-					onclick: "dateHandler"
+					ontap: "dateHandler"
 				}, {
 					name: "row3col2",
 					kind: "onyx.Button",
-					onclick: "dateHandler"
+					ontap: "dateHandler"
 				}, {
 					name: "row3col3",
 					kind: "onyx.Button",
-					onclick: "dateHandler"
+					ontap: "dateHandler"
 				}, {
 					name: "row3col4",
 					kind: "onyx.Button",
-					onclick: "dateHandler"
+					ontap: "dateHandler"
 				}, {
 					name: "row3col5",
 					kind: "onyx.Button",
-					onclick: "dateHandler"
+					ontap: "dateHandler"
 				}, {
 					name: "row3col6",
 					kind: "onyx.Button",
-					onclick: "dateHandler"
+					ontap: "dateHandler"
 				}
 			]
 		}, {
@@ -247,31 +247,31 @@ enyo.kind({
 				{
 					name: "row4col0",
 					kind: "onyx.Button",
-					onclick: "dateHandler"
+					ontap: "dateHandler"
 				}, {
 					name: "row4col1",
 					kind: "onyx.Button",
-					onclick: "dateHandler"
+					ontap: "dateHandler"
 				}, {
 					name: "row4col2",
 					kind: "onyx.Button",
-					onclick: "dateHandler"
+					ontap: "dateHandler"
 				}, {
 					name: "row4col3",
 					kind: "onyx.Button",
-					onclick: "dateHandler"
+					ontap: "dateHandler"
 				}, {
 					name: "row4col4",
 					kind: "onyx.Button",
-					onclick: "dateHandler"
+					ontap: "dateHandler"
 				}, {
 					name: "row4col5",
 					kind: "onyx.Button",
-					onclick: "dateHandler"
+					ontap: "dateHandler"
 				}, {
 					name: "row4col6",
 					kind: "onyx.Button",
-					onclick: "dateHandler"
+					ontap: "dateHandler"
 				}
 			]
 		}, {
@@ -280,31 +280,31 @@ enyo.kind({
 				{
 					name: "row5col0",
 					kind: "onyx.Button",
-					onclick: "dateHandler"
+					ontap: "dateHandler"
 				}, {
 					name: "row5col1",
 					kind: "onyx.Button",
-					onclick: "dateHandler"
+					ontap: "dateHandler"
 				}, {
 					name: "row5col2",
 					kind: "onyx.Button",
-					onclick: "dateHandler"
+					ontap: "dateHandler"
 				}, {
 					name: "row5col3",
 					kind: "onyx.Button",
-					onclick: "dateHandler"
+					ontap: "dateHandler"
 				}, {
 					name: "row5col4",
 					kind: "onyx.Button",
-					onclick: "dateHandler"
+					ontap: "dateHandler"
 				}, {
 					name: "row5col5",
 					kind: "onyx.Button",
-					onclick: "dateHandler"
+					ontap: "dateHandler"
 				}, {
 					name: "row5col6",
 					kind: "onyx.Button",
-					onclick: "dateHandler"
+					ontap: "dateHandler"
 				}
 			]
 		},
@@ -321,7 +321,7 @@ enyo.kind({
 				}, {
 					kind: "onyx.Button",
 					content: "Today",
-					onclick: "resetDate"
+					ontap: "resetDate"
 				}
 			]
 		}
@@ -464,7 +464,7 @@ enyo.kind({
 			this.$['row' + rowCount + 'col' + dispMonth.getDay()].addClass( buttonType );
 
 			this.$['row' + rowCount + 'col' + dispMonth.getDay()].setContent( dispMonth.getDate() );
-			this.$['row' + rowCount + 'col' + dispMonth.getDay()].ts = dispMonth.getTime();//Used by onclick
+			this.$['row' + rowCount + 'col' + dispMonth.getDay()].ts = dispMonth.getTime();//Used by ontap
 
 			dispMonth.setDate( dispMonth.getDate() + 1 );
 
