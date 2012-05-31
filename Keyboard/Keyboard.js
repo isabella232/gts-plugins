@@ -388,36 +388,38 @@ enyo.kind({
 			this.adjustLetters();
 		}
 
-		if( typeof( this.write ) === 'undefined' || this.write === "" ) {
+		if( typeof( this.write ) !== 'undefined' && this.write !== "" ) {
 
-			return;
-		}
+			if( inSender.hasClass( 'delete' ) ) {
+				//delete
 
-		//delete
-		if( inSender.hasClass( 'delete' ) ) {
+				if( this.write['kind'].match( /input/gi ) ) {
 
-			if( this.write['kind'].match( /input/gi ) ) {
+					var val = this.write.getValue();
 
-				var val = this.write.getValue();
+					this.write.setValue( val.substr( 0, val.length - 1 ) );
+				} else {
 
-				this.write.setValue( val.substr( 0, val.length - 1 ) );
+					var content = this.write.getContent();
+
+					this.write.setContent( content.substr( 0, content.length - 1 ) );
+				}
+
+				return;
 			} else {
 
-				var content = this.write.getContent();
+				//Send character to event
+				if( this.write['kind'].match( /input/gi ) ) {
 
-				this.write.setContent( content.substr( 0, content.length - 1 ) );
+					this.write.setValue( this.write.getValue() + character );
+				} else {
+
+					this.write.setContent( this.write.getContent() + character );
+				}
 			}
 
-			return;
-		}
-
-		//Send character to event
-		if( this.write['kind'].match( /input/gi ) ) {
-
-			this.write.setValue( this.write.getValue() + character );
-		} else {
-
-			this.write.setContent( this.write.getContent() + character );
+			this.write.bubble( "oninput" );
+			this.write.bubble( "onInput" );
 		}
 	},
 
