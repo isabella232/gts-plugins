@@ -337,8 +337,6 @@ enyo.kind({
 		this.$['keyboardWrapper'].destroyClientControls();
 		this.$['keyboardWrapper'].createComponents( keyboardComponents, { owner: this } );
 		this.$['keyboardWrapper'].render();
-
-		this.log( keyboardComponents );
 	},
 
 	/**
