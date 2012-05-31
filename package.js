@@ -1,3 +1,4 @@
 enyo.depends(
-	"DatePicker/"
+	"DatePicker/",
+	"Keyboard/"
 );
