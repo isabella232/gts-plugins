@@ -348,79 +348,83 @@ enyo.kind({
 	 */
 	keyTapped: function( inSender, inEvent ) {
 
-		//shift keys
-		if( inSender.hasClass( 'left-shift' ) || inSender.hasClass( 'right-shift' ) ) {
+		var eventObj = {};
 
-			//Shift toggle
+		if( inSender.hasClass( 'left-shift' ) || inSender.hasClass( 'right-shift' ) ) {
+			//shift keys
+
 			this.shift = !this.shift;
 
 			this.adjustLetters();
 			this.adjustSymbols();
 
-			return;
-		}
-
-		//caps lock
-		if( inSender.hasClass( 'capslock' ) ) {
+			eventObj['which'] = 16;
+		} else if( inSender.hasClass( 'capslock' ) ) {
+			//caps lock
 
 			this.capslock = !this.capslock;
 
 			this.adjustLetters();
 
-			return;
-		}
+			eventObj['which'] = 20;
+		} else {
 
-		var character = inSender.getContent();
+			var character = inSender.getContent();
 
-		//uppercase, symbol, or special character
-		character = inSender.hasClass( 'symbol' ) ? character.replace( "&amp;", "&" ).replace( "&lt;", "<" ).replace( "&gt;", ">" ) : character;
-		character = inSender.hasClass( 'space' ) ? " " : character;
-		character = inSender.hasClass( 'tab' ) ? "\t" : character;
-		character = inSender.hasClass( 'return' ) ? "\n" : character;
-		character = inSender.hasClass( 'uppercase' ) ? character.toUpperCase() : character.toLowerCase();
+			//uppercase, symbol, or special character
+			character = inSender.hasClass( 'symbol' ) ? character.replace( "&amp;", "&" ).replace( "&lt;", "<" ).replace( "&gt;", ">" ) : character;
+			character = inSender.hasClass( 'space' ) ? " " : character;
+			character = inSender.hasClass( 'tab' ) ? "\t" : character;
+			character = inSender.hasClass( 'return' ) ? "\r" : character;
+			character = inSender.hasClass( 'uppercase' ) ? character.toUpperCase() : character.toLowerCase();
 
-		//this.shift key handler
-		if( this.shift === true ) {
+			//this.shift key handler
+			if( this.shift === true ) {
 
-			this.shift = false;
+				this.shift = false;
 
-			this.adjustSymbols();
-			this.adjustLetters();
-		}
-
-		if( typeof( this.write ) !== 'undefined' && this.write !== "" ) {
-
-			if( inSender.hasClass( 'delete' ) ) {
-				//delete
-
-				if( this.write['kind'].match( /input/gi ) ) {
-
-					var val = this.write.getValue();
-
-					this.write.setValue( val.substr( 0, val.length - 1 ) );
-				} else {
-
-					var content = this.write.getContent();
-
-					this.write.setContent( content.substr( 0, content.length - 1 ) );
-				}
-
-				return;
-			} else {
-
-				//Send character to event
-				if( this.write['kind'].match( /input/gi ) ) {
-
-					this.write.setValue( this.write.getValue() + character );
-				} else {
-
-					this.write.setContent( this.write.getContent() + character );
-				}
+				this.adjustSymbols();
+				this.adjustLetters();
 			}
 
-			this.write.bubble( "oninput" );
-			this.write.bubble( "onInput" );
+			if( typeof( this.write ) !== 'undefined' && this.write !== "" ) {
+
+				if( inSender.hasClass( 'delete' ) ) {
+					//delete
+
+					if( this.write['kind'].match( /input/gi ) ) {
+
+						var val = this.write.getValue();
+
+						this.write.setValue( val.substr( 0, val.length - 1 ) );
+					} else {
+
+						var content = this.write.getContent();
+
+						this.write.setContent( content.substr( 0, content.length - 1 ) );
+					}
+
+					eventObj['which'] = 8;
+				} else {
+
+					//Send character to event
+					if( this.write['kind'].match( /input/gi ) ) {
+
+						this.write.setValue( this.write.getValue() + character );
+					} else {
+
+						this.write.setContent( this.write.getContent() + character );
+					}
+
+					eventObj['which'] = character.charCodeAt( 0 );
+				}
+			}
 		}
+
+		//Send events
+		this.write.bubble( "oninput", eventObj );
+		this.write.bubble( "onkeyup", eventObj );
+		this.write.bubble( "onkeydown", eventObj );
 	},
 
 	/**
