@@ -27,6 +27,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
  * @param {string}      [stickColor]            Color of joystick handle/current contact point
  * @param {string}      [baseColor]             Color of joystick base/initial contact point
  * @param {int}         [jitter]                Distance from center before joystick is in a 'digital' position
+ * @param {string}      [debug]                 Color of debug message; disabled if blank
  *
  * @param {function}    [onStickMove]      Called when joystick is moved at all
  * @param {function}    [onStickUp]        Called when joystick enters up space
@@ -77,7 +78,9 @@ enyo.kind({
 		stickRadius: 25,
 		stickColor: "#333333",
 
-		jitter: 12.5
+		jitter: 12.5,
+
+		debug: ""
 	},
 
 	/** @public events */
@@ -132,6 +135,8 @@ enyo.kind({
 		this.stickRadiusChanged();
 		this.baseColorChanged();
 		this.stickColorChanged();
+
+		this.debugChanged();
 	},
 
 	/**
@@ -238,6 +243,18 @@ enyo.kind({
 	},
 
 	/**
+	 * @protected
+	 * Called by system when this.debug is changed.
+	 * Adjusts color of debug string
+	 */
+	debugChanged: function() {
+
+		this.$['debug'].setColor( this.debug );
+
+		this.draw();
+	},
+
+	/**
 	 * @public
 	 * Test for touchscreen. Returns true is available
 	 *
@@ -267,7 +284,7 @@ enyo.kind({
 	 */
 	getY: function() {
 
-		return( this.pressed ? ( this.stickY - this.baseY ) : 0 );
+		return( this.pressed ? -( this.stickY - this.baseY ) : 0 );
 	},
 
 	/**
@@ -680,6 +697,11 @@ enyo.kind({
 
 			this.$['baseInner']['bounds']['l'] = -this.$['baseInner']['bounds']['w'];
 			this.$['baseInner']['bounds']['t'] = -this.$['baseInner']['bounds']['h'];
+		}
+
+		if( this.debug.length > 0 ) {
+
+			this.$['debug'].setText( "X: " + this.getX() + " Y: " + this.getY() );
 		}
 
 		this.update();
