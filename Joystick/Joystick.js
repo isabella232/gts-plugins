@@ -107,6 +107,14 @@ enyo.kind({
 			name: "stick",
 			kind: "enyo.canvas.Circle",
 			bounds: {}
+		}, {
+			name:"debug",
+			kind: "canvas.Text",
+			bounds: {
+				l: 0,
+				t: 15
+			},
+			color: "black"
 		}
 	],
 
