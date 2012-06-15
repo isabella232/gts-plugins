@@ -23,9 +23,6 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
  *
  * @param component	[write]	Component to be interacted with by the keyboard
  */
-
-//When complete, submit to enyojs.com
-
 enyo.kind({
 	name: "GTS.Keyboard",
 	kind: enyo.Control,
