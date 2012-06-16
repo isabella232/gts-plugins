@@ -36,6 +36,8 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
  * @param {function}    [onStickRight]     Called when joystick enters right space
  * @param {function}    [onStickCentered]  Called when joystick is released
  */
+var GTS_Joystick_Touch_List = [];
+
 enyo.kind({
 	name: "GTS.Joystick",
 	kind: "enyo.Canvas",
@@ -55,6 +57,7 @@ enyo.kind({
 	width: 0,
 
 	pressed: false,
+	touchId: -1,
 
 	wasUp: false,
 	wasDown: false,
@@ -437,48 +440,6 @@ enyo.kind({
 
 	/**
 	 * @private
-	 * Mouse button no longer held
-	 *
-	 * @param {object}	[inSender]	Source object
-	 * @param {object}	[inEvent]	Mouse event object
-	 */
-	eventMouseUp: function( inSender, inEvent ) {
-
-		return this.touchUp();
-	},
-
-	/**
-	 * @private
-	 * Touch event ended
-	 *
-	 * @param {object}	[inSender]	Source object
-	 * @param {object}	[inEvent]	Touch event object
-	 */
-	eventTouchEnd: function( inSender, inEvent ) {
-
-		// no preventDefault to get click event on ios
-		inEvent.preventDefault();
-
-		return this.touchUp();
-	},
-
-	/**
-	 * @private
-	 * Resets joystick to home
-	 */
-	touchUp: function() {
-
-		this.pressed = false;
-
-		this.stickX = this.baseX = 0;
-		this.stickY = this.baseY = 0;
-
-		this.sendEvents();
-		this.draw();
-	},
-
-	/**
-	 * @private
 	 * Mouse button held
 	 *
 	 * @param {object}	inSender	Source object
@@ -499,7 +460,9 @@ enyo.kind({
 			posy = inEvent.clientY + document.body.scrollTop + document.documentElement.scrollTop;
 		}
 
-		return this.touchDown( x, y );
+		this.touchDown( x, y );
+
+		return true;
 	},
 
 	/**
@@ -511,18 +474,28 @@ enyo.kind({
 	 */
 	eventTouchStart: function( inSender, inEvent ) {
 
-		if( inEvent.touches.length < 1 ) {
+		if( inEvent.changedTouches.length < 1 ) {
 			//false positive
 
 			return;
 		}
 
+		for( var i = 0; i < inEvent.changedTouches.length; i++ ) {
+
+			if( this.touchId < 0 && enyo.indexOf( inEvent.changedTouches[i]['identifier'], GTS_Joystick_Touch_List ) < 0 ) {
+				//fresh touch to joystick system
+
+				this.touchId = inEvent.changedTouches[i]['identifier'];
+				GTS_Joystick_Touch_List.push( this.touchId );
+
+				this.touchDown( inEvent.changedTouches[i].pageX, inEvent.changedTouches[i].pageY );
+
+				break;
+			}
+		}
+
 		inEvent.preventDefault();
-
-		var x = inEvent.touches[0].pageX;
-		var y = inEvent.touches[0].pageY;
-
-		return this.touchDown( x, y );
+		return true;
 	},
 
 	/**
@@ -562,7 +535,9 @@ enyo.kind({
 			posy = inEvent.clientY + document.body.scrollTop + document.documentElement.scrollTop;
 		}
 
-		return this.touchMoved( x, y );
+		this.touchMoved( x, y );
+
+		return true;
 	},
 
 	/**
@@ -574,18 +549,25 @@ enyo.kind({
 	 */
 	eventTouchMove: function( inSender, inEvent ) {
 
-		if( inEvent.touches.length < 1 ) {
+		if( inEvent.changedTouches.length < 1 ) {
 			//false positive
 
 			return;
 		}
 
+		for( var i = 0; i < inEvent.changedTouches.length; i++ ) {
+
+			if( this.touchId === inEvent.changedTouches[i]['identifier'] ) {
+				//Current touch, move
+
+				this.touchMoved( inEvent.changedTouches[i].pageX, inEvent.changedTouches[i].pageY );
+
+				break;
+			}
+		}
+
 		inEvent.preventDefault();
-
-		var x = inEvent.touches[0].pageX;
-		var y = inEvent.touches[0].pageY;
-
-		return this.touchMoved( x, y );
+		return true;
 	},
 
 	/**
@@ -602,6 +584,74 @@ enyo.kind({
 			this.sendEvents();
 			this.draw();
 		}
+	},
+
+	/**
+	 * @private
+	 * Mouse button no longer held
+	 *
+	 * @param {object}	[inSender]	Source object
+	 * @param {object}	[inEvent]	Mouse event object
+	 */
+	eventMouseUp: function( inSender, inEvent ) {
+
+		this.touchUp();
+
+		return true;
+	},
+
+	/**
+	 * @private
+	 * Touch event ended
+	 *
+	 * @param {object}	[inSender]	Source object
+	 * @param {object}	[inEvent]	Touch event object
+	 */
+	eventTouchEnd: function( inSender, inEvent ) {
+
+		if( inEvent.changedTouches.length < 1 ) {
+			//false positive
+
+			return;
+		}
+
+		for( var i = 0; i < inEvent.changedTouches.length; i++ ) {
+
+			if( this.touchId === inEvent.changedTouches[i]['identifier'] ) {
+				//Touch contact ended
+
+				var index = enyo.indexOf( this.touchId, GTS_Joystick_Touch_List );
+
+				if( index >= 0 ) {
+					//Remove identifier if found
+
+					GTS_Joystick_Touch_List.splice( index, 1 );
+				}
+
+				this.touchId = -1;
+				this.touchUp();
+
+				break;
+			}
+		}
+
+		inEvent.preventDefault();
+		return true;
+	},
+
+	/**
+	 * @private
+	 * Resets joystick to home
+	 */
+	touchUp: function() {
+
+		this.pressed = false;
+
+		this.stickX = this.baseX = 0;
+		this.stickY = this.baseY = 0;
+
+		this.sendEvents();
+		this.draw();
 	},
 
 	/**
@@ -709,7 +759,7 @@ enyo.kind({
 
 		if( this.debug.length > 0 ) {
 
-			this.$['debug'].setText( "X: " + this.getX() + " Y: " + this.getY() );
+			this.$['debug'].setText( "X: " + this.getX() + " Y: " + this.getY() + " | " + this.touchId + " | " + this.name );
 		}
 
 		this.update();
