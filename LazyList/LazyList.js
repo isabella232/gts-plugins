@@ -11,7 +11,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 */
 
 /**
- * GTS.DatabaseList
+ * GTS.LazyList
  *
  * DESCRIPTION
  *
@@ -24,7 +24,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
  * @param {viewDate}	[dateObj]	Initial viewing date; defaults to current date
  */
 enyo.kind({
-	name: "GTS.DatabaseList",
+	name: "GTS.LazyList",
 	kind: "enyo.PulldownList",
 
 	classes: "gts-databaselist",
@@ -33,7 +33,8 @@ enyo.kind({
 	published: {
 		buffer: 5,
 		batchSize: 25,
-		overshot: false
+
+		maxCount: -1
 	},
 
 	/** @public */
@@ -46,6 +47,11 @@ enyo.kind({
 	},
 
 	interceptor: function( inSender, inEvent ) {
+
+		if( this.maxCount >= 0 && this.count >= this.maxCount ) {
+
+			return;
+		}
 
 		if( ( inEvent.index + this.buffer ) > this.count ) {
 
