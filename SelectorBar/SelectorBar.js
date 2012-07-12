@@ -36,14 +36,14 @@ enyo.kind({
 		 * @type string
 		 * @default "Select One"
 		 */
-		labelText: "Select One",
+		label: "Select One",
 
 		/**
 		 * Note about dropdown, sits under it
 		 * @type string
 		 * @default ""
 		 */
-		subLabelText: "",
+		sublabel: "",
 
 		/**
 		 * Choices for drop down. Must be in component format
@@ -126,7 +126,7 @@ enyo.kind({
 				}
 			]
 		}, {
-			name: "subLabelText",
+			name: "sublabel",
 			classes: "sub-label"
 		}
 	],
@@ -150,44 +150,56 @@ enyo.kind({
 
 		this.inherited( arguments );
 
-		this.labelTextChanged();
-		this.subLabelTextChanged();
+		this.labelChanged();
+		this.sublabelChanged();
 		this.choicesChanged();
 		this.valueChanged();
 		this.disabledChanged();
 	},
 
 	/**
-	 * @private
+	 * @protected
 	 * @function
-	 * @name GTS.SelectorBar#labelTextChanged
+	 * @name GTS.SelectorBar#reflow
 	 *
-	 * Called by Enyo when this.labelText is changed by host.
-	 * Updates the label display.
+	 * Updates spacing on bar without resize event.
 	 */
-	labelTextChanged: function() {
+	reflow: function() {
 
-		this.$['labelButton'].setContent( this.labelText );
+		this.$['base'].reflow();
 	},
 
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.SelectorBar#subLabelTextChanged
+	 * @name GTS.SelectorBar#labelChanged
 	 *
-	 * Called by Enyo when this.subLabelText is changed by host.
+	 * Called by Enyo when this.label is changed by host.
+	 * Updates the label display.
+	 */
+	labelChanged: function() {
+
+		this.$['labelButton'].setContent( this.label );
+	},
+
+	/**
+	 * @private
+	 * @function
+	 * @name GTS.SelectorBar#sublabelChanged
+	 *
+	 * Called by Enyo when this.sublabel is changed by host.
 	 * Updates the sublabel display.
 	 */
-	subLabelTextChanged: function() {
+	sublabelChanged: function() {
 
-		this.$['subLabelText'].setContent( this.subLabelText );
+		this.$['sublabel'].setContent( this.sublabel );
 
-		if( this.subLabelText === "" ) {
+		if( this.sublabel === "" ) {
 
-			this.$['subLabelText'].hide();
+			this.$['sublabel'].hide();
 		} else {
 
-			this.$['subLabelText'].show();
+			this.$['sublabel'].show();
 		}
 	},
 
@@ -246,8 +258,6 @@ enyo.kind({
 
 		if( this.choices.length === 0 ) {
 
-			this.log( this.choices.length );
-
 			return;
 		}
 
@@ -275,7 +285,7 @@ enyo.kind({
 			}
 		}
 
-		this.$['base'].reflow();
+		this.reflow();
 	},
 
 	/**
