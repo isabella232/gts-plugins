@@ -124,5 +124,9 @@ Number.prototype.formatCurrency = function( precision, currency, decimalSeparato
 
 	var j = ( ( j = i.length ) > 3 ) ? j % 3 : 0;
 
-	return sign + currency + ( j ? i.substr( 0, j ) + thousandsSeparator : "" ) + i.substr( j ).replace( /(\d{3})(?=\d)/g, "$1" + thousandsSeparator ) + ( precision ? decimalSeparator + Math.abs( n - i ).toFixed( precision ).slice( 2 ) : "" );
+	return sign +
+			currency +
+			( j ? i.substr( 0, j ) + thousandsSeparator : "" ) +
+			i.substr( j ).replace( /(\d{3})(?=\d)/g, "$1" + thousandsSeparator ) +
+			( precision ? decimalSeparator + Math.abs( n - i ).toFixed( precision ).slice( 2 ) : "" );
 }

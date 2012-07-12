@@ -11,17 +11,15 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 */
 
 /**
- * GTS.LazyList
+ * @name GTS.LazyList
+ * @author Matthew Schott <glitchtechscience@gmail.com>
  *
  * DESCRIPTION
  *
- * @author Matthew Schott <glitchtechscience@gmail.com>
- *
- * @requies Enyo (https://github.com/enyojs/enyo)
- * @requies Layout (https://github.com/enyojs/layout)
- *
- * @param {date}	[dateObj]	Initial date object set; defaults to current date
- * @param {viewDate}	[dateObj]	Initial viewing date; defaults to current date
+ * @class
+ * @version 0.1 (2012/07/12)
+ * @extends enyo.PulldownList
+ * @see http://enyojs.com
  */
 enyo.kind({
 	name: "GTS.LazyList",
@@ -29,35 +27,102 @@ enyo.kind({
 
 	classes: "gts-databaselist",
 
-	/** @public */
 	published: {
-		buffer: 5,
-		batchSize: 25,
+		/** @lends GTS.LazyList# */
 
+		/**
+		 * Number of pages of data to preload
+		 * @type Number
+		 * @default 2
+		 */
+		lookAhead: 2,
+
+		/**
+		 * Maximum count of items in the list. Set to -1 for no limit.
+		 * @type Number
+		 * @default -1
+		 */
 		maxCount: -1
 	},
 
-	/** @public */
+	/**
+	 * @public
+	 * Events sent by control
+	 */
 	events: {
+		/** @lends GTS.LazyList# */
+		/**
+		 * Aquire new pages of data
+		 * @event
+		 * @param {Object} inSender	Event's sender
+		 * @param {Object} inEvent	Event parameters
+		 */
+		onAcquirePage: ""
 	},
 
-	/** @protected */
-	handlers: {
-		onSetupItem: "interceptor",
-	},
+	/**
+	 * @private
+	 * @function
+	 * @name GTS.LazyList#generatePage
+	 *
+	 * Overrides generatePage to check for & request new data
+	 *
+	 * @param {integer} inPageNo The event sender
+	 * @param {Object} inTarget
+	 */
+	generatePage: function( inPageNo, inTarget ) {
 
-	interceptor: function( inSender, inEvent ) {
+		this.inherited( arguments );
 
-		if( this.maxCount >= 0 && this.count >= this.maxCount ) {
+		this.log( this.getCount(), arguments );
 
+		if( this.maxCount >= 0 && this.getCount() >= this.maxCount ) {
+			//Reached limit of list
+
+			this.log( "Limit reached" );
 			return;
 		}
 
-		if( ( inEvent.index + this.buffer ) > this.count ) {
+		var maxPage = Math.floor( this.getCount() / this.getRowsPerPage() );
 
-			//try to fetch more
+		if( ( inPageNo + this.lookAhead ) > maxPage ) {
+
+			this.log( "Fetch more" );
+
+			for( var i = 0; i < this.lookAhead; i++ ) {
+
+				//this.doAcquirePage( maxPage + i );
+			}
+		}
+	},
+
+	reload: function() {
+
+		this.reset( 0 );
+
+		for( var i = 0; i < this.lookAhead; i++ ) {
+
+			//this.doAcquirePage( i );
+		}
+	},
+
+	reset: function( count ) {
+
+		if( count ) {
+
+			this.setCount( count );
 		}
 
-		this.log( this.count, arguments );
+		this.inherited( arguments );
+	},
+
+	refresh: function( count ) {
+
+		if( count ) {
+
+			this.setCount( count );
+		}
+
+		this.inherited( arguments );
 	}
 });
