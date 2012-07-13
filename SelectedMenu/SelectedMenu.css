@@ -1,0 +1,15 @@
+.gts-selectedMenu .onyx-menu-item.selected {
+	padding-right: 40px;
+
+	background-image: url( "assets/status.png" );
+	background-repeat: no-repeat;
+	background-position: right center;
+}
+
+.gts-selectedMenu .onyx-menu-item.normal {
+	padding-right: 40px;
+
+	background-image: url( "assets/empty.png" );
+	background-repeat: no-repeat;
+	background-position: right center;
+}

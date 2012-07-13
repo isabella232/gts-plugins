@@ -28,7 +28,7 @@ enyo.kind({
 	classes: "gts-selectorBar",
 
 	published: {
-		/** @lends GTS.LazyList# */
+		/** @lends GTS.SelectorBar# */
 
 		/**
 		 * label of drop down
@@ -72,6 +72,7 @@ enyo.kind({
 	 */
 	events: {
 		/** @lends GTS.SelectorBar# */
+
 		/**
 		 * Selected item changed
 		 * @event
@@ -108,18 +109,7 @@ enyo.kind({
 							name: "menu",
 							kind: "onyx.Menu",
 							floating: true,
-							components: [
-								{
-									content: "Reports",
-									menuParent: "searchMenu"
-								}, {
-									content: "Budget",
-									menuParent: "searchMenu"
-								}, {
-									content: "Search",
-									menuParent: "searchMenu"
-								}
-							]
+							components: []
 						}
 					]
 				}
