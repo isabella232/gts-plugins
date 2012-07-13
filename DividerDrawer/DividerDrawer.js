@@ -68,6 +68,7 @@ enyo.kind({
 		{
 			name: "base",
 			kind: "enyo.FittableColumns",
+			noStretch: true,
 			ontap: "toggleOpen",
 			components: [
 				{
@@ -80,8 +81,10 @@ enyo.kind({
 					fit: true
 				}, {
 					name: "switch",
-					kind: "onyx.ToggleButton",
-					onChange: "toggleOpen"
+					kind: "onyx.Checkbox",
+
+					onchange: "toggleOpen",
+					classes: "toggle"
 				}, {
 					classes: "end-cap bar"
 				}
@@ -163,10 +166,20 @@ enyo.kind({
 	 * @name GTS.DividerDrawer#toggleOpen
 	 *
 	 * Handles toggling event.
+	 *
+	 * @param {Object} inSender	Event's sender
+	 * @param {Object} inEvent	Event parameters
 	 */
-	toggleOpen: function() {
+	toggleOpen: function( inSender, inEvent ) {
 
-		this.open = !this.$['switch'].getValue();
+		if( inSender.name === "switch" ) {
+
+			this.open = this.$['switch'].getValue();
+		} else {
+
+			this.open = !this.$['switch'].getValue();
+		}
+
 		this.$['switch'].setValue( this.open );
 
 		this.openChanged();

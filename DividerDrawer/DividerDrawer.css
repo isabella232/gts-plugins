@@ -44,3 +44,12 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 	background: url( "assets/divider.png" ) left top repeat-x;
 	background-size: 6px 4px;
 }
+
+.gts-DividerDrawer .onyx-checkbox.toggle {
+	background: url( "assets/toggle.png" ) no-repeat;
+}
+
+.gts-DividerDrawer .onyx-checkbox.toggle[checked] {
+	/* Fails to switch without this override (same code as normal checkbox) */
+	background-position: 0px -32px;
+}
