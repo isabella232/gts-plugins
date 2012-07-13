@@ -22,7 +22,6 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
  * @see http://enyojs.com
  */
 enyo.kind({
-
 	name: "GTS.SelectorBar",
 	kind: "onyx.Item",
 

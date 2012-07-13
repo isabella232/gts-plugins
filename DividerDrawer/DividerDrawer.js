@@ -11,10 +11,10 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 */
 
 /**
- * @name GTS.ToggleBar
+ * @name GTS.DividerDrawer
  * @author Matthew Schott <glitchtechscience@gmail.com>
  *
- * Standardized ToggleButton kind. Displays ToggleButton in an Item row kind. Text is on the left, toggle is on the right.
+ * Mimics Enyo 1.0 DividerDrawer functionality.
  *
  * @class
  * @version 2.0 (2012/07/12)
@@ -22,48 +22,25 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
  * @see http://enyojs.com
  */
 enyo.kind({
-	name: "GTS.ToggleBar",
-	kind: "onyx.Item",
-
-	classes: "gts-ToggleBar",
+	name: "GTS.DividerDrawer",
+	classes: "gts-DividerDrawer",
 
 	published: {
 		/** @lends GTS.LazyList# */
 
 		/**
-		 * label of toggle
-		 * @type string
-		 * @default "Toggle Button"
-		 */
-		label: "Toggle Button",
-
-		/**
-		 * secondary label of toggle
+		 * caption of bar
 		 * @type string
 		 * @default ""
 		 */
-		sublabel: "",
-
-		/**
-		 * text for true label
-		 * @type string
-		 * @default ""
-		 */
-		onContent: "On",
-
-		/**
-		 * text for false label
-		 * @type string
-		 * @default ""
-		 */
-		offContent: "Off",
+		caption: "",
 
 		/**
 		 * initial state of toggle
 		 * @type boolean
-		 * @default ""
+		 * @default true
 		 */
-		value: false
+		open: true
 	},
 
 	/**
@@ -71,7 +48,7 @@ enyo.kind({
 	 * Events sent by control
 	 */
 	events: {
-		/** @lends GTS.ToggleBar# */
+		/** @lends GTS.DividerDrawer# */
 
 		/**
 		 * Selected item changed
@@ -91,30 +68,42 @@ enyo.kind({
 		{
 			name: "base",
 			kind: "enyo.FittableColumns",
+			ontap: "toggleOpen",
 			components: [
 				{
-					fit: true,
-					components: [
-						{
-							name: "label"
-						}, {
-							name: "sublabel",
-							style: "font-size: 75%;"
-						}
-					]
+					classes: "end-cap"
+				}, {
+					name: "caption",
+					classes: "caption"
+				}, {
+					classes: "bar",
+					fit: true
 				}, {
 					name: "switch",
 					kind: "onyx.ToggleButton",
-					onChange: "doChange"
+					onChange: "toggleOpen"
+				}, {
+					classes: "end-cap bar"
 				}
 			]
+		}, {
+			name: "client",
+			kind: "onyx.Drawer"
 		}
 	],
 
 	/**
+	 * @private
+	 * List of events to handle
+	 */
+	handlers: {
+		onEnd: "animatorEnd"
+	},
+
+	/**
 	 * @protected
 	 * @function
-	 * @name GTS.ToggleBar#rendered
+	 * @name GTS.DividerDrawer#rendered
 	 *
 	 * Called by Enyo when UI is rendered.
 	 */
@@ -122,19 +111,14 @@ enyo.kind({
 
 		this.inherited( arguments );
 
-		this.labelChanged();
-		this.sublabelChanged();
-
-		this.onContentChanged();
-		this.offContentChanged();
-
-		this.valueChanged();
+		this.captionChanged();
+		this.openChanged();
 	},
 
 	/**
 	 * @protected
 	 * @function
-	 * @name GTS.ToggleBar#reflow
+	 * @name GTS.DividerDrawer#reflow
 	 *
 	 * Updates spacing on bar without resize event.
 	 */
@@ -146,80 +130,55 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.ToggleBar#labelChanged
+	 * @name GTS.DividerDrawer#openChanged
 	 *
-	 * Called by Enyo when this.label is changed by host.
-	 * Updates the label display.
+	 * Called by Enyo when this.open is changed by host.
+	 * Opens/Closes the drawer and updates UI.
 	 */
-	labelChanged: function() {
+	openChanged: function() {
 
-		this.$['label'].setContent( this.label );
-	},
+		this.$['switch'].setValue( this.open );
+		this.$['client'].setOpen( this.$['switch'].getValue() );
 
-	/**
-	 * @private
-	 * @function
-	 * @name GTS.ToggleBar#sublabelChanged
-	 *
-	 * Called by Enyo when this.sublabel is changed by host.
-	 * Updates the sublabel display.
-	 */
-	sublabelChanged: function() {
-
-		this.$['sublabel'].setContent( this.sublabel );
-	},
-
-	/**
-	 * @private
-	 * @function
-	 * @name GTS.ToggleBar#onContentChanged
-	 *
-	 * Called by Enyo when this.onContent is changed by host.
-	 * Updates the togglebutt onContent.
-	 */
-	onContentChanged: function() {
-
-		this.$['switch'].setOnContent( this.onContent );
-	},
-
-	/**
-	 * @private
-	 * @function
-	 * @name GTS.ToggleBar#offContentChanged
-	 *
-	 * Called by Enyo when this.offContent is changed by host.
-	 * Updates the togglebutt offContent.
-	 */
-	offContentChanged: function() {
-
-		this.$['switch'].setOffContent( this.offContent );
-	},
-
-	/**
-	 * @private
-	 * @function
-	 * @name GTS.ToggleBar#valueChanged
-	 *
-	 * Called by Enyo when this.value is changed by host.
-	 * Updates the togglebutt value. Resizes bar.
-	 */
-	valueChanged: function() {
-
-		this.$['switch'].setValue( this.value );
 		this.reflow();
 	},
 
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.ToggleBar#getValue
+	 * @name GTS.DividerDrawer#captionChanged
 	 *
-	 * Returns value of toggle button
-	 *
-	 * @returns {boolean}
+	 * Called by Enyo when this.open is changed by host.
+	 * Updates UI for caption.
 	 */
-	getValue: function() {
+	captionChanged: function() {
 
-		return this.$['switch'].getValue();
+		this.$['caption'].setContent( this.caption );
+		this.$['caption'].applyStyle("display", this.caption ? "" : "none");
+	},
+
+	/**
+	 * @private
+	 * @function
+	 * @name GTS.DividerDrawer#toggleOpen
+	 *
+	 * Handles toggling event.
+	 */
+	toggleOpen: function() {
+
+		this.open = !this.$['switch'].getValue();
+		this.$['switch'].setValue( this.open );
+
+		this.openChanged();
+
+		return true;
+	},
+
+	animatorEnd: function() {
+
+		if( this.open ) {
+
+			this.$['client'].applyStyle( "height", null );
+		}
 	}
 });
