@@ -126,7 +126,5 @@ enyo.kind({
 		this.setValue( inEvent.selected.value );
 
 		this.doChange( inEvent.selected );
-
-		return true;
 	}
 });
