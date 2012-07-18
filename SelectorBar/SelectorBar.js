@@ -94,7 +94,8 @@ enyo.kind({
 			components: [
 				{
 					name: "valueIcon",
-					kind: "enyo.Image"
+					kind: "enyo.Image",
+					style: "margin-right: 1em;"
 				}, {
 					name: "valueDisplay",
 					fit: true
