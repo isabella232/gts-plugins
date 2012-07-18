@@ -44,8 +44,6 @@ Date.prototype.format = function( dtFormat, utc ) {
 		mask = ( dateFormat.masks.hasOwnProperty( dtFormat['date'] ) ? dateFormat.masks[dtFormat['date']] : dtFormat['date'] ) + " " + ( dateFormat.masks.hasOwnProperty( dtFormat['time'] ) ? dateFormat.masks[dtFormat['time']] : dtFormat['time'] )
 	}
 
-	console.log( dtFormat, mask );
-
 	return dateFormat( this, mask, utc );
 }
 

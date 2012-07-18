@@ -105,11 +105,20 @@ enyo.kind({
 				}, {
 					name: "switch",
 					kind: "onyx.ToggleButton",
+					ontap: "switchToggled",
 					onChange: "doChange"
 				}
 			]
 		}
 	],
+
+	/**
+	 * @private
+	 * List of events to handle
+	 */
+	handlers: {
+		ontap: "barTapped"
+	},
 
 	/**
 	 * @protected
@@ -141,6 +150,27 @@ enyo.kind({
 	reflow: function() {
 
 		this.$['base'].reflow();
+	},
+
+	barTapped: function() {
+
+		this.$['switch'].setValue( !this.getValue() );
+		this.doChange( this.$['switch'] );
+	},
+
+	/**
+	 * @private
+	 * @function
+	 * @name GTS.ToggleBar#switchToggled
+	 *
+	 * Called by Enyo when the toggle button is tapped.
+	 * return true prevents event from chaining
+	 *
+	 * @return boolean true
+	 */
+	switchToggled: function( inSender, inEvent ) {
+
+		return true;
 	},
 
 	/**

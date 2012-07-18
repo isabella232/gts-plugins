@@ -110,6 +110,9 @@ enyo.kind({
 							name: "menu",
 							kind: "onyx.Menu",
 							floating: true,
+
+							onSelect: "selectionChanged",
+
 							components: []
 						}
 					]
@@ -120,14 +123,6 @@ enyo.kind({
 			classes: "sub-label"
 		}
 	],
-
-	/**
-	 * @private
-	 * List of events to handle
-	 */
-	handlers: {
-		onSelect: "selectionChanged"
-	},
 
 	/**
 	 * @protected

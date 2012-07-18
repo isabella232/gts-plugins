@@ -11,21 +11,26 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 */
 
 /**
- * GTS.DatePicker
+ * @name GTS.DatePicker
+ * @author Matthew Schott <glitchtechscience@gmail.com>
  *
  * Calendar date picker for EnyoJS. Shows a calendar.
  * When the selected date changes, the onChange event is called with the current values as a date object.
  * Using getValue or setValue will get or set the datetime with a Date object. Setting a new value will change the view date.
  * Using getViewDate or setViewDate will get or set the display datetime with a Date object.
  *
- * @author Matthew Schott <glitchtechscience@gmail.com>
+ * @param {date}	[dateObj]	Initial date object set; defaults to current date
+ * @param {viewDate}	[dateObj]	Initial viewing date; defaults to current date
+ *
+ * @class
+ * @version 2.1 (2012/07/18)
  *
  * @requies Enyo (https://github.com/enyojs/enyo)
  * @requies Onyx (https://github.com/enyojs/onyx)
  * @requies Layout/Fittable (https://github.com/enyojs/layout)
+ * @see http://enyojs.com
  *
- * @param {date}	[dateObj]	Initial date object set; defaults to current date
- * @param {viewDate}	[dateObj]	Initial viewing date; defaults to current date
+ * @requies http://blog.stevenlevithan.com/archives/date-time-format
  */
 enyo.kind({
 	name: "GTS.DatePicker",
@@ -38,8 +43,11 @@ enyo.kind({
 		value: null,
 		viewDate: null,
 
-		dowFormat: null,
-		monthFormat: null
+		showTime: false,
+		timeFormat: "12",//12 or 24
+
+		dowFormat: "ddd",
+		monthFormat: "mmmm yyyy"
 	},
 
 	events: {
@@ -315,9 +323,8 @@ enyo.kind({
 
 			components: [
 				{
-					content: "&nbsp;",
-					allowHtml: true,
-					fit: true
+					fit: true,
+					content: " "
 				}, {
 					kind: "onyx.Button",
 					content: "Today",
@@ -336,41 +343,31 @@ enyo.kind({
 		this.viewDate = this.viewDate ? new Date( this.viewDate ) : new Date();
 		this.value = this.value ? new Date( this.value ) : new Date();
 
-		//Removed while there is not localization
-		/*
-		if( !this.dowFormat ) {
+		if( dateFormat ) {
 
-			this.dowFormat = new enyo.g11n.DateFmt( { format: "EEE" } );
+			//Build Day Of Week items
+			var dowDate = new Date( 2011, 4, 1 );//Sunday, May 1, 2011
+
+			this.$['sunday'].setContent( dateFormat( dowDate, this.dowFormat ) );
+
+			dowDate.setDate( dowDate.getDate() + 1 );
+			this.$['monday'].setContent( dateFormat( dowDate, this.dowFormat ) );
+
+			dowDate.setDate( dowDate.getDate() + 1 );
+			this.$['tuesday'].setContent( dateFormat( dowDate, this.dowFormat ) );
+
+			dowDate.setDate( dowDate.getDate() + 1 );
+			this.$['wednesday'].setContent( dateFormat( dowDate, this.dowFormat ) );
+
+			dowDate.setDate( dowDate.getDate() + 1 );
+			this.$['thursday'].setContent( dateFormat( dowDate, this.dowFormat ) );
+
+			dowDate.setDate( dowDate.getDate() + 1 );
+			this.$['friday'].setContent( dateFormat( dowDate, this.dowFormat ) );
+
+			dowDate.setDate( dowDate.getDate() + 1 );
+			this.$['saturday'].setContent( dateFormat( dowDate, this.dowFormat ) );
 		}
-
-		if( !this.monthFormat ) {
-
-			this.monthFormat = new enyo.g11n.DateFmt( { format: "MMMM yyyy" } );
-		}
-
-		//Build Day Of Week items
-		var dowDate = new Date( 2011, 4, 1 );//Sunday, May 1, 2011
-
-		this.$['sunday'].setContent( this.dowFormat.format( dowDate ) );
-
-		dowDate.setDate( dowDate.getDate() + 1 );
-		this.$['monday'].setContent( this.dowFormat.format( dowDate ) );
-
-		dowDate.setDate( dowDate.getDate() + 1 );
-		this.$['tuesday'].setContent( this.dowFormat.format( dowDate ) );
-
-		dowDate.setDate( dowDate.getDate() + 1 );
-		this.$['wednesday'].setContent( this.dowFormat.format( dowDate ) );
-
-		dowDate.setDate( dowDate.getDate() + 1 );
-		this.$['thursday'].setContent( this.dowFormat.format( dowDate ) );
-
-		dowDate.setDate( dowDate.getDate() + 1 );
-		this.$['friday'].setContent( this.dowFormat.format( dowDate ) );
-
-		dowDate.setDate( dowDate.getDate() + 1 );
-		this.$['saturday'].setContent( this.dowFormat.format( dowDate ) );
-		*/
 
 		var cellWidth = Math.round( 10 * this.getBounds()['width'] / 7 ) / 10;
 
@@ -474,7 +471,13 @@ enyo.kind({
 			}
 		}
 
-		this.$['monthLabel'].setContent( this.getMonthString( currMonth.getMonth() ) );
+		if( dateFormat ) {
+
+			this.$['monthLabel'].setContent( dateFormat( currMonth, this.monthFormat ) );
+		} else {
+
+			this.$['monthLabel'].setContent( this.getMonthString( currMonth.getMonth() ) );
+		}
 	},
 
 	/** @protected */
