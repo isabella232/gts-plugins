@@ -16,3 +16,15 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 .gts-timepicker > * {
 	display: inline-block;
 }
+
+.gts-timepicker .label {
+	font-size: 18px;
+	color: #1879CD;
+	text-transform: uppercase;
+
+	padding-right: 1em;
+}
+
+.gts-timepicker .onyx-picker-decorator > * {
+	min-width: 55px;
+}

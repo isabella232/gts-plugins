@@ -29,11 +29,16 @@ enyo.kind({
 
 	classes: "gts-timepicker",
 
+	loaded: false,
+
 	/** @public */
 	published: {
 		value: null,
 
-		timeFormat: "12"//12 or 24
+		minuteInterval: 5,
+		is24HrMode: false,
+
+		label: "Time"
 	},
 
 	events: {
@@ -43,53 +48,50 @@ enyo.kind({
 	/** @private */
 	components: [
 		{
+			name: "label",
+			classes: "label"
+		}, {
 			kind: "onyx.PickerDecorator",
+			onChange: "pickerChanged",
 			components: [
-				{
-					kind: "onyx.Button"
-				}, {
-					name: "hoursPicker",
-					kind: "onyx.FlyweightPicker",
-					count: 12,
-					onSetupItem: "setupHours",
+				{}, {
+					name: "hourPicker",
+					kind: "onyx.Picker",
+
 					components: [
-						{
-							name: "hours"
-						}
+						{ content: "Loading" }
 					]
 				}
 			]
 		}, {
 			kind: "onyx.PickerDecorator",
+			onChange: "pickerChanged",
 			components: [
-				{
-					kind: "onyx.Button"
-				}, {
-					name: "minutesPicker",
-					kind: "onyx.FlyweightPicker",
-					count: 60,
-					onSetupItem: "setupMinutes",
+				{}, {
+					name: "minutePicker",
+					kind: "onyx.Picker",
+
 					components: [
-						{
-							name: "minutes"
-						}
+						{ content: "Loading" }
 					]
 				}
 			]
 		}, {
-			name: "segmentstWrapper",
+			name: "segmentWrapper",
 			kind: "onyx.PickerDecorator",
+			onChange: "pickerChanged",
 			components: [
-				{
-					kind: "onyx.Button"
-				}, {
-					name: "segmentsPicker",
-					kind: "onyx.FlyweightPicker",
-					count: 2,
-					onSetupItem: "setupSegments",
+				{}, {
+					name: "segmentPicker",
+					kind: "onyx.Picker",
+
 					components: [
 						{
-							name: "segments"
+							content: "AM",
+							value: 0
+						}, {
+							content: "PM",
+							value: 12
 						}
 					]
 				}
@@ -97,30 +99,81 @@ enyo.kind({
 		}
 	],
 
+	/** @constructs @protected */
+	constructor: function() {
+
+		this.inherited( arguments );
+
+		this.value = this.value || new Date();this.log();
+	},
+
 	/** @protected */
 	rendered: function() {
 
 		this.inherited( arguments );
 
-		this.timeFormatChanged();
+		this.minuteIntervalChanged();
+		this.is24HrModeChanged();
+		this.labelChanged();
+
+		this.loaded = true;
+	},
+
+	/**
+	 * @private
+	 * @function
+	 * @name GTS.SelectorBar#minuteIntervalChanged
+	 *
+	 * Called by system when this.minuteInterval changes.
+	 * Builds options for minutePicker.
+	 */
+	minuteIntervalChanged: function() {
+
+		this.$['minutePicker'].destroyClientControls();
+
+		var items = [];
+
+		for( var i = 0; i < 60; i += this.minuteInterval ) {
+
+			items.push( { content: ( ( i > 9 ) ? i : ( "0" + i ) ), value: i } );
+		}
+
+		this.$['minutePicker'].createComponents( items );
+		this.$['minutePicker'].render();
 	},
 
 	/** @protected */
-	timeFormatChanged: function() {
+	is24HrModeChanged: function() {
 
-		if( this.timeFormat == "12" ) {
+		this.$['segmentWrapper'].setShowing( !this.is24HrMode );
 
-			//am pm
-			this.$['segmentstWrapper'].show();
-			this.$['hoursPicker'].setCount( 12 );
-		} else {
+		this.setupHour();
+		this.valueChanged();
+	},
 
-			//24 hour
-			this.$['segmentstWrapper'].hide();
-			this.$['hoursPicker'].setCount( 24 );
+	setupHour: function( inSender, inEvent ) {
+
+		var items = [];
+
+		this.$['hourPicker'].destroyClientControls();
+
+		for (var i = ( this.is24HrMode ? 0 : 1 ); i <= ( this.is24HrMode ? 23 : 12 ); i++ ) {
+
+			items.push( { content: ( ( i > 9 ) ? i : ( "0" + i ) ), value: i } );
 		}
 
-		this.valueChanged();
+		this.$['hourPicker'].createComponents( items );
+		this.$['hourPicker'].render();
+	},
+
+	/** @protected */
+	labelChanged: function() {
+
+		this.$['label'].setContent( this.label );
+
+		//Force label to render proper size
+		this.$['label'].applyStyle( "width", "100%" );
+		enyo.asyncMethod( this.$['label'], this.$['label'].applyStyle, "width", null );
 	},
 
 	/** @protected */
@@ -132,23 +185,73 @@ enyo.kind({
 			this.value = new Date();
 		}
 
-		if( this.timeFormat == "12" ) {
-		} else {
+		var hours = this.value.getHours();
+		var mins = Math.floor( this.value.getMinutes() / this.minuteInterval ) * this.minuteInterval;
+		var partOfDay = ( hours >= 12 ) * 12;
+
+		this.setItemSelected( this.$['hourPicker'], ( this.is24HrMode ? hours : hours - partOfDay || 12 ) );
+		this.setItemSelected( this.$['minutePicker'], mins );
+		this.setItemSelected( this.$['segmentPicker'], partOfDay );
+	},
+
+	setItemSelected: function( comp, value ) {
+
+		var children = comp.getClientControls();
+		var childValue;
+
+		for( var i = 0; i < children.length; i++ ) {
+
+			childValue = children[i].value || children[i].content;
+
+			if( childValue == value ) {
+
+				comp.setSelected( children[i] );
+				break;
+			}
 		}
 	},
 
-	setupHours: function( inSender, inEvent ) {
+	getItemSelected: function( comp ) {
 
-		this.$['hours'].setContent( inEvent.index );
+		var selected = comp.getSelected();
+
+		return( ( typeof( selected.value ) !== "undefined" ) ? selected.value : selected.content );
 	},
 
-	setupMinutes: function( inSender, inEvent ) {
+	/**
+	 * @private
+	 * @function
+	 * @name GTS.SelectorBar#pickerChanged
+	 *
+	 * Update local value from current picker values
+	 */
+	pickerChanged: function() {
 
-		this.$['minutes'].setContent( inEvent.index );
-	},
+		if( !this.loaded ) {
 
-	setupSegments: function( inSender, inEvent ) {
+			return;
+		}
 
-		this.$['segments'].setContent( inEvent.index );
+		var hours = parseInt( this.getItemSelected( this.$['hourPicker'] ) );
+		var mins = parseInt( this.getItemSelected( this.$['minutePicker'] ), 10 );
+		var partOfDay = this.getItemSelected( this.$['segmentPicker'] );
+
+		hours = ( this.is24HrMode ) ? hours : hours + ( hours == 12 ? ( -!partOfDay * 12 ) : partOfDay );
+
+		this.setValue(
+				new Date(
+						this.value.getFullYear(),
+						this.value.getMonth(),
+						this.value.getDate(),
+						hours,
+						mins,
+						this.value.getSeconds(),
+						this.value.getMilliseconds()
+					)
+			);
+
+		this.doChange( { value: this.value } );
+
+		return true;
 	}
 });

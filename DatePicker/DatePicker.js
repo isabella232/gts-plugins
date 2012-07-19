@@ -43,9 +43,6 @@ enyo.kind({
 		value: null,
 		viewDate: null,
 
-		showTime: false,
-		timeFormat: "12",//12 or 24
-
 		dowFormat: "ddd",
 		monthFormat: "mmmm yyyy"
 	},
@@ -323,8 +320,8 @@ enyo.kind({
 
 			components: [
 				{
-					fit: true,
-					content: " "
+					name: "client",
+					fit: true
 				}, {
 					kind: "onyx.Button",
 					content: "Today",
