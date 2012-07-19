@@ -33,19 +33,58 @@ enyo.kind({
 
 	/** @public */
 	published: {
+		/** @lends GTS.SelectorBar# */
+
+		/**
+		 * Currently selected time
+		 * @type datetime
+		 * @default NOW()
+		 */
 		value: null,
 
+		/**
+		 * Intervals between minute options
+		 * @type int
+		 * @default 5
+		 */
 		minuteInterval: 5,
+
+		/**
+		 * 24 hour mode (true) or 12 hour mode (false)
+		 * @type boolean
+		 * @default false
+		 */
 		is24HrMode: false,
 
+		/**
+		 * label of picker set
+		 * @type string
+		 * @default "Time"
+		 */
 		label: "Time"
 	},
 
+	/**
+	 * @public
+	 * Events sent by control
+	 */
 	events: {
+		/** @lends GTS.SelectorBar# */
+
+		/**
+		 * Selected time changed
+		 * @event
+		 * @param {Object} inSender	Event's sender
+		 * @param {Object} inEvent	{ value: Date() }
+		 */
 		onChange: ""
 	},
 
-	/** @private */
+	/**
+	 * @private
+	 * @type Array
+	 * Components of the control
+	 */
 	components: [
 		{
 			name: "label",
@@ -99,7 +138,10 @@ enyo.kind({
 		}
 	],
 
-	/** @constructs @protected */
+	/**
+	 * @protected
+	 * @constructs
+	 */
 	constructor: function() {
 
 		this.inherited( arguments );
@@ -107,7 +149,13 @@ enyo.kind({
 		this.value = this.value || new Date();this.log();
 	},
 
-	/** @protected */
+	/**
+	 * @protected
+	 * @function
+	 * @name GTS.SelectorBar#rendered
+	 *
+	 * Called by Enyo when UI is rendered.
+	 */
 	rendered: function() {
 
 		this.inherited( arguments );
@@ -124,8 +172,8 @@ enyo.kind({
 	 * @function
 	 * @name GTS.SelectorBar#minuteIntervalChanged
 	 *
-	 * Called by system when this.minuteInterval changes.
-	 * Builds options for minutePicker.
+	 * Called by Enyo when this.minuteInterval is changed by host.
+	 * Updates options for minutePicker.
 	 */
 	minuteIntervalChanged: function() {
 
@@ -142,7 +190,14 @@ enyo.kind({
 		this.$['minutePicker'].render();
 	},
 
-	/** @protected */
+	/**
+	 * @private
+	 * @function
+	 * @name GTS.SelectorBar#is24HrModeChanged
+	 *
+	 * Called by Enyo when this.is24HrMode is changed by host.
+	 * Shows/Hides AM/PM selector. Updates hour options.
+	 */
 	is24HrModeChanged: function() {
 
 		this.$['segmentWrapper'].setShowing( !this.is24HrMode );
@@ -151,6 +206,13 @@ enyo.kind({
 		this.valueChanged();
 	},
 
+	/**
+	 * @private
+	 * @function
+	 * @name GTS.SelectorBar#setupHour
+	 *
+	 * Generates options for hour picker
+	 */
 	setupHour: function( inSender, inEvent ) {
 
 		var items = [];
@@ -166,7 +228,14 @@ enyo.kind({
 		this.$['hourPicker'].render();
 	},
 
-	/** @protected */
+	/**
+	 * @private
+	 * @function
+	 * @name GTS.SelectorBar#labelChanged
+	 *
+	 * Called by Enyo when this.label is changed by host.
+	 * Updates the label display.
+	 */
 	labelChanged: function() {
 
 		this.$['label'].setContent( this.label );
@@ -176,7 +245,13 @@ enyo.kind({
 		enyo.asyncMethod( this.$['label'], this.$['label'].applyStyle, "width", null );
 	},
 
-	/** @protected */
+	/**
+	 * @private
+	 * @function
+	 * @name GTS.SelectorBar#valueChanged
+	 *
+	 * Updates UI
+	 */
 	valueChanged: function() {
 
 		if( Object.prototype.toString.call( this.value ) !== "[object Date]" || isNaN( this.value.getTime() ) ) {
@@ -194,6 +269,13 @@ enyo.kind({
 		this.setItemSelected( this.$['segmentPicker'], partOfDay );
 	},
 
+	/**
+	 * @private
+	 * @function
+	 * @name GTS.SelectorBar#setItemSelected
+	 *
+	 * Helper function to select an item in onyx.Picker
+	 */
 	setItemSelected: function( comp, value ) {
 
 		var children = comp.getClientControls();
@@ -211,6 +293,13 @@ enyo.kind({
 		}
 	},
 
+	/**
+	 * @private
+	 * @function
+	 * @name GTS.SelectorBar#getItemSelected
+	 *
+	 * Helper function to get value of selected items
+	 */
 	getItemSelected: function( comp ) {
 
 		var selected = comp.getSelected();
