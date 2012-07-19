@@ -146,7 +146,7 @@ enyo.kind({
 
 		this.inherited( arguments );
 
-		this.value = this.value || new Date();this.log();
+		this.value = this.value || new Date();
 	},
 
 	/**

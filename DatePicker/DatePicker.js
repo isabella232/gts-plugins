@@ -331,14 +331,22 @@ enyo.kind({
 		}
 	],
 
+	/**
+	 * @protected
+	 * @constructs
+	 */
+	constructor: function() {
+
+		this.inherited( arguments );
+
+		this.viewDate = this.viewDate || new Date();
+		this.value = this.value || new Date();
+	},
+
 	/** @protected */
 	rendered: function() {
 
 		this.inherited( arguments );
-
-		//Fix pass by reference issues
-		this.viewDate = this.viewDate ? new Date( this.viewDate ) : new Date();
-		this.value = this.value ? new Date( this.value ) : new Date();
 
 		if( dateFormat ) {
 
