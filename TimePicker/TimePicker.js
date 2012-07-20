@@ -283,7 +283,7 @@ enyo.kind({
 
 		for( var i = 0; i < children.length; i++ ) {
 
-			childValue = children[i].value || children[i].content;
+			childValue = ( typeof( children[i].value ) !== "undefined" ) ? children[i].value : children[i].content
 
 			if( childValue == value ) {
 
