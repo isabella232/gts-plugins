@@ -18,6 +18,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
  * @author Matthew Schott <glitchtechscience@gmail.com>
  *
  * @requies Enyo (https://github.com/enyojs/enyo)
+ * @extends Input
  */
 enyo.kind({
 	name: "GTS.DecimalInput",
@@ -288,17 +289,18 @@ enyo.kind({
 		this.setValue( amount );
 	},
 
-	inputBlurred: function () {
-
-		this.oldType = this.type;
-
-		if( this.oldType === "number" ) {
-
-			this.setType( "text" );
-		}
-	},
-
-	inputFocused: function () {
+	/**
+	 * @private
+	 * @function
+	 * @name GTS.DecimalInput#inputFocused
+	 *
+	 * Handles input onfocus event. Sets type to number if that is what it was.
+	 * Also selects all content of input if this.selectAllOnFocus is true.
+	 *
+	 * @param {object} inSender	The event sender
+	 * @param {object} inEvent	Event object
+	 */
+	inputFocused: function( inSender, inEvent ) {
 
 		if( this.oldType === "number" ) {
 
@@ -308,6 +310,26 @@ enyo.kind({
 		if( this.selectAllOnFocus && this.hasNode() ) {
 
 			this.hasNode().setSelectionRange( 0, this.getValue().length );
+		}
+	},
+
+	/**
+	 * @private
+	 * @function
+	 * @name GTS.DecimalInput#inputBlurred
+	 *
+	 * Handles input onblur event. Sets type to text if it was number.
+	 *
+	 * @param {object} inSender	The event sender
+	 * @param {object} inEvent	Event object
+	 */
+	inputBlurred: function( inSender, inEvent ) {
+
+		this.oldType = this.type;
+
+		if( this.oldType === "number" ) {
+
+			this.setType( "text" );
 		}
 	},
 
