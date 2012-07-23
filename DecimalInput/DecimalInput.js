@@ -4,8 +4,8 @@ All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
 
-    Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
-    Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+	Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+	Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
@@ -13,14 +13,11 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 /**
  * GTS.DecimalInput
  *
- * Input specifically for decimal or other decimal number formats.
+ * Input specifically for currency or other decimal number formats.
  *
  * @author Matthew Schott <glitchtechscience@gmail.com>
  *
  * @requies Enyo (https://github.com/enyojs/enyo)
- * @extends Input
- *
- * @param {date}	[dateObj]	Initial date object set; defaults to current date
  */
 enyo.kind({
 	name: "GTS.DecimalInput",
@@ -28,13 +25,8 @@ enyo.kind({
 
 	classes: "decimal-input",
 
-	oldValue: "",
-
-/*
-  Numberic input with decimal: $<input type="number" name="currency" min="0" max="9999" ="0.01" size="4"
-    title="CDA Currency Format - no dollar sign and no comma(s) - cents (.##) are optional" />
-    <br />* setting step="0.01" is the only way to enforce decimal on an input field of type="number" (note: 1-precision decimal place (.1) will be allowed). Non-numeric values are automatically discarded on the input field's change event.
-*/
+	deleteAction: false,
+	oldType: "",
 
 	/** @public */
 	published: {
@@ -42,6 +34,9 @@ enyo.kind({
 
 		/**
 		 * Input type. This should be number unless issues with browser occur.
+		 * Browsers that put a pair of toggle buttons should not be set to "number"
+		 * and use the atm function. They might will fail when using the button.
+		 * This is due to coding limitations involving the step attribute.
 		 * @type string
 		 * @default "number"
 		 */
@@ -68,10 +63,16 @@ enyo.kind({
 		 */
 		max: false,
 
+		/**
+		 * Set the HTML5 input attribute step (using the precision parameter).
+		 * Should be set to true when this.type === "number"
+		 * @type boolean
+		 * @default true
+		 */
+		step: true,
 
 		/**
-		 * Number of decimal points to format to. (equiv of toFixed)
-		 * Adjusts the step option.
+		 * Number of decimal points to format to. Adjusts the step option.
 		 * @type integer
 		 * @default 2
 		 */
@@ -83,7 +84,14 @@ enyo.kind({
 		 * @type boolean
 		 * @default false
 		 */
-		atm: false
+		atm: false,
+
+		/**
+		 * Select all of the content on focus.
+		 * @type boolean
+		 * @default false
+		 */
+		selectAllOnFocus: false
 	},
 
 	/**
@@ -92,10 +100,12 @@ enyo.kind({
 	 */
 	handlers: {
 		onkeypress: "filterInput",
+
 		oninput: "inputValueUpdated",
 		onchange: "inputValueChanged",
-		onfocus: "",
-		onblur: ""
+
+		onfocus: "inputFocused",
+		onblur: "inputBlurred"
 	},
 
 	/**
@@ -112,6 +122,7 @@ enyo.kind({
 		this.minChanged();
 		this.maxChanged();
 		this.precisionChanged();
+		this.inputBlurred();
 	},
 
 	/**
@@ -144,11 +155,29 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
+	 * @name GTS.DecimalInput#stepChanged
+	 *
+	 * Called by Enyo when this.step is changed by host.
+	 */
+	stepChanged: function() {
+
+		this.precisionChanged();
+	},
+
+	/**
+	 * @private
+	 * @function
 	 * @name GTS.DecimalInput#precisionChanged
 	 *
 	 * Called by Enyo when this.precision is changed by host.
 	 */
 	precisionChanged: function() {
+
+		if( !this.step ) {
+
+			this.setAttribute( "step", null );
+			return;
+		}
 
 		var step = "0.";
 
@@ -200,49 +229,35 @@ enyo.kind({
 	 */
 	inputValueUpdated: function( inSender, inEvent ) {
 
-		this.log( arguments, this.getValueAsNumber() );
-
 		if( this.atm ) {
 
-			this.error();
-			return;
+			var amount = this.getValue();
 
-			var amount = this.getValueAsNumber();
+			//Remove non-ints & leading zeroes
+			amount = amount.replace( /[^0-9]/g, "" );
+			amount = amount.replace( /^0*/, "" );
 
-			var oldamount = inSender.oldValue;
+			//Set to this.precision
+			amount = ( parseInt( amount ) / Math.pow( 10, this.precision ) );
 
-			//Save cursor position
-			var curPos = this.$['amount'].getSelection();//https://developer.mozilla.org/en/DOM/HTMLTextAreaElement
+			if( isNaN( amount ) ) {
 
-			if( !amount || amount.length <= 0 ) {
-
-				curPos['start'] = 4;
-				curPos['end'] = 4;
-			} else if( ( oldamount.length - 1 ) === amount.length ) {
-				//Char deleted
-
-				curPos['start']++;
-				curPos['end']++;
+				amount = 0;
 			}
 
-			//Format number
-			if( amount == "" || amount == 0 ) {
+			amount = amount.toFixed( this.precision );
 
-				amount = "0.00";
-			} else {
+			this.setValue( amount );
 
-				amount = amount.replace( /[^0-9]/g, "" );
-				amount = amount.replace( /^0*/, "" );
+			var node = this.hasNode();
 
-				amount = ( parseInt( amount ) / 100 ).toFixed( 2 );
+			//Cursor must be at end for ATM mode
+			if( node ) {
+
+				var len = amount.length;
+
+				enyo.asyncMethod( node, node.setSelectionRange, len, len );
 			}
-
-			//Update values
-			inSender.oldValue = amount;
-			inSender.setValue( amount );
-
-			//Restore cursor position
-			inSender.setSelection( curPos );//Ignoring command when string length < 4
 		}
 	},
 
@@ -268,7 +283,32 @@ enyo.kind({
 			amount = this.min;
 		}
 
+		this.log( amount );
+
 		this.setValue( amount );
+	},
+
+	inputBlurred: function () {
+
+		this.oldType = this.type;
+
+		if( this.oldType === "number" ) {
+
+			this.setType( "text" );
+		}
+	},
+
+	inputFocused: function () {
+
+		if( this.oldType === "number" ) {
+
+			this.setType( this.oldType );
+		}
+
+		if( this.selectAllOnFocus && this.hasNode() ) {
+
+			this.hasNode().setSelectionRange( 0, this.getValue().length );
+		}
 	},
 
 	/**
