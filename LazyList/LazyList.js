@@ -18,12 +18,12 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
  *
  * @class
  * @version 0.1 (2012/07/12)
- * @extends enyo.PulldownList
+ * @extends enyo.List
  * @see http://enyojs.com
  */
 enyo.kind({
 	name: "GTS.LazyList",
-	kind: "enyo.PulldownList",
+	kind: "enyo.List",
 
 	classes: "gts-databaselist",
 
@@ -51,6 +51,7 @@ enyo.kind({
 	 */
 	events: {
 		/** @lends GTS.LazyList# */
+
 		/**
 		 * Aquire new pages of data
 		 * @event
@@ -67,10 +68,11 @@ enyo.kind({
 	 *
 	 * Overrides generatePage to check for & request new data
 	 *
-	 * @param {integer} inPageNo The event sender
+	 * @param {integer} inPageNo
 	 * @param {Object} inTarget
 	 */
-	generatePage: function( inPageNo, inTarget ) {
+	generatePageXXXXXXx: function( inPageNo, inTarget ) {
+		//Doesn't work as expected yet.
 
 		this.inherited( arguments );
 
@@ -91,38 +93,23 @@ enyo.kind({
 
 			for( var i = 0; i < this.lookAhead; i++ ) {
 
-				//this.doAcquirePage( maxPage + i );
+				this.doAcquirePage( { "page": maxPage + i, "pageSize": this.getRowsPerPage() } );
 			}
 		}
 	},
 
+	empty: function() {
+
+		this.setCount( 0 );
+	},
+
 	reload: function() {
 
-		this.reset( 0 );
+		this.empty();
 
 		for( var i = 0; i < this.lookAhead; i++ ) {
 
-			//this.doAcquirePage( i );
+			this.doAcquirePage( { "page": i, "pageSize": this.getRowsPerPage() } );
 		}
-	},
-
-	reset: function( count ) {
-
-		if( count ) {
-
-			this.setCount( count );
-		}
-
-		this.inherited( arguments );
-	},
-
-	refresh: function( count ) {
-
-		if( count ) {
-
-			this.setCount( count );
-		}
-
-		this.inherited( arguments );
 	}
 });
