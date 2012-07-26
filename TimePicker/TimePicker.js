@@ -187,7 +187,6 @@ enyo.kind({
 		}
 
 		this.$['minutePicker'].createComponents( items );
-		this.$['minutePicker'].render();
 	},
 
 	/**
@@ -225,7 +224,6 @@ enyo.kind({
 		}
 
 		this.$['hourPicker'].createComponents( items );
-		this.$['hourPicker'].render();
 	},
 
 	/**
