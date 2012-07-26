@@ -24,7 +24,7 @@ enyo.kind({
 	name: "GTS.DecimalInput",
 	kind: "Input",
 
-	classes: "decimal-input",
+	classes: "gts-decimal-input",
 
 	deleteAction: false,
 	oldType: "",
@@ -283,8 +283,6 @@ enyo.kind({
 
 			amount = this.min;
 		}
-
-		this.log( amount );
 
 		this.setValue( amount );
 	},
