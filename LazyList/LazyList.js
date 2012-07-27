@@ -1,49 +1,56 @@
-/*
-Copyright © 2012, GlitchTech Science
-All rights reserved.
+/**
+	A List that loads its items lazily. When the user scroll to the end of the list, it asks for more items to add, and shows feedback accordingly.
 
-Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+	## Basic Use
 
-    Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
-    Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+	Same as standard list component, but you can use lazyLoad() method to load the first set of data.
 
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+	The onAcquirePage event enabled lazy data retrieval. It gets fired each time the user reachs the end of the list. Return true if there are more items to add, false otherwise:
+
+		components: [
+			{kind: "LazyList", fit: true, onSetupItem: "setupItem", onAcquirePage: "lazyLoad", components: [
+				{classes: "item", ontap: "itemTap", components: [
+					{name: "name"},
+					{name: "index", style: "float: right;"}
+				]}
+			]}
+		],
+		lazyLoad: function( inSender, inEvent ) {
+			var page = inEvent.page;
+
+			if(this.itemsCount > this.$.lazyList.getCount() ) {
+				this.askForData(inPage );
+				return true;
+			} else {
+				return false;
+			}
+		},
+		gotData: function( inRequest, inResponse ) {
+			this.results = this.results.concat( inResponse.results );
+			this.$.list.setCount( this.results.length );
+		}
+
 */
 
 /**
- * @name GTS.LazyList
+ * @name gts.LazyList
+ * @author Newness (Rafa Bernad)
  * @author Matthew Schott <glitchtechscience@gmail.com>
  *
- * DESCRIPTION
+ * Lazy loading list. Found in a merge request on the official enyo github.
+ * Included in here to make use of it until an official solution is released.
+ * Released under the gts namespace to prevent future conflicts. Code cleaned
+ * up some and changed to my needs.
  *
  * @class
- * @version 0.1 (2012/07/12)
  * @extends enyo.List
  * @see http://enyojs.com
  */
 enyo.kind({
-	name: "GTS.LazyList",
+	name: "gts.LazyList",
 	kind: "enyo.List",
 
-	classes: "gts-databaselist",
-
-	published: {
-		/** @lends GTS.LazyList# */
-
-		/**
-		 * Number of pages of data to preload
-		 * @type Number
-		 * @default 2
-		 */
-		lookAhead: 2,
-
-		/**
-		 * Maximum count of items in the list. Set to -1 for no limit.
-		 * @type Number
-		 * @default -1
-		 */
-		maxCount: -1
-	},
+	lastLazyLoad: 0,
 
 	/**
 	 * @public
@@ -61,55 +68,93 @@ enyo.kind({
 		onAcquirePage: ""
 	},
 
+	listTools: [
+		{
+			name: "port",
+			classes: "enyo-list-port enyo-border-box",
+			components: [
+				{
+					name: "generator",
+					kind: "FlyweightRepeater",
+					canGenerate: false,
+					components: [
+						{
+							tag: null,
+							name: "client"
+						}
+					]
+				}, {
+					name: "page0",
+					allowHtml: true,
+					classes: "enyo-list-page"
+				}, {
+					name: "page1",
+					allowHtml: true,
+					classes: "enyo-list-page"
+				}
+			]
+		}, {
+			name: "lazyFeedback",
+			classes: "enyo-lazy-feedback"
+		}
+	],
+
+
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.LazyList#generatePage
+	 * @name GTS.LazyList#scroll
 	 *
-	 * Overrides generatePage to check for & request new data
+	 * Overrides scroll to check for & request new data
 	 *
-	 * @param {integer} inPageNo
-	 * @param {Object} inTarget
+	 * @param {object} inSender	The event sender
+	 * @param {object} inEvent	Event object
 	 */
-	generatePageXXXXXXx: function( inPageNo, inTarget ) {
-		//Doesn't work as expected yet.
+	scroll: function( inSender, inEvent ) {
+
+		var s = this.getStrategy().$.scrollMath;
+
+		if( ( s.isInOverScroll() && s.y < 0 ) || ( s.y <( s.bottomBoundary + this.$.lazyFeedback.hasNode().offsetHeight ) ) ) {
+
+			if( this.lastLazyLoad < this.pageCount ) {
+
+				this.lastLazyLoad = this.pageCount;
+
+				var bMore = this.doAcquirePage( {
+						page: this.lastLazyLoad
+					});
+
+				this.$.lazyFeedback.addRemoveClass( "enyo-loading", bMore );
+				this.$.lazyFeedback.addRemoveClass( "enyo-eol", !bMore );
+			}
+		}
+
+		return this.inherited( arguments );
+	},
+
+	lazyLoad: function() {
+
+		this.lastLazyLoad = 0;
+
+		this.doAcquirePage({
+				page: this.lastLazyLoad
+			});
+	},
+
+	refresh: function() {
+
+		this.$.lazyFeedback.removeClass( "enyo-loading" );
+		this.$.lazyFeedback.addRemoveClass( "enyo-eol", this.$.lazyFeedback.hasClass( "enyo-eol" ) );
+
+		this.inherited( arguments );
+	},
+
+	reset: function() {
+
+		this.$.lazyFeedback.removeClass( "enyo-loading" );
+		this.$.lazyFeedback.removeClass( "enyo-eol" );
 
 		this.inherited( arguments );
 
-		this.log( this.getCount(), arguments );
-
-		if( this.maxCount >= 0 && this.getCount() >= this.maxCount ) {
-			//Reached limit of list
-
-			this.log( "Limit reached" );
-			return;
-		}
-
-		var maxPage = Math.floor( this.getCount() / this.getRowsPerPage() );
-
-		if( ( inPageNo + this.lookAhead ) > maxPage ) {
-
-			this.log( "Fetch more" );
-
-			for( var i = 0; i < this.lookAhead; i++ ) {
-
-				this.doAcquirePage( { "page": maxPage + i, "pageSize": this.getRowsPerPage() } );
-			}
-		}
-	},
-
-	empty: function() {
-
-		this.setCount( 0 );
-	},
-
-	reload: function() {
-
-		this.empty();
-
-		for( var i = 0; i < this.lookAhead; i++ ) {
-
-			this.doAcquirePage( { "page": i, "pageSize": this.getRowsPerPage() } );
-		}
 	}
 });
