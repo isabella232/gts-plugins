@@ -99,11 +99,11 @@ enyo.kind({
 		}
 	],
 
-
 	/**
 	 * @private
 	 * @function
 	 * @name GTS.LazyList#scroll
+	 * @extends enyo.List#scroll
 	 *
 	 * Overrides scroll to check for & request new data
 	 *
@@ -114,24 +114,31 @@ enyo.kind({
 
 		var s = this.getStrategy().$.scrollMath;
 
-		if( ( s.isInOverScroll() && s.y < 0 ) || ( s.y <( s.bottomBoundary + this.$.lazyFeedback.hasNode().offsetHeight ) ) ) {
+		if( ( s.isInOverScroll() && s.y < 0 ) || ( s.y <( s.bottomBoundary + this.$['lazyFeedback'].hasNode().offsetHeight ) ) ) {
 
 			if( this.lastLazyLoad < this.pageCount ) {
 
 				this.lastLazyLoad = this.pageCount;
 
-				var bMore = this.doAcquirePage( {
+				var bMore = this.doAcquirePage({
 						page: this.lastLazyLoad
 					});
 
-				this.$.lazyFeedback.addRemoveClass( "enyo-loading", bMore );
-				this.$.lazyFeedback.addRemoveClass( "enyo-eol", !bMore );
+				this.$['lazyFeedback'].addRemoveClass( "enyo-loading", bMore );
+				this.$['lazyFeedback'].addRemoveClass( "enyo-eol", !bMore );
 			}
 		}
 
 		return this.inherited( arguments );
 	},
 
+	/**
+	 * @public
+	 * @function
+	 * @name GTS.LazyList#lazyLoad
+	 *
+	 * Resets list position and fetches new data
+	 */
 	lazyLoad: function() {
 
 		this.lastLazyLoad = 0;
@@ -141,18 +148,30 @@ enyo.kind({
 			});
 	},
 
+	/**
+	 * @public
+	 * @function
+	 * @name GTS.LazyList#refresh
+	 * @extends enyo.List#refresh
+	 */
 	refresh: function() {
 
-		this.$.lazyFeedback.removeClass( "enyo-loading" );
-		this.$.lazyFeedback.addRemoveClass( "enyo-eol", this.$.lazyFeedback.hasClass( "enyo-eol" ) );
+		this.$['lazyFeedback'].removeClass( "enyo-loading" );
+		this.$['lazyFeedback'].addRemoveClass( "enyo-eol", this.$['lazyFeedback'].hasClass( "enyo-eol" ) );
 
 		this.inherited( arguments );
 	},
 
+	/**
+	 * @public
+	 * @function
+	 * @name GTS.LazyList#reset
+	 * @extends enyo.List#reset
+	 */
 	reset: function() {
 
-		this.$.lazyFeedback.removeClass( "enyo-loading" );
-		this.$.lazyFeedback.removeClass( "enyo-eol" );
+		this.$['lazyFeedback'].removeClass( "enyo-loading" );
+		this.$['lazyFeedback'].removeClass( "enyo-eol" );
 
 		this.inherited( arguments );
 
