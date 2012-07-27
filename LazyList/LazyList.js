@@ -33,7 +33,7 @@
 */
 
 /**
- * @name gts.LazyList
+ * @name GTS.LazyList
  * @author Newness (Rafa Bernad)
  * @author Matthew Schott <glitchtechscience@gmail.com>
  *
@@ -47,7 +47,7 @@
  * @see http://enyojs.com
  */
 enyo.kind({
-	name: "gts.LazyList",
+	name: "GTS.LazyList",
 	kind: "enyo.List",
 
 	lastLazyLoad: 0,
