@@ -96,14 +96,6 @@ enyo.kind({
 	],
 
 	/**
-	 * @private
-	 * List of events to handle
-	 */
-	handlers: {
-		onEnd: "animatorEnd"
-	},
-
-	/**
 	 * @protected
 	 * @function
 	 * @name GTS.DividerDrawer#rendered
@@ -185,13 +177,5 @@ enyo.kind({
 		this.openChanged();
 
 		return true;
-	},
-
-	animatorEnd: function() {
-
-		if( this.open ) {
-
-			this.$['client'].applyStyle( "height", null );
-		}
 	}
 });
