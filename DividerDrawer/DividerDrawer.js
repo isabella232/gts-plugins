@@ -26,7 +26,7 @@ enyo.kind({
 	classes: "gts-DividerDrawer",
 
 	published: {
-		/** @lends GTS.LazyList# */
+		/** @lends GTS.DividerDrawer# */
 
 		/**
 		 * caption of bar
