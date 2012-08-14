@@ -63,7 +63,21 @@ enyo.kind({
 		 * @type boolean
 		 * @default false
 		 */
-		disabled: false
+		disabled: false,
+
+		/**
+		 * Max height of picker popup
+		 * @type string
+		 * @default "200px"
+		 */
+		maxHeight: "200px",
+
+		/**
+		 * Width of label button, null for natural
+		 * @type string
+		 * @default null
+		 */
+		labelWidth: null
 	},
 
 	/**
@@ -108,7 +122,7 @@ enyo.kind({
 							classes: "label arrow"
 						}, {
 							name: "menu",
-							kind: "onyx.Menu",
+							kind: "onyx.Picker",
 							floating: true,
 
 							onSelect: "selectionChanged",
@@ -140,6 +154,10 @@ enyo.kind({
 		this.choicesChanged();
 		this.valueChanged();
 		this.disabledChanged();
+		this.labelWidthChanged();
+		this.maxHeightChanged();
+
+		this.reflow();
 	},
 
 	/**
@@ -214,6 +232,30 @@ enyo.kind({
 	disabledChanged: function() {
 
 		this.$['labelButton'].setDisabled( this.disabled );
+	},
+
+	/**
+	 * @private
+	 * @function
+	 * @name GTS.SelectorBar#maxHeightChanged
+	 *
+	 * Called by Enyo when this.maxHeight is changed by host.
+	 */
+	maxHeightChanged: function() {
+
+		this.$['menu'].setMaxHeight( this.maxHeight );
+	},
+
+	/**
+	 * @private
+	 * @function
+	 * @name GTS.SelectorBar#labelWidthChanged
+	 *
+	 * Called by Enyo when this.labelWidth is changed by host.
+	 */
+	labelWidthChanged: function() {
+
+		this.$['labelButton'].applyStyle( "width", this.labelWidth );
 	},
 
 	/**
