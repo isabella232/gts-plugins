@@ -69,7 +69,11 @@ enyo.kind({
 			name: "base",
 			kind: "enyo.FittableColumns",
 			noStretch: true,
+
+			classes: "base-bar",
+
 			ontap: "toggleOpen",
+
 			components: [
 				{
 					classes: "end-cap"
@@ -81,10 +85,9 @@ enyo.kind({
 					fit: true
 				}, {
 					name: "switch",
-					kind: "onyx.Checkbox",
+					classes: "toggle",
 
-					onchange: "toggleOpen",
-					classes: "toggle"
+					value: false
 				}, {
 					classes: "end-cap bar"
 				}
@@ -132,8 +135,10 @@ enyo.kind({
 	 */
 	openChanged: function() {
 
-		this.$['switch'].setValue( this.open );
-		this.$['client'].setOpen( this.$['switch'].getValue() );
+		this.$['switch'].value = this.open;
+		this.$['client'].setOpen( this.$['switch'].value );
+
+		this.$['switch'].addRemoveClass( "checked", this.$['switch'].value );
 
 		this.reflow();
 	},
@@ -164,15 +169,8 @@ enyo.kind({
 	 */
 	toggleOpen: function( inSender, inEvent ) {
 
-		if( inSender.name === "switch" ) {
-
-			this.open = this.$['switch'].getValue();
-		} else {
-
-			this.open = !this.$['switch'].getValue();
-		}
-
-		this.$['switch'].setValue( this.open );
+		this.open = !this.$['switch'].value;
+		this.$['switch'].value = this.open;
 
 		this.openChanged();
 

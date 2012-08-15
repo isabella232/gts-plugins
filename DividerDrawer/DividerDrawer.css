@@ -13,15 +13,19 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 .gts-DividerDrawer {
 }
 
-.gts-DividerDrawer .enyo-fittable-columns-layout > * {
+.gts-DividerDrawer .base-bar {
+	cursor: pointer;
+}
+
+.gts-DividerDrawer .base-bar > * {
 	vertical-align: middle;
 }
 
-.gts-DividerDrawer .end-cap {
+.gts-DividerDrawer .base-bar .end-cap {
 	width: 7px;
 }
 
-.gts-DividerDrawer .caption {
+.gts-DividerDrawer .base-bar .caption {
 	margin-right: 6px;
 
 	overflow: hidden;
@@ -35,7 +39,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 	color: #3A8BCB;
 }
 
-.gts-DividerDrawer .bar {
+.gts-DividerDrawer .base-bar .bar {
 	min-width: 6px;
 	min-height: 4px;
 
@@ -45,11 +49,18 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 	background-size: 6px 4px;
 }
 
-.gts-DividerDrawer .onyx-checkbox.toggle {
+.gts-DividerDrawer .base-bar .toggle {
+	height: 32px;
+	width: 32px;
+
 	background: url( "assets/toggle.png" ) no-repeat;
+
+	margin: 0px;
+
+	display: inline-block;
+	vertical-align: middle;
 }
 
-.gts-DividerDrawer .onyx-checkbox.toggle[checked] {
-	/* Fails to switch without this override (same code as normal checkbox) */
+.gts-DividerDrawer .base-bar .toggle.checked {
 	background-position: 0px -32px;
 }
