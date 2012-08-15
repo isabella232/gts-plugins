@@ -123,9 +123,9 @@ enyo.kind({
 						}, {
 							name: "menu",
 							kind: "onyx.Picker",
-							floating: true,
+							classes: "gts-selectorBar",
 
-							onSelect: "selectionChanged",
+							onChange: "selectionChanged",
 
 							components: []
 						}
@@ -169,7 +169,13 @@ enyo.kind({
 	 */
 	reflow: function() {
 
-		this.$['base'].reflow();
+		enyo.asyncMethod(
+				this,
+				this.waterfallDown,
+				"onresize",
+				"onresize",
+				this
+			);
 	},
 
 	/**
@@ -348,6 +354,8 @@ enyo.kind({
 		this.valueChanged();
 
 		this.doChange( inEvent );
+
+		this.reflow();
 
 		return true;
 	}

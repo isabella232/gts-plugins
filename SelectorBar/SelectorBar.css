@@ -49,3 +49,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 .gts-selectorBar .arrow.dark {
 	background-image: url( "assets/menu-arrow-light.png" );
 }
+
+.gts-selectorBar .onyx-menu-item {
+	text-align: left;
+}
