@@ -106,7 +106,7 @@ enyo.kind({
 					name: "switch",
 					kind: "onyx.ToggleButton",
 					ontap: "switchToggled",
-					onChange: "doChange"
+					onChange: "switchChanged"
 				}
 			]
 		}
@@ -170,6 +170,22 @@ enyo.kind({
 	 */
 	switchToggled: function( inSender, inEvent ) {
 
+		return true;
+	},
+
+	/**
+	 * @private
+	 * @function
+	 * @name GTS.ToggleBar#switchChanged
+	 *
+	 * Called by Enyo when the toggle button is changed.
+	 * return true prevents event from chaining
+	 *
+	 * @return boolean true
+	 */
+	switchChanged: function( inSender, inEvent ) {
+
+		this.doChange( inEvent );
 		return true;
 	},
 
