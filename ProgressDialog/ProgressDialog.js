@@ -247,6 +247,9 @@ enyo.kind({
 
 		for( property in published ) {
 
+			//Remove everything but letters, numbers, and underscores.
+			property = property.replace( /\W/g, "" );
+
 			var funct = "set" + property.charAt( 0 ).toUpperCase() + property.slice( 1 );
 
 			if( enyo.isFunction( this[funct] ) ) {
