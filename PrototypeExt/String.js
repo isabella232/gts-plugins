@@ -85,3 +85,36 @@ String.prototype.ucfirst = function() {
 	var c = this.charAt( 0 ).toUpperCase();
 	return( c + this.substr( 1 ) );
 }
+
+/**
+ * Checks if string is blank
+ * @augments String.prototype
+ *
+ * @return boolean
+ */
+String.prototype.blank = function() {
+
+	return /^\s*$/.test( this );
+}
+
+/**
+ * Checks if string is JSON formatted
+ * @augments String.prototype
+ *
+ * @return {String}
+ */
+String.prototype.isJSON = function() {
+
+	var str = this;
+
+	if( str.blank() ) {
+
+		return false;
+	}
+
+	str = str.replace( /\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g, "@" );
+	str = str.replace( /"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, "]" );
+	str = str.replace( /(?:^|:|,)(?:\s*\[)+/g, "" );
+
+	return ( /^[\],:{}\s]*$/ ).test( str );
+}
