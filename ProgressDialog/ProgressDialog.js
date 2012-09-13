@@ -59,13 +59,6 @@ enyo.kind({
 		progressBarClasses: "",
 
 		/**
-		 * If true, progress bar is 32px tall instead of standard 8px
-		 * @type boolean
-		 * @default false
-		 */
-		progressBarTall: false,
-
-		/**
 		 * Minimum progress value (i.e., no progress made)
 		 * @type number
 		 * @default 0
@@ -222,7 +215,6 @@ enyo.kind({
 
 		this.progressChanged();
 		this.progressBarClassesChanged();
-		this.progressBarTallChanged();
 		this.minChanged();
 		this.maxChanged();
 		this.showStripesChanged();
@@ -320,18 +312,6 @@ enyo.kind({
 	progressBarClassesChanged: function() {
 
 		this.$['progressBar'].setBarClasses( this.progressBarClasses );
-	},
-
-	/**
-	 * @private
-	 * @function
-	 * @name GTS.ConfirmDialog#progressBarClassesChanged
-	 *
-	 * Called by Enyo when this.progressBarTall is changed by host.
-	 */
-	progressBarTallChanged: function() {
-
-		this.$['progressBar'].addRemoveClass( "tall", this.progressBarTall );
 	},
 
 	/**

@@ -30,10 +30,6 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 	max-width: 95%;
 }
 
-.gts-progress-dialog .onyx-progress-bar.tall {
-	height: 36px;
-}
-
 .gts-progress-dialog .button-wrapper {
 	text-align: right;
 	padding: 0.5em;
