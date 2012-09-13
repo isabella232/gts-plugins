@@ -41,6 +41,7 @@ enyo.kind({
 		 * @default ""
 		 */
 		clientId: "",
+
 		/**
 		 * Scope for current authentication
 		 * @type [string]
