@@ -179,7 +179,8 @@ enyo.kind({
 		},
 		{
 			name: "message",
-			classes: "message-wrapper"
+			classes: "message-wrapper",
+			allowHtml: true
 		}, {
 			name: "progressBar",
 			kind: "onyx.ProgressBar"
