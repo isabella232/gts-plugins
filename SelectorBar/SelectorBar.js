@@ -157,7 +157,7 @@ enyo.kind({
 		this.labelWidthChanged();
 		this.maxHeightChanged();
 
-		this.reflow();
+		enyo.asyncMethod( this, this.reflow );
 	},
 
 	/**

@@ -53,3 +53,17 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 .gts-selectorBar .onyx-menu-item {
 	text-align: left;
 }
+
+@media all and ( max-width: 350px ) {
+
+	.gts-selectorBar .enyo-fittable-columns-layout > div:first-child {
+		width: 90% !important;
+	}
+
+	.gts-selectorBar .enyo-fittable-columns-layout > div:last-child {
+		display: block;
+
+		margin-top: 10px;
+		text-align: right;
+	}
+}
