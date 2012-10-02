@@ -76,6 +76,13 @@ enyo.kind( {
 		icon: "assets/search.png",
 
 		/**
+		 * Option z-index. Used in situations where autocomplete is in a popup
+		 * @type number/boolean
+		 * @default false
+		 */
+		zIndex: false,
+
+		/**
 		 * Allow <, >, &, etc
 		 * @type boolean
 		 * @default true
@@ -150,6 +157,7 @@ enyo.kind( {
 
 		this.enabledChanged();
 		this.iconChanged();
+		this.zIndexChanged();
 	},
 
 	/**
@@ -173,8 +181,26 @@ enyo.kind( {
 	 */
 	iconChanged: function() {
 
-		this.$['icon'].setStyle( "background-image: url( '" + this.icon + "' )" );
+		this.$['icon'].applyStyle( "background-image", this.icon );
 		this.$['icon'].setShowing( this.enabled && this.icon != "" );
+	},
+
+	/**
+	 * @protected
+	 * @function
+	 * @name GTS.AutoComplete#zIndexChanged
+	 *
+	 * Called by Enyo when this.zIndex is changed by user
+	 */
+	zIndexChanged: function() {
+
+		if( this.zIndex !== false ) {
+
+			this.$['options'].applyStyle( "z-index", this.zIndex );
+		} else {
+
+			this.$['options'].applyStyle( "z-index", null );
+		}
 	},
 
 	/**
@@ -258,6 +284,8 @@ enyo.kind( {
 		this.$['options'].render();
 
 		this.waterfall( "onRequestShowMenu", { activator: this } );
+
+		this.log( this );
 	},
 
 	/**
