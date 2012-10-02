@@ -66,11 +66,11 @@ enyo.kind({
 		disabled: false,
 
 		/**
-		 * Max height of picker popup
+		 * Max height of picker popup (px)
 		 * @type string
-		 * @default "200px"
+		 * @default 200
 		 */
-		maxHeight: "200px",
+		maxHeight: 200,
 
 		/**
 		 * Width of label button, null for natural
