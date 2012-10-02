@@ -1,0 +1,15 @@
+.gts-autocomplete {
+	/* Required for proper view setup with icon */
+	position: relative;
+}
+
+.gts-autocomplete .search-icon {
+	position: absolute;
+	right: 5px;
+
+	height: 32px;
+	width: 32px;
+
+	background-size: cover;
+	background-position: 0px 0px;
+}

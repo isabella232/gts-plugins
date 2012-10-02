@@ -161,7 +161,7 @@ enyo.kind({
 	 * Events sent by control
 	 */
 	events: {
-		/** @lends GTS.Gapi# */
+		/** @lends GTS.ProgressDialog# */
 
 		/**
 		 * Cancel button pressed
@@ -201,7 +201,7 @@ enyo.kind({
 	/**
 	 * @protected
 	 * @function
-	 * @name GTS.ConfirmDialog#rendered
+	 * @name GTS.ProgressDialog#rendered
 	 *
 	 * Called by Enyo when UI is rendered.
 	 */
@@ -228,7 +228,7 @@ enyo.kind({
 	/**
 	 * @public
 	 * @function
-	 * @name GTS.ConfirmDialog#show
+	 * @name GTS.ProgressDialog#show
 	 *
 	 * Shows the progress dialog. Attempts to mix in arguments with published values after display.
 	 *
@@ -255,7 +255,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.ConfirmDialog#titleChanged
+	 * @name GTS.ProgressDialog#titleChanged
 	 *
 	 * Called by Enyo when this.title is changed by host.
 	 */
@@ -267,7 +267,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.ConfirmDialog#messageChanged
+	 * @name GTS.ProgressDialog#messageChanged
 	 *
 	 * Called by Enyo when this.message is changed by host.
 	 */
@@ -287,7 +287,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.ConfirmDialog#progressChanged
+	 * @name GTS.ProgressDialog#progressChanged
 	 *
 	 * Called by Enyo when this.progress is changed by host.
 	 * Adjusts progress bar progress
@@ -306,7 +306,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.ConfirmDialog#progressBarClassesChanged
+	 * @name GTS.ProgressDialog#progressBarClassesChanged
 	 *
 	 * Called by Enyo when this.progressBarClasses is changed by host.
 	 */
@@ -318,7 +318,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.ConfirmDialog#progressBarClassesChanged
+	 * @name GTS.ProgressDialog#progressBarClassesChanged
 	 *
 	 * Called by Enyo when this.min is changed by host.
 	 */
@@ -330,7 +330,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.ConfirmDialog#progressBarClassesChanged
+	 * @name GTS.ProgressDialog#progressBarClassesChanged
 	 *
 	 * Called by Enyo when this.max is changed by host.
 	 */
@@ -342,7 +342,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.ConfirmDialog#progressBarClassesChanged
+	 * @name GTS.ProgressDialog#progressBarClassesChanged
 	 *
 	 * Called by Enyo when this.showStripes is changed by host.
 	 */
@@ -354,7 +354,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.ConfirmDialog#animateStripesChanged
+	 * @name GTS.ProgressDialog#animateStripesChanged
 	 *
 	 * Called by Enyo when this.animateStripes is changed by host.
 	 */
@@ -366,7 +366,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.ConfirmDialog#cancelTextChanged
+	 * @name GTS.ProgressDialog#cancelTextChanged
 	 *
 	 * Called by Enyo when this.cancelText is changed by host.
 	 */
@@ -386,7 +386,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.ConfirmDialog#cancelClassChanged
+	 * @name GTS.ProgressDialog#cancelClassChanged
 	 *
 	 * Called by Enyo when this.confirmText is changed by host.
 	 */
@@ -398,7 +398,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.ConfirmDialog#cancel
+	 * @name GTS.ProgressDialog#cancel
 	 *
 	 * Cancel button tapped. Hides dialog and notifies host.
 	 *
