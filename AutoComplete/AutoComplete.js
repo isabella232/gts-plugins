@@ -27,11 +27,6 @@ enyo.kind( {
 
 	classes: "gts-autocomplete",
 
-	handlers: {
-		oninput: "input",
-		onSelect: "itemSelected",
-	},
-
 	/**
 	 * @private
 	 * Needed to support menu
@@ -124,6 +119,7 @@ enyo.kind( {
 		onValueSelected: ""
 	},
 
+	/** @private */
 	components:[
 		{
 			name: "options",
@@ -134,6 +130,12 @@ enyo.kind( {
 			classes: "search-icon"
 		},
 	],
+
+	/** @private */
+	handlers: {
+		oninput: "inputChanged",
+		onSelect: "itemSelected",
+	},
 
 	/**
 	 * @protected
@@ -150,18 +152,39 @@ enyo.kind( {
 		this.iconChanged();
 	},
 
+	/**
+	 * @protected
+	 * @function
+	 * @name GTS.AutoComplete#enabledChanged
+	 *
+	 * Called by Enyo when this.enabled is changed by user
+	 */
 	enabledChanged: function() {
 
 		this.iconChanged();
 	},
 
+	/**
+	 * @protected
+	 * @function
+	 * @name GTS.AutoComplete#iconChanged
+	 *
+	 * Called by Enyo when this.icon is changed by user
+	 */
 	iconChanged: function() {
 
 		this.$['icon'].setStyle( "background-image: url( '" + this.icon + "' )" );
 		this.$['icon'].setShowing( this.enabled && this.icon != "" );
 	},
 
-	input: function( source, event ) {
+	/**
+	 * @protected
+	 * @function
+	 * @name GTS.AutoComplete#inputChanged
+	 *
+	 * Called by Enyo when the content of the input is changed by end-user
+	 */
+	inputChanged: function( source, event ) {
 
 		if( !this.enabled ) {
 
@@ -173,6 +196,14 @@ enyo.kind( {
 		enyo.job( null, enyo.bind( this, "fireInputChanged" ), this.delay );
 	},
 
+	/**
+	 * @protected
+	 * @function
+	 * @name GTS.AutoComplete#fireInputChanged
+	 *
+	 * Delay action handling of onInput via enyo.job
+	 * Request data from onDataRequest handler
+	 */
 	fireInputChanged: function() {
 
 		this.searchValue = this.inputField.getValue();
@@ -188,6 +219,13 @@ enyo.kind( {
 		this.doDataRequested( { "value": this.inputField.getValue(), "callback": enyo.bind( this, this.buildSuggestionList, this.searchValue ) } );
 	},
 
+	/**
+	 * @protected
+	 * @function
+	 * @name GTS.AutoComplete#buildSuggestionList
+	 *
+	 * Recieves data from fireInputChanged event call
+	 */
 	buildSuggestionList: function( oldSearchValue, results ) {
 
 		if( this.searchValue !== oldSearchValue ) {
@@ -222,6 +260,13 @@ enyo.kind( {
 		this.waterfall( "onRequestShowMenu", { activator: this } );
 	},
 
+	/**
+	 * @protected
+	 * @function
+	 * @name GTS.AutoComplete#input
+	 *
+	 * Updates input field with menu selection, sends event with value to handler
+	 */
 	itemSelected: function( inSender, inEvent ) {
 
 		if( inEvent.content && inEvent.content.length > 0 ) {
@@ -234,6 +279,7 @@ enyo.kind( {
 		this.doValueSelected( enyo.mixin( inEvent, { "value": this.inputField.getValue() } ) );
 	},
 
+	/** @private */
 	dirtyString: function( string ) {
 
 		if( !this.allowDirty ) {
