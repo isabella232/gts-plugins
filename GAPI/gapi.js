@@ -17,7 +17,8 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
  *
  * @author Matthew Schott <glitchtechscience@gmail.com>
  *
- * @requies Enyo (https://github.com/enyojs/enyo)
+ * @requires Enyo (https://github.com/enyojs/enyo)
+ * @requires Phonegap-ChildBrowsers (if used on a mobile device)
  */
 enyo.kind({
 	name: "GTS.Gapi",
@@ -36,18 +37,51 @@ enyo.kind({
 		apiKey: "",
 
 		/**
-		 * API Client ID
+		 * API Client ID. This is obtained during application registration
 		 * @type string
 		 * @default ""
 		 */
 		clientId: "",
 
 		/**
+		 * API Client Secret. This is obtained during application registration
+		 * @type string
+		 * @default ""
+		 */
+		clientSecret: "",
+
+		/**
 		 * Scope for current authentication
 		 * @type [string]
 		 * @default []
 		 */
-		scope: []
+		scope: [],
+
+		/**
+		 * GAPI Auth Settings. Not advisible to modify
+		 * @type {}
+		 */
+		gapiConfig: {
+
+			endpoint: "https://accounts.google.com/o/oauth2/auth",
+			endtoken: "https://accounts.google.com/o/oauth2/token", // token endpoint
+
+			response_type: "code",
+
+			redirect_uri: "http://localhost",
+
+			/* stores access Token's Expiry Limit. Uses 58 min. instead of 60 min. */
+			accessTokenExpireLimit: ( 58 * 60 * 1000 ),
+
+			/* As defined in the OAuth 2.0 specification, this field must contain a value
+			 * of "authorization_code" or "refresh_token" */
+			grantTypes: { AUTHORIZE: "authorization_code", REFRESH: "refresh_token" },
+
+			access_type: "offline",
+
+			// ## Not required to be updated: only used for echoing ##
+			state: "lligtaskinit"
+		}
 	},
 
 	/**
@@ -76,6 +110,7 @@ enyo.kind({
 		this.inherited( arguments );
 
 		this._binds = {
+				"_cbUrlChanged": enyo.bind( this, this.cbUrlChanged ),
 				"_handleAuthResult": enyo.bind( this, this.handleAuthResult )
 			};
 	},
@@ -208,7 +243,255 @@ enyo.kind({
 
 		this.nextSteps = options;
 
-		gapi.auth.authorize( { "client_id": this.clientId, "scope": this.scope.join( " " ), "immediate": true }, this._binds['_handleAuthResult'] );
+		if( window.device && window.plugins.childBrowser ) {
+			//Use custom authentication system
+
+			var accessToken = this.getAuthToken();
+
+			if( /* DISABLED PATH */ 1 == 2 /* DISABLED PATH */ && accessToken && accessToken['access_token'] ) {
+				//Phonegap method doesn't like to restore token from memory
+
+				this.log( "Phonegap token refresh" );
+
+				this.getAuthToken( options );
+			} else {
+
+				this.log( "Phonegap-ChildBrowsers Auth" );
+
+				var authArgs = {
+						"client_id": encodeURIComponent( this.clientId ),
+						"scope": encodeURIComponent( this.scope.join( " " ) ),
+
+						"redirect_uri": encodeURIComponent( this.gapiConfig['redirect_uri'] ),
+						"response_type": encodeURIComponent( this.gapiConfig['response_type'] ),
+						"state": encodeURIComponent( this.gapiConfig['state'] ),
+						"access_type": encodeURIComponent( this.gapiConfig['access_type'] ),
+						"approval_prompt": "force"
+					};
+
+				var authUri = this.gapiConfig['endpoint'] + "?" + Object.keys( authArgs ).map( function( x ) { return( x + "=" + authArgs[x] ); } ).join( "&" );
+
+				// Now open new browser
+				window.plugins.childBrowser.onClose = function() {};
+				window.plugins.childBrowser.onLocationChange = this._binds['_cbUrlChanged'];
+
+				window.plugins.childBrowser.showWebPage( authUri, { "showLocationBar": false } );
+			}
+		} else {
+			//This doesn't work in Android/Phonegap, wonder why.
+
+			gapi.auth.authorize( { "client_id": this.clientId, "scope": this.scope.join( " " ), "immediate": true }, this._binds['_handleAuthResult'] );
+		}
+	},
+
+	/**
+	 * @private
+	 * @function
+	 * @name GTS.Gapi#getParameterByName
+	 *
+	 * Gets called when the URL changes on OAuth authorization process
+	 *
+	 * @param {string} uriLocation The URI Location
+	 */
+	cbUrlChanged: function( uriLocation ) {
+
+		if( uriLocation.indexOf( "code=" ) != -1 ) {
+
+			this.log( "Authenticated" );
+
+			/* Store the authCode temporarily */
+			var token = this.getParameterByName( "code", uriLocation );
+
+			enyo.job( "refreshFromUrlChange", enyo.bind( this, this.getRefreshToken, token, this.nextSteps ), 1000 );
+
+			// close the childBrowser
+			window.plugins.childBrowser.close();
+		} else if( uriLocation.indexOf( "error=" ) != -1 ) {
+
+			// close the childBrowser
+			window.plugins.childBrowser.close();
+
+			if( enyo.isFunction( this.nextSteps.onError ) ) {
+
+				this.nextSteps.onError( this.getParameterByName( "error", uriLocation ) );
+				return;
+			}
+		} else {
+
+			this.log( "Status unknown: " + uriLocation );
+		}
+   },
+
+   /**
+	 * @private
+	 * @function
+	 * @name GTS.Gapi#getParameterByName
+	 *
+	 * Extracts the code from the url. Copied from online.
+	 *
+	 * @param name The parameter whose value is to be grabbed from url
+	 * @param url  The url to be grabbed from.
+	 *
+	 * @return Returns the Value corresponding to the name passed
+	 */
+   getParameterByName: function( name, url ) {
+
+		name = name.replace( /[\[]/, "\\\[" ).replace( /[\]]/, "\\\]" );
+
+		var regex = new RegExp( "[\\?&]" + name + "=([^&#]*)" );
+		var results = regex.exec(url);
+
+		if( results == null ) {
+
+			return false;
+		} else {
+
+			return decodeURIComponent( results[1].replace( /\+/g, " " ) );
+		}
+	},
+
+	/**
+	 * @public
+	 * @function
+	 * @name GTS.Gapi#getAccessToken
+	 *
+	 * Retrieve the proper access token.
+	 *
+	 * @param {object} [options]	Callback functions
+	 * @param {function [options.onSuccess]	execute once authorization obtained
+	 * @param {function} [options.onError]	execute if an error occurs
+	 */
+	getAccessToken: function( options ) {
+
+		this.log( "Update token" );
+
+		this.nextSteps = {};
+
+		var currentTime = ( new Date() ).getTime();
+
+		var accessToken = this.getAuthToken();
+
+		//Is token still valid?
+		if( accessToken && accessToken['access_token'] && currentTime < ( accessToken['expires_in'] + this.gapiConfig['accessTokenExpireLimit'] ) ) {
+
+			if( enyo.isFunction( options.onSuccess ) ) {
+
+				options.onSuccess();
+			}
+
+			return;
+		}
+
+		this.log( "Fetching fresh token" );
+
+		var x = new enyo.Ajax( {
+				"url": this.gapiConfig.endtoken,
+				"method": "POST"
+			});
+
+		x.go( {
+				"client_id": this.clientId,
+				"client_secret": this.clientSecret,
+
+				"refresh_token": accessToken['access_token'],
+
+				"redirect_uri": this.gapiConfig.redirect_uri,
+				"grant_type": this.gapiConfig.grantTypes.AUTHORIZE
+			});
+
+		x.response( this, function( inSender, inResponse ) {
+
+				this.log( "Access complete" );
+
+				var accessToken = {
+						"access_token": inResponse['access_token']
+					};
+
+				this.setAuthToken( accessToken );
+
+				inResponse['error'] = false;
+
+				if( enyo.isFunction( options.onSuccess ) ) {
+
+					options.onSuccess( inResponse );
+				}
+
+				return true;
+			});
+
+		x.error( this, function( inSender, inResponse ) {
+
+				this.log( "Access error" );
+
+				if( enyo.isFunction( options.onError ) ) {
+
+					inResponse['error'] = true;
+
+					options.onError( inResponse );
+				}
+
+				return true;
+			});
+	},
+
+	/**
+	 * @public
+	 * @function
+	 * @name GTS.Gapi#getRefreshToken
+	 *
+	 * Gets the Refresh from Access Token. This method is only called internally,
+	 * and once, only after when authorization of Application happens.
+	 *
+	 * @param {object} [options]	Callback functions
+	 * @param {function [options.onSuccess]	execute once authorization obtained
+	 * @param {function} [options.onError]	execute if an error occurs
+	 */
+	getRefreshToken: function( authCode, options ) {
+
+		this.log( "Refresh token" );
+
+		var x = new enyo.Ajax( {
+				"url": this.gapiConfig.endtoken,
+				"method": "POST"
+			});
+
+		x.go( {
+				"code": authCode,
+
+				"client_id": this.clientId,
+				"client_secret": this.clientSecret,
+
+				"redirect_uri": this.gapiConfig.redirect_uri,
+				"grant_type": this.gapiConfig.grantTypes.AUTHORIZE
+			});
+
+		x.response( this, function( inSender, inResponse ) {
+
+				this.log( "Refresh complete" );
+
+				this.setAuthToken( inResponse );
+
+				if( enyo.isFunction( options.onSuccess ) ) {
+
+					options.onSuccess( inResponse );
+				}
+
+				return true;
+			});
+
+		x.error( this, function( inSender, inResponse ) {
+
+				this.log( "Refresh error", enyo.json.stringify( inResponse ) );
+
+				if( enyo.isFunction( options.onError ) ) {
+
+					inResponse['error'] = true;
+
+					options.onError( inResponse );
+				}
+
+				return true;
+			});
 	},
 
 	/**
@@ -250,17 +533,22 @@ enyo.kind({
 						content: "Authenticate with Google",
 						classes: "margin-half-bottom bigger text-center"
 					}, {
-						kind: "onyx.Button",
-						content: "Cancel",
-						ontap: "handleAuthAbort",
-						classes: "onyx-negative",
+						classes: "text-center",
+						components: [
+							{
+								kind: "onyx.Button",
+								content: "Cancel",
+								ontap: "handleAuthAbort",
+								classes: "onyx-negative",
 
-						style: "margin-right: 15px;"
-					}, {
-						kind: "onyx.Button",
-						content: "Authenticate",
-						onclick: "handleAuthClick",
-						classes: "onyx-affirmative"
+								style: "margin-right: 15px;"
+							}, {
+								kind: "onyx.Button",
+								content: "Authenticate",
+								onclick: "handleAuthClick",
+								classes: "onyx-affirmative"
+							}
+						]
 					}
 				]
 			};
@@ -270,6 +558,7 @@ enyo.kind({
 			this.render();
 
 			this.$["authPop"].show();
+			this.$["authPop"].reflow();
 		}
 	},
 
