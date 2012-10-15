@@ -86,6 +86,7 @@ enyo.kind({
 
 		this.valueChanged();
 
+		this.render();
 		this.reflow();
 	},
 
