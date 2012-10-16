@@ -507,7 +507,7 @@ enyo.kind({
 
 		if( this.$['authPop'] ) {
 
-			this.$["authPop"].hide();
+			this.$['authPop'].hide();
 			this.$['authPop'].destroy();
 		}
 
@@ -557,8 +557,28 @@ enyo.kind({
 
 			this.render();
 
-			this.$["authPop"].show();
-			this.$["authPop"].reflow();
+			this.$['authPop'].show();
+
+			var zIndex = this.$['authPop'].getComputedStyleValue( "zIndex" );
+
+			if( !zIndex ) {
+
+				var css = this.$['authPop'].domCssText.split( ";" );
+
+				for( var i = 0; i < css.length; i++ ) {
+
+					if( css[i].match( "z-index" ) ) {
+
+						css = css[i].split( ":" );
+						zIndex = css[1];
+						break;
+					}
+				}
+			}
+
+			this.$['authPop'].applyStyle( "z-index", ( ( zIndex - 5 ) + 10 ) );
+
+			this.$['authPop'].reflow();
 		}
 	},
 
@@ -571,7 +591,7 @@ enyo.kind({
 	 */
 	handleAuthAbort: function() {
 
-		this.$["authPop"].hide();
+		this.$['authPop'].hide();
 
 		if( enyo.isFunction( this.nextSteps.onError ) ) {
 
