@@ -1,5 +1,5 @@
 /*
-Copyright © 2011-2012, GlitchTech Science
+Copyright © 2012, GlitchTech Science
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
@@ -11,52 +11,32 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 */
 
 /**
- * @name GTS.DividerDrawer
+ * @name GTS.Divider
  * @author Matthew Schott <glitchtechscience@gmail.com>
- *
- * Mimics Enyo 1.0 DividerDrawer functionality.
+
+ * @param string	[content]	Divider text
  *
  * @class
- * @version 2.0 (2012/07/12)
- * @requires onyx 2.0-beta5
+ * @version 2.1 (2012/10/29)
+ *
+ * @requies Enyo (https://github.com/enyojs/enyo)
+ * @requies Onyx (https://github.com/enyojs/onyx)
+ * @requies Layout/Fittable (https://github.com/enyojs/layout)
  * @see http://enyojs.com
  */
 enyo.kind({
-	name: "GTS.DividerDrawer",
-	classes: "gts-DividerDrawer",
+	name: "GTS.Divider",
+	classes: "gts-Divider",
 
 	published: {
-		/** @lends GTS.DividerDrawer# */
+		/** @lends GTS.Divider# */
 
 		/**
 		 * caption of bar
 		 * @type string
 		 * @default ""
 		 */
-		caption: "",
-
-		/**
-		 * initial state of toggle
-		 * @type boolean
-		 * @default true
-		 */
-		open: true
-	},
-
-	/**
-	 * @public
-	 * Events sent by control
-	 */
-	events: {
-		/** @lends GTS.DividerDrawer# */
-
-		/**
-		 * Selected item changed
-		 * @event
-		 * @param {Object} inSender	Event's sender
-		 * @param {Object} inEvent	Event parameters
-		 */
-		onChange: ""
+		content: ""
 	},
 
 	/**
@@ -72,36 +52,24 @@ enyo.kind({
 
 			classes: "base-bar",
 
-			ontap: "toggleOpen",
-
 			components: [
 				{
-					classes: "end-cap"
+					classes: "end-cap bar"
 				}, {
 					name: "caption",
 					classes: "caption"
 				}, {
 					classes: "bar",
 					fit: true
-				}, {
-					name: "switch",
-					classes: "toggle",
-
-					value: false
-				}, {
-					classes: "end-cap bar"
 				}
 			]
-		}, {
-			name: "client",
-			kind: "onyx.Drawer"
 		}
 	],
 
 	/**
 	 * @protected
 	 * @function
-	 * @name GTS.DividerDrawer#rendered
+	 * @name GTS.Divider#rendered
 	 *
 	 * Called by Enyo when UI is rendered.
 	 */
@@ -109,14 +77,13 @@ enyo.kind({
 
 		this.inherited( arguments );
 
-		this.captionChanged();
-		this.openChanged();
+		this.contentChanged();
 	},
 
 	/**
 	 * @protected
 	 * @function
-	 * @name GTS.DividerDrawer#reflow
+	 * @name GTS.Divider#reflow
 	 *
 	 * Updates spacing on bar without resize event.
 	 */
@@ -128,56 +95,16 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.DividerDrawer#openChanged
-	 *
-	 * Called by Enyo when this.open is changed by host.
-	 * Opens/Closes the drawer and updates UI.
-	 */
-	openChanged: function() {
-
-		this.$['switch'].value = this.open;
-		this.$['client'].setOpen( this.$['switch'].value );
-
-		this.$['switch'].addRemoveClass( "checked", this.$['switch'].value );
-
-		this.reflow();
-	},
-
-	/**
-	 * @private
-	 * @function
-	 * @name GTS.DividerDrawer#captionChanged
+	 * @name GTS.Divider#captionChanged
 	 *
 	 * Called by Enyo when this.open is changed by host.
 	 * Updates UI for caption.
 	 */
-	captionChanged: function() {
+	contentChanged: function() {
 
-		this.$['caption'].setContent( this.caption );
-		this.$['caption'].applyStyle( "display", this.caption ? "" : "none" );
+		this.$['caption'].setContent( this.content );
+		this.$['caption'].applyStyle( "display", this.content ? "" : "none" );
 
 		this.reflow();
-	},
-
-	/**
-	 * @private
-	 * @function
-	 * @name GTS.DividerDrawer#toggleOpen
-	 *
-	 * Handles toggling event.
-	 *
-	 * @param {Object} inSender	Event's sender
-	 * @param {Object} inEvent	Event parameters
-	 */
-	toggleOpen: function( inSender, inEvent ) {
-
-		this.open = !this.$['switch'].value;
-		this.$['switch'].value = this.open;
-
-		this.openChanged();
-
-		this.doChange( this, { "caption": this.getCaption(), "open": this.getOpen() } );
-
-		return true;
 	}
 });

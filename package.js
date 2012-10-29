@@ -3,6 +3,7 @@ enyo.depends(
 	"ConfirmDialog",
 	"DatePicker",
 	"DecimalInput",
+	"Divider",
 	"DividerDrawer",
 	"GAPI",
 	"InlineNotification",
