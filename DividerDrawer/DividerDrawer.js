@@ -155,6 +155,8 @@ enyo.kind({
 
 		this.$['caption'].setContent( this.caption );
 		this.$['caption'].applyStyle("display", this.caption ? "" : "none");
+
+		this.reflow();
 	},
 
 	/**
@@ -173,6 +175,8 @@ enyo.kind({
 		this.$['switch'].value = this.open;
 
 		this.openChanged();
+
+		this.doChange( this, { "caption": this.getCaption(), "open": this.getOpen() } );
 
 		return true;
 	}
