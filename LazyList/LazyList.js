@@ -48,9 +48,20 @@
  */
 enyo.kind({
 	name: "GTS.LazyList",
-	kind: "enyo.List",
+	kind: "enyo.AroundList",
 
 	lastLazyLoad: 0,
+
+	published: {
+		/** @lends GTS.LazyList# */
+
+		/**
+		 * Page size
+		 * @type int
+		 * @default 50
+		 */
+		pageSize: 50
+	},
 
 	/**
 	 * @public
@@ -67,15 +78,17 @@ enyo.kind({
 		 */
 		onAcquirePage: ""
 	},
-
+/*
 	listTools: [
 		{
 			name: "port",
 			classes: "enyo-list-port enyo-border-box",
 			components: [
 				{
+					name: "aboveClient"
+				}, {
 					name: "generator",
-					kind: "FlyweightRepeater",
+					kind: "enyo.FlyweightRepeater",
 					canGenerate: false,
 					components: [
 						{
@@ -91,6 +104,8 @@ enyo.kind({
 					name: "page1",
 					allowHtml: true,
 					classes: "enyo-list-page"
+				}, {
+					name: "belowClient"
 				}
 			]
 		}, {
@@ -98,7 +113,7 @@ enyo.kind({
 			classes: "enyo-lazy-feedback"
 		}
 	],
-
+*/
 	/**
 	 * @private
 	 * @function
@@ -114,18 +129,21 @@ enyo.kind({
 
 		var s = this.getStrategy().$.scrollMath;
 
-		if( ( s.isInOverScroll() && s.y < 0 ) || ( s.y <( s.bottomBoundary + this.$['lazyFeedback'].hasNode().offsetHeight ) ) ) {
+		if( ( s.isInOverScroll() && s.y < 0 ) || ( s.y <( s.bottomBoundary + this.$['belowClient'].hasNode().offsetHeight ) ) ) {
 
 			if( this.lastLazyLoad < this.pageCount ) {
 
 				this.lastLazyLoad = this.pageCount;
 
-				var bMore = this.doAcquirePage({
-						page: this.lastLazyLoad
+				var bMore = this.doAcquirePage( {
+						"page": this.lastLazyLoad,
+						"pageSize": this.pageSize
 					});
 
-				this.$['lazyFeedback'].addRemoveClass( "enyo-loading", bMore );
-				this.$['lazyFeedback'].addRemoveClass( "enyo-eol", !bMore );
+				this.log( bMore, new Date() );
+
+				//this.$['lazyFeedback'].addRemoveClass( "enyo-loading", bMore );
+				//this.$['lazyFeedback'].addRemoveClass( "enyo-eol", !bMore );
 			}
 		}
 
@@ -143,9 +161,7 @@ enyo.kind({
 
 		this.lastLazyLoad = 0;
 
-		this.doAcquirePage({
-				page: this.lastLazyLoad
-			});
+		this.doAcquirePage( { "page": this.lastLazyLoad, "pageSize": this.pageSize } );
 	},
 
 	/**
@@ -156,8 +172,8 @@ enyo.kind({
 	 */
 	refresh: function() {
 
-		this.$['lazyFeedback'].removeClass( "enyo-loading" );
-		this.$['lazyFeedback'].addRemoveClass( "enyo-eol", this.$['lazyFeedback'].hasClass( "enyo-eol" ) );
+		//this.$['lazyFeedback'].removeClass( "enyo-loading" );
+		//this.$['lazyFeedback'].addRemoveClass( "enyo-eol", this.$['lazyFeedback'].hasClass( "enyo-eol" ) );
 
 		this.inherited( arguments );
 	},
@@ -170,8 +186,8 @@ enyo.kind({
 	 */
 	reset: function() {
 
-		this.$['lazyFeedback'].removeClass( "enyo-loading" );
-		this.$['lazyFeedback'].removeClass( "enyo-eol" );
+		//this.$['lazyFeedback'].removeClass( "enyo-loading" );
+		//this.$['lazyFeedback'].removeClass( "enyo-eol" );
 
 		this.inherited( arguments );
 
