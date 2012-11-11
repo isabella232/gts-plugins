@@ -38,9 +38,9 @@ enyo.kind({
 		/**
 		 * label of picker set
 		 * @type string
-		 * @default "Time"
+		 * @default ""
 		 */
-		label: "Time"
+		label: ""
 	},
 
 	/**

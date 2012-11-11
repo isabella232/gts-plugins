@@ -12,39 +12,42 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 /**
  * Format the date for display
- * @requires date.format.js (http://blog.stevenlevithan.com/archives/date-time-format)
+ * @requires enyo.g11n
  * @augments Date.prototype
  *
- * @param {string|object}	[dtFormat]	Pattern to format date by
- * @param {string}	[dtFormat.date="mediumDate"]	Format pattern for date ("shortDate", "mediumDate", "longDate", "fullDate", custom pattern)
- * @param {string}	[dtFormat.time="shortTime"]	Format pattern for date ("shortTime", "mediumTime", "longTime", custom pattern)
- * @param {boolean}	[utl]	Convert datetime to UTC
+ * @param {object}	[dtFormat]	Pattern to format date by
+ * @param {string}	[dtFormat.date="medium"]	Format pattern for date ("short", "medium", "long", custom pattern)
+ * @param {string}	[dtFormat.time="short"]	Format pattern for date ("short, "medium", "long", custom pattern)
+ *
  * @return {string}	Formatted date
  */
-Date.prototype.format = function( dtFormat, utc ) {
+Date.prototype.format = function( dtFormat, locale ) {
 
-	var mask = "";
+	if( enyo.g11n ) {
 
-	if( dtFormat == "special" ) {
+		if( dtFormat == "special" ) {
 
-		mask = "yyyy-MM-dd HH:mm:ss";
-	} else if( typeof( dtFormat ) === "undefined" ) {
+			dtFormat = { date: "yyyy-MM-dd", time: "HH:mm:ss" };
+		} else if( typeof( dtFormat ) === "undefined" ) {
 
-		mask = dateFormat.masks['mediumDate'] + " " + dateFormat.masks['shortTime'];
-	} else if( !enyo.isString( dtFormat ) ) {
+			dtFormat = { date: "medium", time: "short" };
+		} else if( !enyo.isString( dtFormat ) ) {
 
-		if( typeof( dtFormat['date'] ) === "undefined" ) {
+			if( typeof( dtFormat['date'] ) === "undefined" ) {
 
-			dtFormat['date'] = "mediumDate";
-		} else if( typeof( dtFormat['time'] ) === "undefined" ) {
+				dtFormat['date'] = "medium";
+			} else if( typeof( dtFormat['time'] ) === "undefined" ) {
 
-			dtFormat['time'] = "shortTime";
+				dtFormat['time'] = "short";
+			}
 		}
 
-		mask = ( dateFormat.masks.hasOwnProperty( dtFormat['date'] ) ? dateFormat.masks[dtFormat['date']] : dtFormat['date'] ) + " " + ( dateFormat.masks.hasOwnProperty( dtFormat['time'] ) ? dateFormat.masks[dtFormat['time']] : dtFormat['time'] )
+		var fmt = new enyo.g11n.DateFmt( dtFormat );
+
+		return fmt.format( this );
 	}
 
-	return dateFormat( this, mask, utc );
+	return "";
 }
 
 /**

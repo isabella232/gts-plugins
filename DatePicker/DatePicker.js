@@ -12,25 +12,21 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 /**
  * @name GTS.DatePicker
+ *
  * @author Matthew Schott <glitchtechscience@gmail.com>
  *
  * Calendar date picker for EnyoJS. Shows a calendar.
- * When the selected date changes, the onChange event is called with the current values as a date object.
+ * When the selected date changes, the onSelect event is called with the current values as a date object.
  * Using getValue or setValue will get or set the datetime with a Date object. Setting a new value will change the view date.
  * Using getViewDate or setViewDate will get or set the display datetime with a Date object.
  *
- * @param {date}	[dateObj]	Initial date object set; defaults to current date
- * @param {viewDate}	[dateObj]	Initial viewing date; defaults to current date
- *
  * @class
- * @version 2.1 (2012/07/18)
+ * @version 2.2 (2012/11/10)
  *
  * @requies Enyo (https://github.com/enyojs/enyo)
  * @requies Onyx (https://github.com/enyojs/onyx)
+ * @requies g11n (https://github.com/enyojs/g11n)
  * @requies Layout/Fittable (https://github.com/enyojs/layout)
- * @see http://enyojs.com
- *
- * @requies http://blog.stevenlevithan.com/archives/date-time-format
  */
 enyo.kind({
 	name: "GTS.DatePicker",
@@ -40,15 +36,53 @@ enyo.kind({
 
 	/** @public */
 	published: {
+		/** @lends GTS.DatePicker# */
+
+		/**
+		 * Currently selected date
+		 * @type Date object
+		 * @default current date
+		 */
 		value: null,
+
+		/**
+		 * Current locale used for formatting (see enyo g11n)
+		 * @type string
+		 * @default g11n locale detection
+		 */
+		locale: "",
+
+		/**
+		 * Disables changing the value (NYI)
+		 * @type boolean
+		 * @default false
+		 */
+		disabled: false,
+
+		/**
+		 * Currently shown month
+		 * @type Date object
+		 * @default current date
+		 */
 		viewDate: null,
 
-		dowFormat: "ddd",
-		monthFormat: "mmmm yyyy"
+		/**
+		 * Format of day of week (see enyo g11n)
+		 * @type string
+		 * @default "medium"
+		 */
+		dowFormat: "medium",
+
+		/**
+		 * Format of month in header (see enyo g11n)
+		 * @type string
+		 * @default "MMMM yyyy"
+		 */
+		monthFormat: "MMMM yyyy"
 	},
 
 	events: {
-		onChange: ""
+		onSelect: ""
 	},
 
 	/** @private */
@@ -78,7 +112,7 @@ enyo.kind({
 
 		//Calendar week header
 		{
-			kind: "FittableColumns",
+			classes: "date-row day-of-week",
 			components: [
 				{
 					name: "sunday",
@@ -115,7 +149,7 @@ enyo.kind({
 
 		//Calendar dates (6 rows of 7 cols)
 		{
-			kind: "FittableColumns",
+			classes: "date-row",
 			components: [
 				{
 					name: "row0col0",
@@ -148,7 +182,7 @@ enyo.kind({
 				}
 			]
 		}, {
-			kind: "FittableColumns",
+			classes: "date-row",
 			components: [
 				{
 					name: "row1col0",
@@ -181,7 +215,7 @@ enyo.kind({
 				}
 			]
 		}, {
-			kind: "FittableColumns",
+			classes: "date-row",
 			components: [
 				{
 					name: "row2col0",
@@ -214,7 +248,7 @@ enyo.kind({
 				}
 			]
 		}, {
-			kind: "FittableColumns",
+			classes: "date-row",
 			components: [
 				{
 					name: "row3col0",
@@ -247,7 +281,7 @@ enyo.kind({
 				}
 			]
 		}, {
-			kind: "FittableColumns",
+			classes: "date-row",
 			components: [
 				{
 					name: "row4col0",
@@ -280,7 +314,7 @@ enyo.kind({
 				}
 			]
 		}, {
-			kind: "FittableColumns",
+			classes: "date-row",
 			components: [
 				{
 					name: "row5col0",
@@ -331,64 +365,59 @@ enyo.kind({
 		}
 	],
 
-	/**
-	 * @protected
-	 * @constructs
-	 */
-	constructor: function() {
+	create: function() {
 
 		this.inherited( arguments );
 
-		this.viewDate = this.viewDate || new Date();
+		if( enyo.g11n && this.locale == "" ) {
+
+			this.locale = enyo.g11n.currentLocale().getLocale();
+		}
+
 		this.value = this.value || new Date();
+		this.viewDate = this.viewDate || new Date();
+
+		this.localeChanged();
 	},
 
-	/** @protected */
+	localeChanged: function() {
+
+		// Fall back to en_us as default
+		this.days = {
+				"weekstart": 0,
+				"short": [ "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" ],
+				"full": [ "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" ]
+			};
+
+		//Attempt to use the g11n lib (ie assume it is loaded)
+		if( enyo.g11n ) {
+
+			var formats = new enyo.g11n.Fmts( { locale: new enyo.g11n.Locale( this.locale ) } );
+
+			this.days = {
+					"weekstart": formats.getFirstDayOfWeek(),
+					"medium": formats.dateTimeHash.medium.day,
+					"long": formats.dateTimeHash.long.day
+				};
+		}
+
+		this.$['sunday'].setContent( this.days[this.dowFormat][0] );
+		this.$['monday'].setContent( this.days[this.dowFormat][1] );
+		this.$['tuesday'].setContent( this.days[this.dowFormat][2] );
+		this.$['wednesday'].setContent( this.days[this.dowFormat][3] );
+		this.$['thursday'].setContent( this.days[this.dowFormat][4] );
+		this.$['friday'].setContent( this.days[this.dowFormat][5] );
+		this.$['saturday'].setContent( this.days[this.dowFormat][6] );
+	},
+
 	rendered: function() {
 
 		this.inherited( arguments );
 
-		if( dateFormat ) {
-
-			//Build Day Of Week items
-			var dowDate = new Date( 2011, 4, 1 );//Sunday, May 1, 2011
-
-			this.$['sunday'].setContent( dateFormat( dowDate, this.dowFormat ) );
-
-			dowDate.setDate( dowDate.getDate() + 1 );
-			this.$['monday'].setContent( dateFormat( dowDate, this.dowFormat ) );
-
-			dowDate.setDate( dowDate.getDate() + 1 );
-			this.$['tuesday'].setContent( dateFormat( dowDate, this.dowFormat ) );
-
-			dowDate.setDate( dowDate.getDate() + 1 );
-			this.$['wednesday'].setContent( dateFormat( dowDate, this.dowFormat ) );
-
-			dowDate.setDate( dowDate.getDate() + 1 );
-			this.$['thursday'].setContent( dateFormat( dowDate, this.dowFormat ) );
-
-			dowDate.setDate( dowDate.getDate() + 1 );
-			this.$['friday'].setContent( dateFormat( dowDate, this.dowFormat ) );
-
-			dowDate.setDate( dowDate.getDate() + 1 );
-			this.$['saturday'].setContent( dateFormat( dowDate, this.dowFormat ) );
-		}
-
-		var cellWidth = Math.round( 10 * this.getBounds()['width'] / 7 ) / 10;
-
-		this.$['sunday'].applyStyle( "width", cellWidth + "px" );
-		this.$['monday'].applyStyle( "width", cellWidth + "px" );
-		this.$['tuesday'].applyStyle( "width", cellWidth + "px" );
-		this.$['wednesday'].applyStyle( "width", cellWidth + "px" );
-		this.$['thursday'].applyStyle( "width", cellWidth + "px" );
-		this.$['friday'].applyStyle( "width", cellWidth + "px" );
-		this.$['saturday'].applyStyle( "width", cellWidth + "px" );
-
-		//Build everything else
+		this.renderDoW();
 		this.valueChanged();
 	},
 
-	/** @protected */
 	valueChanged: function() {
 
 		if( Object.prototype.toString.call( this.value ) !== "[object Date]" || isNaN( this.value.getTime() ) ) {
@@ -402,14 +431,35 @@ enyo.kind({
 		this.renderCalendar();
 	},
 
-	/** @protected */
 	viewDateChanged: function() {
 
 		this.renderCalendar();
 	},
 
-	/** @protected */
+	renderDoW: function() {
+
+		enyo.job( "renderDoW", enyo.bind( this, "_renderDoW" ), 100 );
+	},
+
+	_renderDoW: function() {
+
+		var cellWidth = Math.round( 10 * this.getBounds()['width'] / 7 ) / 10;
+
+		this.$['sunday'].applyStyle( "width", cellWidth + "px" );
+		this.$['monday'].applyStyle( "width", cellWidth + "px" );
+		this.$['tuesday'].applyStyle( "width", cellWidth + "px" );
+		this.$['wednesday'].applyStyle( "width", cellWidth + "px" );
+		this.$['thursday'].applyStyle( "width", cellWidth + "px" );
+		this.$['friday'].applyStyle( "width", cellWidth + "px" );
+		this.$['saturday'].applyStyle( "width", cellWidth + "px" );
+	},
+
 	renderCalendar: function() {
+
+		enyo.job( "renderCalendar", enyo.bind( this, "_renderCalendar" ), 100 );
+	},
+
+	_renderCalendar: function() {
 
 		var cellWidth = Math.round( 10 * this.getBounds()['width'] / 7 ) / 10;
 		var today = new Date();
@@ -476,16 +526,9 @@ enyo.kind({
 			}
 		}
 
-		if( dateFormat ) {
-
-			this.$['monthLabel'].setContent( dateFormat( currMonth, this.monthFormat ) );
-		} else {
-
-			this.$['monthLabel'].setContent( this.getMonthString( currMonth.getMonth() ) );
-		}
+		this.$['monthLabel'].setContent( currMonth.format( this.monthFormat ) );
 	},
 
-	/** @protected */
 	monthBack: function() {
 
 		this.viewDate.setMonth( this.viewDate.getMonth() - 1 );
@@ -493,7 +536,6 @@ enyo.kind({
 		this.renderCalendar();
 	},
 
-	/** @protected */
 	monthForward: function() {
 
 		this.viewDate.setMonth( this.viewDate.getMonth() + 1 );
@@ -501,7 +543,6 @@ enyo.kind({
 		this.renderCalendar();
 	},
 
-	/** @protected */
 	resetDate: function() {
 		//Reset button pressed
 
@@ -510,63 +551,25 @@ enyo.kind({
 
 		this.renderCalendar();
 
-		this.doChange( this.value );
+		this.doSelect( { "date": this.value } );
 	},
 
-	/** @protected */
 	dateHandler: function( inSender, inEvent ) {
 		//Date button pressed
 
 		var newDate = new Date();
 		newDate.setTime( inSender.ts );
 
-		this.value.setDate( newDate.getDate() );
-		this.value.setMonth( newDate.getMonth() );
 		this.value.setFullYear( newDate.getFullYear() );
+		this.value.setMonth( newDate.getMonth() );
+		this.value.setDate( newDate.getDate() );
 
 		if( this.value.getMonth() != this.viewDate.getMonth() ) {
 
 			this.viewDate = new Date( this.value.getFullYear(), this.value.getMonth(), 1 );
 		}
 
-		this.doChange( this.value );
+		this.doSelect( { "date": this.value } );
 		this.renderCalendar();
-	},
-
-	/** @public */
-	getMonthString: function( jsIndex ) {
-
-		return(
-				[
-					"January",
-					"February",
-					"March",
-					"April",
-					"May",
-					"June",
-					"July",
-					"August",
-					"September",
-					"October",
-					"November",
-					"December"
-				][jsIndex]
-			);
-	},
-
-	/** @public */
-	getDayString: function( jsIndex ) {
-
-		return(
-				[
-					"Sunday",
-					"Monday",
-					"Tuesday",
-					"Wednesday",
-					"Thursday",
-					"Friday",
-					"Saturday"
-				][jsIndex]
-			);
 	}
 });

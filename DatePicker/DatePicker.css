@@ -27,6 +27,19 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 	font-size: 90%;
 }
 
+.gts-calendar .date-row {
+	position: relative;
+	white-space: nowrap;
+}
+
+.gts-calendar .date-row.day-of-week {
+	margin-top: 0.5em;
+}
+
+.gts-calendar .date-row > * {
+	display: inline-block;
+}
+
 .gts-calendar .onyx-dark {
 	background-color: #666666;
 	color: #f1f1f1;
