@@ -12,3 +12,9 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 .gts-timepicker {
 }
+
+.gts-timepicker .label {
+	color: #1879CD;
+	font-size: .8rem;
+	text-transform: uppercase;
+}
