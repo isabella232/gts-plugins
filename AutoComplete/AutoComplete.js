@@ -37,11 +37,11 @@ enyo.kind( {
 
 	/**
 	 * @private
-	 * list of values for suggest list
+	 * Search term history validation
 	 * @type [string]
-	 * @default ""
+	 * @default []
 	 */
-	values: "",
+	searchValues: [],
 
 	/** @public */
 	published: {
@@ -53,6 +53,13 @@ enyo.kind( {
 		 * @default true
 		 */
 		enabled: true,
+
+		/**
+		 * list of values for suggest list
+		 * @type [string]
+		 * @default ""
+		 */
+		values: "",
 
 		/**
 		 * Max results to display
@@ -232,35 +239,45 @@ enyo.kind( {
 	 */
 	fireInputChanged: function() {
 
-		this.searchValue = this.inputField.getValue();
+		var searchValue = this.inputField.getValue();
 
 		this.doInputChanged( { "value": this.inputField.getValue() } );
 
-		if( this.searchValue.length <= 0 ) {
+		if( searchValue.length <= 0 ) {
 
 			this.waterfall( "onRequestHideMenu", { activator: this } );
+
+			//Clear search history
+			this.searchValues.slice( 0, 0 );
 			return;
 		}
 
-		this.doDataRequested( { "value": this.inputField.getValue(), "callback": enyo.bind( this, this.buildSuggestionList, this.searchValue ) } );
+		this.searchValues.push( searchValue );
+		this.doDataRequested( { "value": this.inputField.getValue(), "limit": this.limit } );
 	},
 
 	/**
 	 * @protected
 	 * @function
-	 * @name GTS.AutoComplete#buildSuggestionList
+	 * @name GTS.AutoComplete#valuesChanged
 	 *
-	 * Recieves data from fireInputChanged event call
+	 * Display menu of suggestions
 	 */
-	buildSuggestionList: function( oldSearchValue, results ) {
+	valuesChanged: function() {
 
-		if( this.searchValue !== oldSearchValue ) {
-			//prevent old data queries
+		var searchValue = this.inputField.getValue();
+		var len = this.searchValues.length;
+
+		//Most recent search value
+		if( len <= 0 || this.searchValues.indexOf( searchValue ) != ( len - 1 ) ) {
 
 			return;
 		}
 
-		this.values = results.slice( 0, this.limit );
+		//Clear search history
+		this.searchValues.slice( 0, 0 );
+
+		this.values = this.values.slice( 0, this.limit );
 
 		if( !this.values || this.values.length === 0 ) {
 
@@ -284,8 +301,6 @@ enyo.kind( {
 		this.$['options'].render();
 
 		this.waterfall( "onRequestShowMenu", { activator: this } );
-
-		this.log( this );
 	},
 
 	/**
