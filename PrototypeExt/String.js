@@ -37,7 +37,7 @@ enyo.singleton({
 		 * Array of 'clean' string items
 		 * @type [string]
 		 */
-		cleanItem: [ "&amp;","$lt;", "&gt;",  "&quot;", "'", "'", " " ]
+		cleanItem: [ "&amp;","$lt;", "&gt;",  "&quot;", "'", "'", "&crarr;" ]
 	},
 
 	/**
