@@ -11,112 +11,159 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 */
 
 /**
- * Returns numbers from obj
- * @augments Object
+ * GTS.Object
  *
- * @param {object} obj
- */
-Object.numericValues = function( obj ) {
-
-	return Object.values( obj ).select( Object.isNumber );
-}
-
-/**
- * More extensive number check on obj
- * @augments Object
+ * Helper kind for using Objects.
  *
- * @param {object} obj
- */
-Object.validNumber = function( obj ) {
-
-	return this.isNumber( obj ) && !isNaN( parseFloat( obj ) ) && isFinite( obj );
-}
-
-/**
- * Exchanges the values between the two indexes
- * @augments Object
+ * @author Matthew Schott <glitchtechscience@gmail.com>
  *
- * @param {object} obj
- * @param {string} index1
- * @param {string} index2
- * @return {object}
+ * @requires Enyo (https://github.com/enyojs/enyo)
  */
-Object.swap = function( obj, index1, index2 ) {
+enyo.singleton({
+	name: "GTS.Object",
+	kind: "enyo.Component",
 
-	var swap = obj[index1];
+	/**
+	 * @public
+	 *
+	 * Returns numbers from obj
+	 *
+	 * @param {object} obj
+	 * @return {obj}
+	 */
+	numericValues: function( obj ) {
 
-	obj[index1] = obj[index2];
-	obj[index2] = swap;
+		return Object.values( obj ).select( this.isNumber );
+	},
 
-	return obj;
-}
+	/**
+	 * @public
+	 *
+	 * More extensive number check on obj
+	 *
+	 * @param {object} obj
+	 */
+	validNumber: function( obj ) {
 
-/**
- * Is the object a function
- * @augments Object
- *
- * @param {object} obj
- * @return boolean
- */
-Object.isFunction = function( obj ) {
+		return this.isNumber( obj ) && !isNaN( parseFloat( obj ) ) && isFinite( obj );
+	},
 
-	if( enyo.isFunction ) {
+	/**
+	 * @public
+	 *
+	 * Exchanges the values between the two indexes
+	 *
+	 * @param {object} obj
+	 * @param {string} index1
+	 * @param {string} index2
+	 * @return {object}
+	 */
+	swap: function( obj, index1, index2 ) {
 
-		return enyo.isFunction( obj );
+		var swap = obj[index1];
+
+		obj[index1] = obj[index2];
+		obj[index2] = swap;
+
+		return obj;
+	},
+
+	/**
+	 * @public
+	 *
+	 * Returns the size of the object
+	 *
+	 * @param {object} obj
+	 * @return int
+	 */
+	size: function( obj ) {
+
+		var size = 0;
+		var key;
+
+		for( key in obj ) {
+
+			if( obj.hasOwnProperty( key ) ) {
+
+				size++;
+			}
+		}
+
+		return size;
+	},
+
+	/**
+	 * @public
+	 *
+	 * Is the object a function
+	 *
+	 * @param {object} obj
+	 * @return boolean
+	 */
+	isFunction: function( obj ) {
+
+		if( enyo.isFunction ) {
+
+			return enyo.isFunction( obj );
+		}
+
+		return Object.prototype.toString.call( obj ) === "[object Function]";
+	},
+
+	/**
+	 * @public
+	 *
+	 * Is the object a string
+	 *
+	 * @param {object} obj
+	 * @return boolean
+	 */
+	isString: function( obj ) {
+
+		if( enyo.isString ) {
+
+			return enyo.isString( obj );
+		}
+
+		return Object.prototype.toString.call( obj ) === "[object String]";
+	},
+
+	/**
+	 * @public
+	 *
+	 * Is the object a number
+	 *
+	 * @param {object} obj
+	 * @return boolean
+	 */
+	isNumber: function( obj ) {
+
+		return Object.prototype.toString.call( obj ) === "[object Number]";
+	},
+
+	/**
+	 * @public
+	 *
+	 * Is the object a date
+	 *
+	 * @param {object} obj
+	 * @return boolean
+	 */
+	isDate: function( obj ) {
+
+		return Object.prototype.toString.call( obj ) === "[object Date]";
+	},
+
+	/**
+	 * @public
+	 *
+	 * Is the object undefined
+	 *
+	 * @param {object} obj
+	 * @return boolean
+	 */
+	isUndefined: function( obj ) {
+
+		return typeof obj === "undefined";
 	}
-
-	return Object.prototype.toString.call( obj ) === "[object Function]";
-}
-
-/**
- * Is the object a string
- * @augments Object
- *
- * @param {object} obj
- * @return boolean
- */
-Object.isString = function( obj ) {
-
-	if( enyo.isString ) {
-
-		return enyo.isString( obj );
-	}
-
-	return Object.prototype.toString.call( obj ) === "[object String]";
-}
-
-/**
- * Is the object a number
- * @augments Object
- *
- * @param {object} obj
- * @return boolean
- */
-Object.isNumber = function( obj ) {
-
-	return Object.prototype.toString.call( obj ) === "[object Number]";
-}
-
-/**
- * Is the object a date
- * @augments Object
- *
- * @param {object} obj
- * @return boolean
- */
-Object.isDate = function( obj ) {
-
-	return Object.prototype.toString.call( obj ) === "[object Date]";
-}
-
-/**
- * Is the object undefined
- * @augments Object
- *
- * @param {object} obj
- * @return boolean
- */
-Object.isUndefined = function( obj ) {
-
-	return typeof object === "undefined";
-}
+});
