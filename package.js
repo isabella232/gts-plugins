@@ -6,6 +6,7 @@ enyo.depends(
 	"Divider",
 	"DividerDrawer",
 	"GAPI",
+	"Item",
 	"InlineNotification",
 	"Joystick",
 	"Keyboard",
