@@ -386,18 +386,19 @@ enyo.kind({
 
 		var x = new enyo.Ajax( {
 				"url": this.gapiConfig.endtoken,
-				"method": "POST"
+				"method": "POST",
+				"postBody": {
+					"client_id": this.clientId,
+					"client_secret": this.clientSecret,
+
+					"refresh_token": accessToken['access_token'],
+
+					"redirect_uri": this.gapiConfig.redirect_uri,
+					"grant_type": this.gapiConfig.grantTypes.AUTHORIZE
+				}
 			});
 
-		x.go( {
-				"client_id": this.clientId,
-				"client_secret": this.clientSecret,
-
-				"refresh_token": accessToken['access_token'],
-
-				"redirect_uri": this.gapiConfig.redirect_uri,
-				"grant_type": this.gapiConfig.grantTypes.AUTHORIZE
-			});
+		x.go();
 
 		x.response( this, function( inSender, inResponse ) {
 
@@ -452,22 +453,23 @@ enyo.kind({
 
 		var x = new enyo.Ajax( {
 				"url": this.gapiConfig.endtoken,
-				"method": "POST"
+				"method": "POST",
+				"postBody": {
+					"code": authCode,
+
+					"client_id": this.clientId,
+					"client_secret": this.clientSecret,
+
+					"redirect_uri": this.gapiConfig.redirect_uri,
+					"grant_type": this.gapiConfig.grantTypes.AUTHORIZE
+				}
 			});
 
-		x.go( {
-				"code": authCode,
-
-				"client_id": this.clientId,
-				"client_secret": this.clientSecret,
-
-				"redirect_uri": this.gapiConfig.redirect_uri,
-				"grant_type": this.gapiConfig.grantTypes.AUTHORIZE
-			});
+		x.go();
 
 		x.response( this, function( inSender, inResponse ) {
 
-				this.log( "Refresh complete" );
+				this.log( "Refresh complete", enyo.json.stringify( inResponse ) );
 
 				this.setAuthToken( inResponse );
 
