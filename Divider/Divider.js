@@ -59,7 +59,7 @@ enyo.kind({
 					name: "caption",
 					classes: "caption"
 				}, {
-					classes: "bar",
+					classes: "bar full",
 					fit: true
 				}
 			]

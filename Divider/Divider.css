@@ -15,10 +15,29 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 .gts-Divider .base-bar {
 	cursor: pointer;
+
+	display: inline-block;
+
+	display: -webkit-box;
+	-webkit-box-orient: horizontal;
+	-webkit-box-align: center;
+
+	display: -moz-box;
+	-moz-box-orient: horizontal;
+	-moz-box-align: center;
+
+	display: box;
+	box-orient: horizontal;
+	box-align: center;
 }
 
 .gts-Divider .base-bar > * {
 	vertical-align: middle;
+
+	-webkit-box-flex: 0;
+	-moz-box-flex: 0;
+	box-flex: 0;
+	display: block;
 }
 
 .gts-Divider .base-bar .end-cap {
@@ -48,4 +67,10 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 	background: url( "assets/divider.png" ) left top repeat-x;
 	background-size: 6px 4px;
+}
+
+.gts-Divider .base-bar .bar.full {
+	-webkit-box-flex: 1;
+	-moz-box-flex: 1;
+	box-flex: 1;
 }
