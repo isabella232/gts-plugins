@@ -60,7 +60,7 @@ enyo.kind({
 
 		var s = this.getStrategy().$.scrollMath;
 
-		if( ( s.isInOverScroll() && s.y < 0 ) || ( s.y <( s.bottomBoundary + this.$['belowClient'].hasNode().offsetHeight ) ) ) {
+		if( ( s.isInOverScroll() && s.y < 0 ) || ( s.y < ( s.bottomBoundary + this.$['belowClient'].hasNode().offsetHeight ) ) ) {
 
 			if( this.lastLazyLoad < this.pageCount ) {
 
@@ -117,6 +117,5 @@ enyo.kind({
 		//hide
 
 		this.inherited( arguments );
-
 	}
 });

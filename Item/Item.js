@@ -85,9 +85,6 @@ enyo.kind( {
 				return;
 			}
 
-			//tagging last generated item, not just tapped item
-			this.log( this.controlParent, this, ( this.controlParent || this ).getClassAttribute(), inEvent );
-
 			GTS.Item.addFlyweightClass( ( this.controlParent || this ), this.tapClass, inEvent );
 
 			enyo.job( "endTap", enyo.bind( this, this.endTap, inSender, inEvent ), 250 );
@@ -160,12 +157,9 @@ enyo.kind( {
 				});
 
 				inControl.removeClass( inClass );
-			} else {
+			} else if( !inControl.hasClass( inClass ) ) {
 
-				if( !inControl.hasClass( inClass ) ) {
-
-					inControl.addClass(inClass);
-				}
+				inControl.addClass( inClass );
 			}
 		},
 
@@ -187,6 +181,9 @@ enyo.kind( {
 						inControl.removeClass( inClass );
 					}
 				});
+			} else if( inControl.hasClass( inClass ) ) {
+
+				inControl.removeClass( inClass );
 			}
 		}
 	}
