@@ -36,53 +36,32 @@ enyo.kind({
 		 * @type string
 		 * @default ""
 		 */
-		content: ""
+		content: "",
+
+		/**
+		 * Should Divider use fittables? Set false if used in a list.
+		 * @type boolean
+		 * @default true
+		 */
+		useFittable: true
 	},
 
 	/**
-	 * @private
-	 * @type Array
-	 * Components of the control
-	 */
-	components: [
-		{
-			name: "base",
-			kind: "enyo.FittableColumns",
-			noStretch: true,
-
-			classes: "base-bar",
-
-			components: [
-				{
-					classes: "end-cap bar"
-				}, {
-					name: "caption",
-					classes: "caption"
-				}, {
-					classes: "bar full",
-					fit: true
-				}
-			]
-		}
-	],
-
-	/**
 	 * @protected
-	 * @function
 	 * @name GTS.Divider#rendered
 	 *
 	 * Called by Enyo when UI is rendered.
 	 */
-	rendered: function() {
+	create: function() {
 
 		this.inherited( arguments );
 
+		this.useFittableChanged();
 		this.contentChanged();
 	},
 
 	/**
 	 * @protected
-	 * @function
 	 * @name GTS.Divider#reflow
 	 *
 	 * Updates spacing on bar without resize event.
@@ -93,11 +72,47 @@ enyo.kind({
 	},
 
 	/**
-	 * @private
-	 * @function
-	 * @name GTS.Divider#captionChanged
+	 * @protected
+	 * @name GTS.Divider#useFittableChanged
 	 *
-	 * Called by Enyo when this.open is changed by host.
+	 * Called by Enyo when this.useFittable is changed by host.
+	 */
+	useFittableChanged: function() {
+
+		this.destroyComponents();
+
+		this.createComponents(
+				[
+					{
+						name: "base",
+						kind: ( this.useFittable ? "enyo.FittableColumns" : "enyo.Control" ),
+						noStretch: true,
+
+						classes: "base-bar",
+
+						components: [
+							{
+								classes: "end-cap bar"
+							}, {
+								name: "caption",
+								classes: "caption"
+							}, {
+								classes: "bar full",
+								fit: true
+							}
+						]
+					}
+				], {
+					owner: this
+				}
+			);
+	},
+
+	/**
+	 * @protected
+	 * @name GTS.Divider#contentChanged
+	 *
+	 * Called by Enyo when this.content is changed by host.
 	 * Updates UI for caption.
 	 */
 	contentChanged: function() {
