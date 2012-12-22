@@ -85,7 +85,7 @@ enyo.kind( {
 				return;
 			}
 
-			GTS.Item.addFlyweightClass( ( this.controlParent || this ), this.tapClass, inEvent );
+			onyx.Item.addFlyweightClass( ( this.controlParent || this ), this.tapClass, inEvent );
 
 			enyo.job( "endTap", enyo.bind( this, this.endTap, inSender, inEvent ), 250 );
 		}
@@ -101,7 +101,7 @@ enyo.kind( {
 
 		if( this.tapPulse ) {
 
-			GTS.Item.removeFlyweightClass( ( this.controlParent || this ), this.tapClass, inEvent );
+			onyx.Item.removeFlyweightClass( ( this.controlParent || this ), this.tapClass, inEvent );
 		}
 	},
 
@@ -115,7 +115,7 @@ enyo.kind( {
 
 		if( this.tapHighlight ) {
 
-			GTS.Item.addFlyweightClass( ( this.controlParent || this ), this.highlightClass, inEvent );
+			onyx.Item.addFlyweightClass( ( this.controlParent || this ), this.highlightClass, inEvent );
 		}
 	},
 
@@ -131,60 +131,7 @@ enyo.kind( {
 
 			this.preventTapDisplayTimer = ( new Date() ).getTime();
 
-			GTS.Item.removeFlyweightClass( ( this.controlParent || this ), this.highlightClass, inEvent );
-		}
-	},
-
-	//* @protected
-	statics: {
-		addFlyweightClass: function( inControl, inClass, inEvent, inIndex ) {
-
-			var flyweight = inEvent.flyweight;
-
-			if( flyweight ) {
-
-				var index = inIndex !== undefined ? inIndex : inEvent.index;
-
-				flyweight.performOnRow( index, function() {
-
-					if( !inControl.hasClass( inClass ) ) {
-
-						inControl.addClass( inClass );
-					} else {
-
-						inControl.setClassAttribute( inControl.getClassAttribute() );
-					}
-				});
-
-				inControl.removeClass( inClass );
-			} else if( !inControl.hasClass( inClass ) ) {
-
-				inControl.addClass( inClass );
-			}
-		},
-
-		removeFlyweightClass: function( inControl, inClass, inEvent, inIndex ) {
-
-			var flyweight = inEvent.flyweight;
-
-			if( flyweight ) {
-
-				var index = inIndex !== undefined ? inIndex : inEvent.index;
-
-				flyweight.performOnRow( index, function() {
-
-					if( !inControl.hasClass( inClass ) ) {
-
-						inControl.setClassAttribute( inControl.getClassAttribute() );
-					} else {
-
-						inControl.removeClass( inClass );
-					}
-				});
-			} else if( inControl.hasClass( inClass ) ) {
-
-				inControl.removeClass( inClass );
-			}
+			onyx.Item.removeFlyweightClass( ( this.controlParent || this ), this.highlightClass, inEvent );
 		}
 	}
 });
