@@ -52,7 +52,13 @@ enyo.singleton({
 	 */
 	stripHTML: function( str ) {
 
-		return str.replace( /<\S[^><]*>/g, "" );
+		if( str ) {
+
+			return str.replace( /<\S[^><]*>/g, "" );
+		} else {
+
+			return "";
+		}
 	},
 
 	/**
@@ -67,12 +73,18 @@ enyo.singleton({
 	 */
 	cleanString: function( str ) {
 
-		for( var i = 0; i < this.dirtyItem.length; i++ ) {
+		if( str ) {
 
-			str = str.replace( new RegExp( this.dirtyItem[i], "g" ), this.cleanItem[i] );
+			for( var i = 0; i < this.dirtyItem.length; i++ ) {
+
+				str = str.replace( new RegExp( this.dirtyItem[i], "g" ), this.cleanItem[i] );
+			}
+
+			return str;
+		} else {
+
+			return "";
 		}
-
-		return str;
 	},
 
 	/**
@@ -87,12 +99,18 @@ enyo.singleton({
 	 */
 	dirtyString: function( str ) {
 
-		for( var i = 0; i < this.dirtyItem.length; i++ ) {
+		if( str ) {
 
-			str = str.replace( new RegExp( this.cleanItem[i], "g" ), this.dirtyItem[i] );
+			for( var i = 0; i < this.dirtyItem.length; i++ ) {
+
+				str = str.replace( new RegExp( this.cleanItem[i], "g" ), this.dirtyItem[i] );
+			}
+
+			return str;
+		} else {
+
+			return "";
 		}
-
-		return str;
 	},
 
 	/**
@@ -107,7 +125,13 @@ enyo.singleton({
 	 */
 	trim: function( str ) {
 
-		return str.replace( /^\s\s*/, "" ).replace( /\s\s*$/, "" );
+		if( str ) {
+
+			return str.replace( /^\s\s*/, "" ).replace( /\s\s*$/, "" );
+		} else {
+
+			return "";
+		}
 	},
 
 	/**
@@ -122,8 +146,14 @@ enyo.singleton({
 	 */
 	ucfirst: function( str ) {
 
-		var c = str.charAt( 0 ).toUpperCase();
-		return( c + str.substr( 1 ) );
+		if( str ) {
+
+			var c = str.charAt( 0 ).toUpperCase();
+			return( c + str.substr( 1 ) );
+		} else {
+
+			return "";
+		}
 	},
 
 	/**
@@ -138,7 +168,13 @@ enyo.singleton({
 	 */
 	isBlank: function( str ) {
 
-		return /^\s*$/.test( str );
+		if( str ) {
+
+			return /^\s*$/.test( str );
+		} else {
+
+			return true;
+		}
 	},
 
 	/**
@@ -153,15 +189,16 @@ enyo.singleton({
 	 */
 	isJSON: function( str ) {
 
-		if( str.blank() ) {
+		if( str && !this.isBlank( str ) ) {
+
+			str = str.replace( /\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g, "@" );
+			str = str.replace( /"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, "]" );
+			str = str.replace( /(?:^|:|,)(?:\s*\[)+/g, "" );
+
+			return ( /^[\],:{}\s]*$/ ).test( str );
+		} else {
 
 			return false;
 		}
-
-		str = str.replace( /\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g, "@" );
-		str = str.replace( /"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, "]" );
-		str = str.replace( /(?:^|:|,)(?:\s*\[)+/g, "" );
-
-		return ( /^[\],:{}\s]*$/ ).test( str );
 	}
 });
