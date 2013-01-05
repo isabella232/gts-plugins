@@ -85,7 +85,7 @@ enyo.kind( {
 				return;
 			}
 
-			onyx.Item.addFlyweightClass( ( this.controlParent || this ), this.tapClass, inEvent );
+			onyx.Item.addRemoveFlyweightClass( ( this.controlParent || this ), this.tapClass, true, inEvent );
 
 			enyo.job( "endTap", enyo.bind( this, this.endTap, inSender, inEvent ), 250 );
 		}
@@ -101,7 +101,7 @@ enyo.kind( {
 
 		if( this.tapPulse ) {
 
-			onyx.Item.removeFlyweightClass( ( this.controlParent || this ), this.tapClass, inEvent );
+			onyx.Item.addRemoveFlyweightClass( ( this.controlParent || this ), this.tapClass, false, inEvent );
 		}
 	},
 
@@ -115,7 +115,7 @@ enyo.kind( {
 
 		if( this.tapHighlight ) {
 
-			onyx.Item.addFlyweightClass( ( this.controlParent || this ), this.highlightClass, inEvent );
+			onyx.Item.addRemoveFlyweightClass( ( this.controlParent || this ), this.highlightClass, true, inEvent );
 		}
 	},
 
@@ -131,7 +131,7 @@ enyo.kind( {
 
 			this.preventTapDisplayTimer = ( new Date() ).getTime();
 
-			onyx.Item.removeFlyweightClass( ( this.controlParent || this ), this.highlightClass, inEvent );
+			onyx.Item.addRemoveFlyweightClass( ( this.controlParent || this ), this.highlightClass, false, inEvent );
 		}
 	}
 });
