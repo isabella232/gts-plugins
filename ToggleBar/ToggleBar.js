@@ -170,7 +170,7 @@ enyo.kind({
 	 */
 	switchToggled: function( inSender, inEvent ) {
 
-		this.doChange( inEvent );
+		this.doChange( this.$['switch'] );
 		return true;
 	},
 
