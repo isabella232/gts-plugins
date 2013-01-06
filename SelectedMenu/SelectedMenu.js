@@ -69,7 +69,6 @@ enyo.kind({
 
 	/**
 	 * @private
-	 * @function
 	 * @name GTS.SelectedMenu#choicesChanged
 	 *
 	 * Called by Enyo when this.choices is changed by host.
@@ -92,7 +91,6 @@ enyo.kind({
 
 	/**
 	 * @private
-	 * @function
 	 * @name GTS.SelectedMenu#valueChanged
 	 *
 	 * Updates UI
@@ -114,7 +112,6 @@ enyo.kind({
 
 	/**
 	 * @private
-	 * @function
 	 * @name GTS.SelectedMenu#selectionChanged
 	 *
 	 * Handles menu selection; Calls host function for onChange
