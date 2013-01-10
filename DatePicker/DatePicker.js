@@ -580,9 +580,9 @@ enyo.kind({
 		var newDate = new Date();
 		newDate.setTime( inSender.ts );
 
-		this.value.setFullYear( newDate.getFullYear() );
-		this.value.setMonth( newDate.getMonth() );
 		this.value.setDate( newDate.getDate() );
+		this.value.setMonth( newDate.getMonth() );
+		this.value.setFullYear( newDate.getFullYear() );
 
 		if( this.value.getMonth() != this.viewDate.getMonth() ) {
 
