@@ -538,7 +538,15 @@ enyo.kind({
 			}
 		}
 
-		this.$['monthLabel'].setContent( currMonth.format( this.monthFormat ) );
+		if( enyo.g11n ) {
+
+			var fmt = new enyo.g11n.DateFmt( this.monthFormat );
+
+			this.$['monthLabel'].setContent( fmt.format( currMonth ) );
+		} else {
+
+			this.$['monthLabel'].setContent( currMonth.getMonth() + " - " + currMonth.getFullYear() );
+		}
 	},
 
 	monthBack: function() {
