@@ -418,6 +418,13 @@ enyo.kind({
 		this.valueChanged();
 	},
 
+	setValue: function( inValue ) {
+
+		this.value = inValue;
+
+		this.valueChanged();
+	},
+
 	valueChanged: function() {
 
 		if( Object.prototype.toString.call( this.value ) !== "[object Date]" || isNaN( this.value.getTime() ) ) {
@@ -426,9 +433,14 @@ enyo.kind({
 			this.value = new Date();
 		}
 
-		this.viewDate.setTime( this.value.getTime() );
+		this.setViewDate( this.value );
+	},
 
-		this.renderCalendar();
+	setViewDate: function( inViewDate ) {
+
+		this.viewDate = inViewDate;
+
+		this.viewDateChanged();
 	},
 
 	viewDateChanged: function() {
