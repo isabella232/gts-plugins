@@ -71,7 +71,7 @@ enyo.kind({
 	 * List of events to handle
 	 */
 	handlers: {
-		onSelect: "selectionChanged"
+		onChange: "selectionChanged"
 	},
 
 	/**
@@ -163,7 +163,5 @@ enyo.kind({
 	selectionChanged: function( inSender, inEvent ) {
 
 		this.setValue( inEvent.selected.content );
-
-		this.doChange( { "originator": inEvent, "value": this.value } );
 	}
 });
