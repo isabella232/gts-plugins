@@ -420,6 +420,11 @@ enyo.kind({
 
 	setValue: function( inValue ) {
 
+		if( enyo.isString( inValue ) ) {
+
+			inValue = new Date( inValue );
+		}
+
 		this.value = inValue;
 
 		this.valueChanged();
@@ -437,6 +442,11 @@ enyo.kind({
 	},
 
 	setViewDate: function( inViewDate ) {
+
+		if( enyo.isString( inViewDate ) ) {
+
+			inViewDate = new Date( inViewDate );
+		}
 
 		this.viewDate = inViewDate;
 
