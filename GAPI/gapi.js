@@ -243,8 +243,8 @@ enyo.kind({
 
 		this.nextSteps = options;
 
-		if( window.device && window.plugins.childBrowser ) {
-			//Use custom authentication system
+		if( window.device && window.plugins.childBrowser && ( enyo.platform.android || enyo.platform.androidChrome ) ) {
+			//Use custom authentication system (Android only for now)
 
 			var accessToken = this.getAuthToken();
 
