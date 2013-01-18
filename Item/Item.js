@@ -35,14 +35,14 @@ enyo.kind( {
 		 * @type boolean
 		 * @default false
 		 */
-		tapHighlight: false,
+		holdHighlight: false,
 
 		/**
 		 * Add class gts-pulse to row on tap
 		 * @type boolean
 		 * @default true
 		 */
-		tapPulse: true,
+		tapHighlight: true,
 
 		/**
 		 * Class name to add on tap
@@ -77,13 +77,13 @@ enyo.kind( {
 	 */
 	startTap: function( inSender, inEvent ) {
 
-		if( this.tapPulse ) {
+		if( this.preventTapDisplayTimer >= ( ( new Date() ).getTime() - 50 ) ) {
+			//prevent tap event display from occurring just after a hold event
 
-			if( this.preventTapDisplayTimer >= ( ( new Date() ).getTime() - 50 ) ) {
-				//prevent tap event display from occurring just after a hold event
+			return true;
+		}
 
-				return;
-			}
+		if( this.tapHighlight ) {
 
 			onyx.Item.addRemoveFlyweightClass( ( this.controlParent || this ), this.tapClass, true, inEvent );
 
@@ -99,7 +99,7 @@ enyo.kind( {
 	 */
 	endTap: function( inSender, inEvent ) {
 
-		if( this.tapPulse ) {
+		if( this.tapHighlight ) {
 
 			onyx.Item.addRemoveFlyweightClass( ( this.controlParent || this ), this.tapClass, false, inEvent );
 		}
@@ -113,7 +113,7 @@ enyo.kind( {
 	 */
 	hold: function( inSender, inEvent ) {
 
-		if( this.tapHighlight ) {
+		if( this.holdHighlight ) {
 
 			onyx.Item.addRemoveFlyweightClass( ( this.controlParent || this ), this.highlightClass, true, inEvent );
 		}
@@ -127,9 +127,9 @@ enyo.kind( {
 	 */
 	release: function( inSender, inEvent ) {
 
-		if( this.tapHighlight ) {
+		this.preventTapDisplayTimer = ( new Date() ).getTime();
 
-			this.preventTapDisplayTimer = ( new Date() ).getTime();
+		if( this.holdHighlight ) {
 
 			onyx.Item.addRemoveFlyweightClass( ( this.controlParent || this ), this.highlightClass, false, inEvent );
 		}
