@@ -11,7 +11,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 */
 
 /**
- * GTS.gapi
+ * gts.gapi
  *
  * Helper kind for using Google API (gapi). Handles authentication and loading modules.
  *
@@ -21,13 +21,13 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
  * @requires Phonegap-ChildBrowsers (if used on a mobile device)
  */
 enyo.kind({
-	name: "GTS.Gapi",
+	name: "gts.Gapi",
 
 	nextSteps: {},
 
 	/** @public */
 	published: {
-		/** @lends GTS.Gapi# */
+		/** @lends gts.Gapi# */
 
 		/**
 		 * Most Google APIs require an API key. You can sign up for an API key at the Google APIs Console (https://code.google.com/apis/console/).
@@ -89,7 +89,7 @@ enyo.kind({
 	 * Events sent by control
 	 */
 	events: {
-		/** @lends GTS.Gapi# */
+		/** @lends gts.Gapi# */
 
 		/**
 		 * Base library loaded
@@ -118,7 +118,7 @@ enyo.kind({
 	/**
 	 * @protected
 	 * @function
-	 * @name GTS.Gapi#create
+	 * @name gts.Gapi#create
 	 *
 	 * Called by Enyo when created. Loaded base Google API if needed.
 	 */
@@ -139,7 +139,7 @@ enyo.kind({
 	/**
 	 * @public
 	 * @function
-	 * @name GTS.Gapi#isGapiReady
+	 * @name gts.Gapi#isGapiReady
 	 *
 	 * Checks if gapi is ready
 	 *
@@ -153,7 +153,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.Gapi#loadGapi
+	 * @name gts.Gapi#loadGapi
 	 *
 	 * Fetch gapi
 	 */
@@ -170,7 +170,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.Gapi#gapiLoaded
+	 * @name gts.Gapi#gapiLoaded
 	 *
 	 * Handler for loading gapi
 	 */
@@ -187,7 +187,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.Gapi#apiKeyChanged
+	 * @name gts.Gapi#apiKeyChanged
 	 *
 	 * Called by Enyo when this.apiKey is changed by host.
 	 */
@@ -199,7 +199,7 @@ enyo.kind({
 	/**
 	 * @public
 	 * @function
-	 * @name GTS.Gapi#getAuthToken
+	 * @name gts.Gapi#getAuthToken
 	 *
 	 * Fetchs the oauth token from the api (if set)
 	 *
@@ -213,7 +213,7 @@ enyo.kind({
 	/**
 	 * @public
 	 * @function
-	 * @name GTS.Gapi#setAuthToken
+	 * @name gts.Gapi#setAuthToken
 	 *
 	 * Sets the oauth token
 	 *
@@ -231,7 +231,7 @@ enyo.kind({
 	/**
 	 * @public
 	 * @function
-	 * @name GTS.Gapi#auth
+	 * @name gts.Gapi#auth
 	 *
 	 * Authorize with OAuth2. Refreshes the token if set
 	 *
@@ -287,7 +287,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.Gapi#getParameterByName
+	 * @name gts.Gapi#getParameterByName
 	 *
 	 * Gets called when the URL changes on OAuth authorization process
 	 *
@@ -325,7 +325,7 @@ enyo.kind({
    /**
 	 * @private
 	 * @function
-	 * @name GTS.Gapi#getParameterByName
+	 * @name gts.Gapi#getParameterByName
 	 *
 	 * Extracts the code from the url. Copied from online.
 	 *
@@ -353,7 +353,7 @@ enyo.kind({
 	/**
 	 * @public
 	 * @function
-	 * @name GTS.Gapi#getAccessToken
+	 * @name gts.Gapi#getAccessToken
 	 *
 	 * Retrieve the proper access token.
 	 *
@@ -438,7 +438,7 @@ enyo.kind({
 	/**
 	 * @public
 	 * @function
-	 * @name GTS.Gapi#getRefreshToken
+	 * @name gts.Gapi#getRefreshToken
 	 *
 	 * Gets the Refresh from Access Token. This method is only called internally,
 	 * and once, only after when authorization of Application happens.
@@ -499,7 +499,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.Gapi#handleAuthResult
+	 * @name gts.Gapi#handleAuthResult
 	 *
 	 * Handles response from server
 	 *
@@ -587,7 +587,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.Gapi#handleAuthAbort
+	 * @name gts.Gapi#handleAuthAbort
 	 *
 	 * Exits auth attempt
 	 */
@@ -604,7 +604,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.Gapi#handleAuthClick
+	 * @name gts.Gapi#handleAuthClick
 	 *
 	 * Handler to start pop-up auth
 	 */
@@ -616,7 +616,7 @@ enyo.kind({
 	/**
 	 * @public
 	 * @function
-	 * @name GTS.Gapi#loadModule
+	 * @name gts.Gapi#loadModule
 	 *
 	 * Loads the specified module.
 	 *

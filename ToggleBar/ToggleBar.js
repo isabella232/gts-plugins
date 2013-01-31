@@ -11,7 +11,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 */
 
 /**
- * @name GTS.ToggleBar
+ * @name gts.ToggleBar
  * @author Matthew Schott <glitchtechscience@gmail.com>
  *
  * Standardized ToggleButton kind. Displays ToggleButton in an Item row kind. Text is on the left, toggle is on the right.
@@ -22,13 +22,13 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
  * @see http://enyojs.com
  */
 enyo.kind({
-	name: "GTS.ToggleBar",
+	name: "gts.ToggleBar",
 	kind: "onyx.Item",
 
 	classes: "gts-ToggleBar",
 
 	published: {
-		/** @lends GTS.LazyList# */
+		/** @lends gts.LazyList# */
 
 		/**
 		 * label of toggle
@@ -71,7 +71,7 @@ enyo.kind({
 	 * Events sent by control
 	 */
 	events: {
-		/** @lends GTS.ToggleBar# */
+		/** @lends gts.ToggleBar# */
 
 		/**
 		 * Selected item changed
@@ -123,7 +123,7 @@ enyo.kind({
 	/**
 	 * @protected
 	 * @function
-	 * @name GTS.ToggleBar#rendered
+	 * @name gts.ToggleBar#rendered
 	 *
 	 * Called by Enyo when UI is rendered.
 	 */
@@ -143,7 +143,7 @@ enyo.kind({
 	/**
 	 * @protected
 	 * @function
-	 * @name GTS.ToggleBar#reflow
+	 * @name gts.ToggleBar#reflow
 	 *
 	 * Updates spacing on bar without resize event.
 	 */
@@ -161,7 +161,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.ToggleBar#switchToggled
+	 * @name gts.ToggleBar#switchToggled
 	 *
 	 * Called by Enyo when the toggle button is tapped.
 	 * return true prevents event from chaining
@@ -177,7 +177,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.ToggleBar#switchChanged
+	 * @name gts.ToggleBar#switchChanged
 	 *
 	 * Called by Enyo when the toggle button is changed.
 	 * return true prevents event from chaining
@@ -192,7 +192,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.ToggleBar#labelChanged
+	 * @name gts.ToggleBar#labelChanged
 	 *
 	 * Called by Enyo when this.label is changed by host.
 	 * Updates the label display.
@@ -205,7 +205,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.ToggleBar#sublabelChanged
+	 * @name gts.ToggleBar#sublabelChanged
 	 *
 	 * Called by Enyo when this.sublabel is changed by host.
 	 * Updates the sublabel display.
@@ -218,7 +218,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.ToggleBar#onContentChanged
+	 * @name gts.ToggleBar#onContentChanged
 	 *
 	 * Called by Enyo when this.onContent is changed by host.
 	 * Updates the togglebutt onContent.
@@ -231,7 +231,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.ToggleBar#offContentChanged
+	 * @name gts.ToggleBar#offContentChanged
 	 *
 	 * Called by Enyo when this.offContent is changed by host.
 	 * Updates the togglebutt offContent.
@@ -244,7 +244,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.ToggleBar#valueChanged
+	 * @name gts.ToggleBar#valueChanged
 	 *
 	 * Called by Enyo when this.value is changed by host.
 	 * Updates the togglebutt value. Resizes bar.
@@ -258,7 +258,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.ToggleBar#getValue
+	 * @name gts.ToggleBar#getValue
 	 *
 	 * Returns value of toggle button
 	 *

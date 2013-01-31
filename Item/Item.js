@@ -11,7 +11,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 */
 
 /**
- * GTS.Item
+ * gts.Item
  *
  * Row item for use in lists and repeaters. Enables tap display on row.
  *
@@ -21,14 +21,14 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
  * @requies Onyx (https://github.com/enyojs/onyx)
  */
 enyo.kind( {
-	name: "GTS.Item",
+	name: "gts.Item",
 	kind: "onyx.Item",
 
 	classes: "gts-item",
 
 	/** @public */
 	published: {
-		/** @lends GTS.Item# */
+		/** @lends gts.Item# */
 
 		/**
 		 * Add class onyx-hightlight to row on hold
@@ -71,7 +71,7 @@ enyo.kind( {
 
 	/**
 	 * @public
-	 * @name GTS.Item#startTap
+	 * @name gts.Item#startTap
 	 *
 	 * Called on tap. Adds class to row.
 	 */
@@ -93,7 +93,7 @@ enyo.kind( {
 
 	/**
 	 * @protected
-	 * @name GTS.Item#endTap
+	 * @name gts.Item#endTap
 	 *
 	 * Removes class from row.
 	 */
@@ -107,7 +107,7 @@ enyo.kind( {
 
 	/**
 	 * @public
-	 * @name GTS.Item#hold
+	 * @name gts.Item#hold
 	 *
 	 * Called on hold. Adds class to row. Removes tap class.
 	 */
@@ -121,7 +121,7 @@ enyo.kind( {
 
 	/**
 	 * @public
-	 * @name GTS.Item#release
+	 * @name gts.Item#release
 	 *
 	 * Called on release. Removes class from row.
 	 */

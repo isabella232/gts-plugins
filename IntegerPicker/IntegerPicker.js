@@ -1,7 +1,7 @@
 /* Copyright © 2011-2012, GlitchTech Science */
 
 /**
- * @name GTS.integerPicker
+ * @name gts.integerPicker
  * @author Matthew Schott <glitchtechscience@gmail.com>
  *
  * Extends the Onyx Picker to auto populate min through max in steps.
@@ -13,13 +13,13 @@
  * @see http://enyojs.com
  */
 enyo.kind({
-	name: "GTS.IntegerPicker",
+	name: "gts.IntegerPicker",
 	kind: "onyx.Picker",
 
 	classes: "gts-integer-picker",
 
 	published: {
-		/** @lends GTS.IntegerPicker# */
+		/** @lends gts.IntegerPicker# */
 
 		/**
 		 * Min picker value
@@ -55,7 +55,7 @@ enyo.kind({
 	 * Events sent by control
 	 */
 	events: {
-		/** @lends GTS.IntegerPicker# */
+		/** @lends gts.IntegerPicker# */
 
 		/**
 		 * Selected item changed
@@ -76,7 +76,7 @@ enyo.kind({
 
 	/**
 	 * @private
-	 * @name GTS.IntegerPicker#create
+	 * @name gts.IntegerPicker#create
 	 *
 	 * Calls UI updater.
 	 */
@@ -89,7 +89,7 @@ enyo.kind({
 
 	/**
 	 * @private
-	 * @name GTS.IntegerPicker#minChanged
+	 * @name gts.IntegerPicker#minChanged
 	 *
 	 * Called by Enyo when this.min is changed by host.
 	 * Updates menu choices; Calls UI updater.
@@ -101,7 +101,7 @@ enyo.kind({
 
 	/**
 	 * @private
-	 * @name GTS.IntegerPicker#maxChanged
+	 * @name gts.IntegerPicker#maxChanged
 	 *
 	 * Called by Enyo when this.max is changed by host.
 	 * Updates menu choices; Calls UI updater.
@@ -113,7 +113,7 @@ enyo.kind({
 
 	/**
 	 * @private
-	 * @name GTS.IntegerPicker#stepChanged
+	 * @name gts.IntegerPicker#stepChanged
 	 *
 	 * Called by Enyo when this.step is changed by host.
 	 * Updates menu choices; Calls UI updater.
@@ -125,7 +125,7 @@ enyo.kind({
 
 	/**
 	 * @private
-	 * @name GTS.IntegerPicker#generateValues
+	 * @name gts.IntegerPicker#generateValues
 	 *
 	 * Updates UI
 	 */
@@ -153,7 +153,7 @@ enyo.kind({
 
 	/**
 	 * @private
-	 * @name GTS.IntegerPicker#selectionChanged
+	 * @name gts.IntegerPicker#selectionChanged
 	 *
 	 * Handles pciker selection; Calls host function for onChange
 	 *

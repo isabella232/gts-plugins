@@ -11,7 +11,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 */
 
 /**
- * @name GTS.IntegerPickerBar
+ * @name gts.IntegerPickerBar
  * @author Matthew Schott <glitchtechscience@gmail.com>
  *
  * Integer Picker that takes up an entire row. Does not look like a giant button.
@@ -19,17 +19,17 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
  * @class
  * @version 2.0
  * @requires onyx
- * @requires GTS.IntegerPicker
+ * @requires gts.IntegerPicker
  * @see http://enyojs.com
  */
 enyo.kind({
-	name: "GTS.IntegerPickerBar",
+	name: "gts.IntegerPickerBar",
 	kind: "onyx.Item",
 
 	classes: "gts-integerPickerBar",
 
 	published: {
-		/** @lends GTS.IntegerPickerBar# */
+		/** @lends gts.IntegerPickerBar# */
 
 		/**
 		 * label of drop down
@@ -100,7 +100,7 @@ enyo.kind({
 	 * Events sent by control
 	 */
 	events: {
-		/** @lends GTS.IntegerPickerBar# */
+		/** @lends gts.IntegerPickerBar# */
 
 		/**
 		 * Selected item changed
@@ -132,7 +132,7 @@ enyo.kind({
 							classes: "arrow"
 						}, {
 							name: "integer",
-							kind: "GTS.IntegerPicker",
+							kind: "gts.IntegerPicker",
 
 							min: 1,
 							max: 25,
@@ -153,7 +153,7 @@ enyo.kind({
 	/**
 	 * @protected
 	 * @function
-	 * @name GTS.IntegerPickerBar#rendered
+	 * @name gts.IntegerPickerBar#rendered
 	 *
 	 * Called by Enyo when UI is rendered.
 	 */
@@ -180,7 +180,7 @@ enyo.kind({
 	/**
 	 * @protected
 	 * @function
-	 * @name GTS.IntegerPickerBar#reflow
+	 * @name gts.IntegerPickerBar#reflow
 	 *
 	 * Updates spacing on bar without resize event.
 	 */
@@ -198,7 +198,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.IntegerPickerBar#labelChanged
+	 * @name gts.IntegerPickerBar#labelChanged
 	 *
 	 * Called by Enyo when this.label is changed by host.
 	 * Updates the label display.
@@ -211,7 +211,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.IntegerPickerBar#sublabelChanged
+	 * @name gts.IntegerPickerBar#sublabelChanged
 	 *
 	 * Called by Enyo when this.sublabel is changed by host.
 	 * Updates the sublabel display.
@@ -232,7 +232,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.IntegerPickerBar#disabledChanged
+	 * @name gts.IntegerPickerBar#disabledChanged
 	 *
 	 * Called by Enyo when this.disabled is changed by host.
 	 * Disables button when this.disabled is true
@@ -245,7 +245,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.IntegerPickerBar#maxHeightChanged
+	 * @name gts.IntegerPickerBar#maxHeightChanged
 	 *
 	 * Called by Enyo when this.maxHeight is changed by host.
 	 */
@@ -257,7 +257,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.IntegerPickerBar#pickerWidthChanged
+	 * @name gts.IntegerPickerBar#pickerWidthChanged
 	 *
 	 * Called by Enyo when this.pickerWidth is changed by host.
 	 */
@@ -268,7 +268,7 @@ enyo.kind({
 
 	/**
 	 * @private
-	 * @name GTS.IntegerPicker#minChanged
+	 * @name gts.IntegerPicker#minChanged
 	 *
 	 * Called by Enyo when this.min is changed by host.
 	 * Updates menu choices; Calls UI updater.
@@ -280,7 +280,7 @@ enyo.kind({
 
 	/**
 	 * @private
-	 * @name GTS.IntegerPicker#maxChanged
+	 * @name gts.IntegerPicker#maxChanged
 	 *
 	 * Called by Enyo when this.max is changed by host.
 	 * Updates menu choices; Calls UI updater.
@@ -292,7 +292,7 @@ enyo.kind({
 
 	/**
 	 * @private
-	 * @name GTS.IntegerPicker#stepChanged
+	 * @name gts.IntegerPicker#stepChanged
 	 *
 	 * Called by Enyo when this.step is changed by host.
 	 * Updates menu choices; Calls UI updater.
@@ -305,7 +305,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.IntegerPickerBar#valueChanged
+	 * @name gts.IntegerPickerBar#valueChanged
 	 *
 	 * Updates UI
 	 */
@@ -320,7 +320,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.IntegerPickerBar#selectionChanged
+	 * @name gts.IntegerPickerBar#selectionChanged
 	 *
 	 * Handles menu selection; Calls host function for onChange
 	 *

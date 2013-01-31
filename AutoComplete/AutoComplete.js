@@ -11,7 +11,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 */
 
 /**
- * GTS.AutoComplete
+ * gts.AutoComplete
  *
  * Menu contained within an input decorator to present text suggestions.
  * Suggestions are user generated.
@@ -22,7 +22,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
  * @requies Onyx (https://github.com/enyojs/onyx)
  */
 enyo.kind( {
-	name: "GTS.AutoComplete",
+	name: "gts.AutoComplete",
 	kind: "onyx.InputDecorator",
 
 	classes: "gts-autocomplete",
@@ -45,7 +45,7 @@ enyo.kind( {
 
 	/** @public */
 	published: {
-		/** @lends GTS.AutoComplete# */
+		/** @lends gts.AutoComplete# */
 
 		/**
 		 * Is system active
@@ -102,7 +102,7 @@ enyo.kind( {
 	 * Events sent by control
 	 */
 	events: {
-		/** @lends GTS.AutoComplete# */
+		/** @lends gts.AutoComplete# */
 
 		/**
 		 * Even to respond to when data is required for the drop down
@@ -154,7 +154,7 @@ enyo.kind( {
 	/**
 	 * @protected
 	 * @function
-	 * @name GTS.AutoComplete#rendered
+	 * @name gts.AutoComplete#rendered
 	 *
 	 * Called by Enyo when UI is rendered.
 	 */
@@ -170,7 +170,7 @@ enyo.kind( {
 	/**
 	 * @protected
 	 * @function
-	 * @name GTS.AutoComplete#enabledChanged
+	 * @name gts.AutoComplete#enabledChanged
 	 *
 	 * Called by Enyo when this.enabled is changed by user
 	 */
@@ -182,7 +182,7 @@ enyo.kind( {
 	/**
 	 * @protected
 	 * @function
-	 * @name GTS.AutoComplete#iconChanged
+	 * @name gts.AutoComplete#iconChanged
 	 *
 	 * Called by Enyo when this.icon is changed by user
 	 */
@@ -195,7 +195,7 @@ enyo.kind( {
 	/**
 	 * @protected
 	 * @function
-	 * @name GTS.AutoComplete#zIndexChanged
+	 * @name gts.AutoComplete#zIndexChanged
 	 *
 	 * Called by Enyo when this.zIndex is changed by user
 	 */
@@ -213,7 +213,7 @@ enyo.kind( {
 	/**
 	 * @protected
 	 * @function
-	 * @name GTS.AutoComplete#inputChanged
+	 * @name gts.AutoComplete#inputChanged
 	 *
 	 * Called by Enyo when the content of the input is changed by end-user
 	 */
@@ -232,7 +232,7 @@ enyo.kind( {
 	/**
 	 * @protected
 	 * @function
-	 * @name GTS.AutoComplete#fireInputChanged
+	 * @name gts.AutoComplete#fireInputChanged
 	 *
 	 * Delay action handling of onInput via enyo.job
 	 * Request data from onDataRequest handler
@@ -259,7 +259,7 @@ enyo.kind( {
 	/**
 	 * @protected
 	 * @function
-	 * @name GTS.AutoComplete#valuesChanged
+	 * @name gts.AutoComplete#valuesChanged
 	 *
 	 * Display menu of suggestions
 	 */
@@ -306,7 +306,7 @@ enyo.kind( {
 	/**
 	 * @protected
 	 * @function
-	 * @name GTS.AutoComplete#input
+	 * @name gts.AutoComplete#input
 	 *
 	 * Updates input field with menu selection, sends event with value to handler
 	 */

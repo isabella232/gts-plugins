@@ -11,7 +11,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 */
 
 /**
- * @name GTS.Divider
+ * @name gts.Divider
  * @author Matthew Schott <glitchtechscience@gmail.com>
 
  * @param string	[content]	Divider text
@@ -25,11 +25,11 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
  * @see http://enyojs.com
  */
 enyo.kind({
-	name: "GTS.Divider",
+	name: "gts.Divider",
 	classes: "gts-Divider",
 
 	published: {
-		/** @lends GTS.Divider# */
+		/** @lends gts.Divider# */
 
 		/**
 		 * caption of bar
@@ -48,7 +48,7 @@ enyo.kind({
 
 	/**
 	 * @protected
-	 * @name GTS.Divider#rendered
+	 * @name gts.Divider#rendered
 	 *
 	 * Called by Enyo when UI is rendered.
 	 */
@@ -62,7 +62,7 @@ enyo.kind({
 
 	/**
 	 * @protected
-	 * @name GTS.Divider#reflow
+	 * @name gts.Divider#reflow
 	 *
 	 * Updates spacing on bar without resize event.
 	 */
@@ -73,7 +73,7 @@ enyo.kind({
 
 	/**
 	 * @protected
-	 * @name GTS.Divider#useFittableChanged
+	 * @name gts.Divider#useFittableChanged
 	 *
 	 * Called by Enyo when this.useFittable is changed by host.
 	 */
@@ -110,7 +110,7 @@ enyo.kind({
 
 	/**
 	 * @protected
-	 * @name GTS.Divider#contentChanged
+	 * @name gts.Divider#contentChanged
 	 *
 	 * Called by Enyo when this.content is changed by host.
 	 * Updates UI for caption.

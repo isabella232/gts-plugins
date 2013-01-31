@@ -11,7 +11,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 */
 
 /**
- * GTS.ConfirmDialog
+ * gts.ConfirmDialog
  *
  * Enyo style confirmation dialog
  *
@@ -31,7 +31,7 @@ enyo.kind({
 
 	/** @public */
 	published: {
-		/** @lends GTS.ConfirmDialog# */
+		/** @lends gts.ConfirmDialog# */
 
 		/**
 		 * Dialog title to display
@@ -129,7 +129,7 @@ enyo.kind({
 	 * Events sent by control
 	 */
 	events: {
-		/** @lends GTS.ConfirmDialog# */
+		/** @lends gts.ConfirmDialog# */
 
 		/**
 		 * Cancel button pressed
@@ -178,7 +178,7 @@ enyo.kind({
 	/**
 	 * @protected
 	 * @function
-	 * @name GTS.ConfirmDialog#rendered
+	 * @name gts.ConfirmDialog#rendered
 	 *
 	 * Called by Enyo when UI is rendered.
 	 */
@@ -200,7 +200,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.ConfirmDialog#titleChanged
+	 * @name gts.ConfirmDialog#titleChanged
 	 *
 	 * Called by Enyo when this.title is changed by host.
 	 */
@@ -212,7 +212,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.ConfirmDialog#messageChanged
+	 * @name gts.ConfirmDialog#messageChanged
 	 *
 	 * Called by Enyo when this.message is changed by host.
 	 */
@@ -224,7 +224,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.ConfirmDialog#confirmTextChanged
+	 * @name gts.ConfirmDialog#confirmTextChanged
 	 *
 	 * Called by Enyo when this.confirmText is changed by host.
 	 */
@@ -236,7 +236,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.ConfirmDialog#confirmClassChanged
+	 * @name gts.ConfirmDialog#confirmClassChanged
 	 *
 	 * Called by Enyo when this.confirmClass is changed by host.
 	 */
@@ -248,7 +248,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.ConfirmDialog#cancelTextChanged
+	 * @name gts.ConfirmDialog#cancelTextChanged
 	 *
 	 * Called by Enyo when this.cancelText is changed by host.
 	 */
@@ -268,7 +268,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.ConfirmDialog#cancelClassChanged
+	 * @name gts.ConfirmDialog#cancelClassChanged
 	 *
 	 * Called by Enyo when this.confirmText is changed by host.
 	 */
@@ -280,7 +280,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.ConfirmDialog#cancel
+	 * @name gts.ConfirmDialog#cancel
 	 *
 	 * Cancel button tapped. Hides dialog and notifies host.
 	 *
@@ -296,7 +296,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.ConfirmDialog#confirm
+	 * @name gts.ConfirmDialog#confirm
 	 *
 	 * Confirm button tapped. Hides dialog and notifies host.
 	 *

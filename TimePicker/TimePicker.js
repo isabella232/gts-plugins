@@ -11,7 +11,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 */
 
 /**
- * GTS.TimePicker
+ * gts.TimePicker
  * @extends onyx.TimePicker
  *
  * @author Matthew Schott <glitchtechscience@gmail.com>
@@ -19,14 +19,14 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
  * @param int	[minuteInterval]	Interval for minute picker
  */
 enyo.kind({
-	name: "GTS.TimePicker",
+	name: "gts.TimePicker",
 	kind: "onyx.TimePicker",
 
 	classes: "gts-timepicker",
 
 	/** @public */
 	published: {
-		/** @lends GTS.TimePicker# */
+		/** @lends gts.TimePicker# */
 
 		/**
 		 * Intervals between minute options
@@ -65,7 +65,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.TimePicker#minuteIntervalChanged
+	 * @name gts.TimePicker#minuteIntervalChanged
 	 *
 	 * Called by Enyo when this.minuteInterval is changed by host.
 	 * Updates options for minutePicker.
@@ -86,7 +86,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.TimePicker#labelChanged
+	 * @name gts.TimePicker#labelChanged
 	 *
 	 * Called by Enyo when this.label is changed by host.
 	 * Updates the label display.

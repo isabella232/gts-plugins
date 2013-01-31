@@ -1,7 +1,7 @@
 /* Copyright © 2011-2012, GlitchTech Science */
 
 /**
- * @name GTS.selectedMenu
+ * @name gts.selectedMenu
  * @author Matthew Schott <glitchtechscience@gmail.com>
  *
  * Extends the Onyx Menu to indicate which item is selected.
@@ -13,13 +13,13 @@
  * @see http://enyojs.com
  */
 enyo.kind({
-	name: "GTS.SelectedMenu",
+	name: "gts.SelectedMenu",
 	kind: "onyx.Menu",
 
 	classes: "gts-selectedMenu",
 
 	published: {
-		/** @lends GTS.SelectedMenu# */
+		/** @lends gts.SelectedMenu# */
 
 		/**
 		 * Choices for drop down. Must be in component format
@@ -41,7 +41,7 @@ enyo.kind({
 	 * Events sent by control
 	 */
 	events: {
-		/** @lends GTS.SelectedMenu# */
+		/** @lends gts.SelectedMenu# */
 
 		/**
 		 * Selected item changed
@@ -69,7 +69,7 @@ enyo.kind({
 
 	/**
 	 * @private
-	 * @name GTS.SelectedMenu#choicesChanged
+	 * @name gts.SelectedMenu#choicesChanged
 	 *
 	 * Called by Enyo when this.choices is changed by host.
 	 * Updates menu choices; Calls UI updater.
@@ -91,7 +91,7 @@ enyo.kind({
 
 	/**
 	 * @private
-	 * @name GTS.SelectedMenu#valueChanged
+	 * @name gts.SelectedMenu#valueChanged
 	 *
 	 * Updates UI
 	 */
@@ -112,7 +112,7 @@ enyo.kind({
 
 	/**
 	 * @private
-	 * @name GTS.SelectedMenu#selectionChanged
+	 * @name gts.SelectedMenu#selectionChanged
 	 *
 	 * Handles menu selection; Calls host function for onChange
 	 *

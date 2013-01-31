@@ -11,7 +11,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 */
 
 /**
- * GTS.ProgressDialog
+ * gts.ProgressDialog
  *
  * Popup with icon, header text, sub text, and progress bar
  *
@@ -21,14 +21,14 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
  * @requies Onyx (https://github.com/enyojs/onyx)
  */
 enyo.kind({
-	name: "GTS.ProgressDialog",
+	name: "gts.ProgressDialog",
 	kind: "onyx.Popup",
 
 	classes: "gts-progress-dialog",
 
 	/** @public */
 	published: {
-		/** @lends GTS.ProgressDialog# */
+		/** @lends gts.ProgressDialog# */
 
 		/**
 		 * Dialog title to display
@@ -161,7 +161,7 @@ enyo.kind({
 	 * Events sent by control
 	 */
 	events: {
-		/** @lends GTS.ProgressDialog# */
+		/** @lends gts.ProgressDialog# */
 
 		/**
 		 * Cancel button pressed
@@ -201,7 +201,7 @@ enyo.kind({
 	/**
 	 * @protected
 	 * @function
-	 * @name GTS.ProgressDialog#rendered
+	 * @name gts.ProgressDialog#rendered
 	 *
 	 * Called by Enyo when UI is rendered.
 	 */
@@ -228,7 +228,7 @@ enyo.kind({
 	/**
 	 * @public
 	 * @function
-	 * @name GTS.ProgressDialog#show
+	 * @name gts.ProgressDialog#show
 	 *
 	 * Shows the progress dialog. Attempts to mix in arguments with published values after display.
 	 *
@@ -255,7 +255,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.ProgressDialog#titleChanged
+	 * @name gts.ProgressDialog#titleChanged
 	 *
 	 * Called by Enyo when this.title is changed by host.
 	 */
@@ -267,7 +267,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.ProgressDialog#messageChanged
+	 * @name gts.ProgressDialog#messageChanged
 	 *
 	 * Called by Enyo when this.message is changed by host.
 	 */
@@ -287,7 +287,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.ProgressDialog#progressChanged
+	 * @name gts.ProgressDialog#progressChanged
 	 *
 	 * Called by Enyo when this.progress is changed by host.
 	 * Adjusts progress bar progress
@@ -306,7 +306,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.ProgressDialog#progressBarClassesChanged
+	 * @name gts.ProgressDialog#progressBarClassesChanged
 	 *
 	 * Called by Enyo when this.progressBarClasses is changed by host.
 	 */
@@ -318,7 +318,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.ProgressDialog#progressBarClassesChanged
+	 * @name gts.ProgressDialog#progressBarClassesChanged
 	 *
 	 * Called by Enyo when this.min is changed by host.
 	 */
@@ -330,7 +330,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.ProgressDialog#progressBarClassesChanged
+	 * @name gts.ProgressDialog#progressBarClassesChanged
 	 *
 	 * Called by Enyo when this.max is changed by host.
 	 */
@@ -342,7 +342,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.ProgressDialog#progressBarClassesChanged
+	 * @name gts.ProgressDialog#progressBarClassesChanged
 	 *
 	 * Called by Enyo when this.showStripes is changed by host.
 	 */
@@ -354,7 +354,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.ProgressDialog#animateStripesChanged
+	 * @name gts.ProgressDialog#animateStripesChanged
 	 *
 	 * Called by Enyo when this.animateStripes is changed by host.
 	 */
@@ -366,7 +366,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.ProgressDialog#cancelTextChanged
+	 * @name gts.ProgressDialog#cancelTextChanged
 	 *
 	 * Called by Enyo when this.cancelText is changed by host.
 	 */
@@ -386,7 +386,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.ProgressDialog#cancelClassChanged
+	 * @name gts.ProgressDialog#cancelClassChanged
 	 *
 	 * Called by Enyo when this.confirmText is changed by host.
 	 */
@@ -398,7 +398,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.ProgressDialog#cancel
+	 * @name gts.ProgressDialog#cancel
 	 *
 	 * Cancel button tapped. Hides dialog and notifies host.
 	 *

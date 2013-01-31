@@ -1,5 +1,5 @@
 /**
- * @name GTS.LazyList
+ * @name gts.LazyList
  * @author Newness (Rafa Bernad)
  * @author Matthew Schott <glitchtechscience@gmail.com>
  *
@@ -13,13 +13,13 @@
  * @see http://enyojs.com
  */
 enyo.kind({
-	name: "GTS.LazyList",
+	name: "gts.LazyList",
 	kind: "enyo.AroundList",
 
 	lastLazyLoad: 0,
 
 	published: {
-		/** @lends GTS.LazyList# */
+		/** @lends gts.LazyList# */
 
 		/**
 		 * Page size
@@ -34,7 +34,7 @@ enyo.kind({
 	 * Events sent by control
 	 */
 	events: {
-		/** @lends GTS.LazyList# */
+		/** @lends gts.LazyList# */
 
 		/**
 		 * Aquire new pages of data
@@ -61,7 +61,7 @@ enyo.kind({
 	/**
 	 * @public
 	 * @function
-	 * @name GTS.LazyList#lazyLoad
+	 * @name gts.LazyList#lazyLoad
 	 *
 	 * Resets list position and fetches new data
 	 */
@@ -75,7 +75,7 @@ enyo.kind({
 	/**
 	 * @protected
 	 * @function
-	 * @name GTS.LazyList#scroll
+	 * @name gts.LazyList#scroll
 	 * @extends enyo.AroundList#scroll
 	 *
 	 * Overrides scroll to check for & request new data
@@ -103,7 +103,7 @@ enyo.kind({
 	/**
 	 * @protected
 	 * @function
-	 * @name GTS.LazyList#_requestData
+	 * @name gts.LazyList#_requestData
 	 *
 	 * Request more data
 	 */
@@ -120,7 +120,7 @@ enyo.kind({
 	/**
 	 * @public
 	 * @function
-	 * @name GTS.LazyList#reset
+	 * @name gts.LazyList#reset
 	 * @extends enyo.AroundList#reset
 	 */
 	reset: function() {

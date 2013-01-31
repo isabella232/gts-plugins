@@ -1,7 +1,7 @@
 /* Copyright © 2012, GlitchTech Science */
 
 /**
- * @name GTS.InlineNotification
+ * @name gts.InlineNotification
  * @author Matthew Schott <glitchtechscience@gmail.com>
  *
  * Simple styler for in page notification text.
@@ -11,7 +11,7 @@
  * @see http://enyojs.com
  */
 enyo.kind({
-	name: "GTS.InlineNotification",
+	name: "gts.InlineNotification",
 	classes: "inline-notification",
 
 	content: "",
@@ -29,11 +29,11 @@ enyo.kind({
 		],
 
 	published: {
-		/** @lends GTS.InlineNotification# */
+		/** @lends gts.InlineNotification# */
 
 		/**
 		 * Choices for style.
-		 * @see GTS.InlineNotification#typeOptions
+		 * @see gts.InlineNotification#typeOptions
 		 * @type string
 		 * @default "error"
 		 */
@@ -50,7 +50,7 @@ enyo.kind({
 	/**
 	 * @protected
 	 * @function
-	 * @name GTS.InlineNotification#rendered
+	 * @name gts.InlineNotification#rendered
 	 *
 	 * Called by Enyo when UI is rendered.
 	 */
@@ -65,7 +65,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.InlineNotification#typeChanged
+	 * @name gts.InlineNotification#typeChanged
 	 *
 	 * Called by Enyo when this.type is changed by host.
 	 * Updates UI
@@ -81,7 +81,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.InlineNotification#iconChanged
+	 * @name gts.InlineNotification#iconChanged
 	 *
 	 * Called by Enyo when this.icon is changed by host.
 	 * Updates UI

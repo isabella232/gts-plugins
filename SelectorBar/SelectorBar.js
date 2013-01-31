@@ -11,7 +11,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 */
 
 /**
- * @name GTS.SelectorBar
+ * @name gts.SelectorBar
  * @author Matthew Schott <glitchtechscience@gmail.com>
  *
  * Selector that takes up an entire row. Does not look like a giant button.
@@ -22,13 +22,13 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
  * @see http://enyojs.com
  */
 enyo.kind({
-	name: "GTS.SelectorBar",
+	name: "gts.SelectorBar",
 	kind: "onyx.Item",
 
 	classes: "gts-selectorBar",
 
 	published: {
-		/** @lends GTS.SelectorBar# */
+		/** @lends gts.SelectorBar# */
 
 		/**
 		 * label of drop down
@@ -85,7 +85,7 @@ enyo.kind({
 	 * Events sent by control
 	 */
 	events: {
-		/** @lends GTS.SelectorBar# */
+		/** @lends gts.SelectorBar# */
 
 		/**
 		 * Selected item changed
@@ -141,7 +141,7 @@ enyo.kind({
 	/**
 	 * @protected
 	 * @function
-	 * @name GTS.SelectorBar#rendered
+	 * @name gts.SelectorBar#rendered
 	 *
 	 * Called by Enyo when UI is rendered.
 	 */
@@ -163,7 +163,7 @@ enyo.kind({
 	/**
 	 * @protected
 	 * @function
-	 * @name GTS.SelectorBar#reflow
+	 * @name gts.SelectorBar#reflow
 	 *
 	 * Updates spacing on bar without resize event.
 	 */
@@ -181,7 +181,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.SelectorBar#labelChanged
+	 * @name gts.SelectorBar#labelChanged
 	 *
 	 * Called by Enyo when this.label is changed by host.
 	 * Updates the label display.
@@ -194,7 +194,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.SelectorBar#sublabelChanged
+	 * @name gts.SelectorBar#sublabelChanged
 	 *
 	 * Called by Enyo when this.sublabel is changed by host.
 	 * Updates the sublabel display.
@@ -215,7 +215,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.SelectorBar#choicesChanged
+	 * @name gts.SelectorBar#choicesChanged
 	 *
 	 * Called by Enyo when this.choices is changed by host.
 	 * Updates menu choices; Calls UI updater.
@@ -230,7 +230,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.SelectorBar#disabledChanged
+	 * @name gts.SelectorBar#disabledChanged
 	 *
 	 * Called by Enyo when this.disabled is changed by host.
 	 * Disables button when this.disabled is true
@@ -243,7 +243,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.SelectorBar#maxHeightChanged
+	 * @name gts.SelectorBar#maxHeightChanged
 	 *
 	 * Called by Enyo when this.maxHeight is changed by host.
 	 */
@@ -255,7 +255,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.SelectorBar#labelWidthChanged
+	 * @name gts.SelectorBar#labelWidthChanged
 	 *
 	 * Called by Enyo when this.labelWidth is changed by host.
 	 */
@@ -267,7 +267,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.SelectorBar#setValue
+	 * @name gts.SelectorBar#setValue
 	 *
 	 * Updates value. Calls UI updater.
 	 *
@@ -283,7 +283,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.SelectorBar#valueChanged
+	 * @name gts.SelectorBar#valueChanged
 	 *
 	 * Updates UI
 	 */
@@ -324,7 +324,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.SelectorBar#_getValue
+	 * @name gts.SelectorBar#_getValue
 	 *
 	 * Helper function for valueChanged. Determines if choice has a value property.
 	 * Returns string of value or content
@@ -340,7 +340,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.SelectorBar#selectionChanged
+	 * @name gts.SelectorBar#selectionChanged
 	 *
 	 * Handles menu selection; Calls host function for onChange
 	 *

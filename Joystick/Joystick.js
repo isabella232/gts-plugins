@@ -11,7 +11,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 */
 
 /**
- * GTS.Joystick
+ * gts.Joystick
  *
  * Digital joystick for touch interfaces.
  *
@@ -39,7 +39,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 var GTS_Joystick_Touch_List = [];
 
 enyo.kind({
-	name: "GTS.Joystick",
+	name: "gts.Joystick",
 	kind: "enyo.Canvas",
 
 	classes: "gts-joystick",

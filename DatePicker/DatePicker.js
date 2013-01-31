@@ -11,7 +11,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 */
 
 /**
- * @name GTS.DatePicker
+ * @name gts.DatePicker
  *
  * @author Matthew Schott <glitchtechscience@gmail.com>
  *
@@ -29,14 +29,14 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
  * @requies Layout/Fittable (https://github.com/enyojs/layout)
  */
 enyo.kind({
-	name: "GTS.DatePicker",
+	name: "gts.DatePicker",
 	kind: "enyo.Control",
 
 	classes: "gts-calendar",
 
 	/** @public */
 	published: {
-		/** @lends GTS.DatePicker# */
+		/** @lends gts.DatePicker# */
 
 		/**
 		 * Currently selected date

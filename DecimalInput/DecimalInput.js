@@ -11,7 +11,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 */
 
 /**
- * GTS.DecimalInput
+ * gts.DecimalInput
  *
  * Input specifically for currency or other decimal number formats.
  *
@@ -21,7 +21,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
  * @extends Input
  */
 enyo.kind({
-	name: "GTS.DecimalInput",
+	name: "gts.DecimalInput",
 	kind: "Input",
 
 	classes: "gts-decimal-input",
@@ -31,7 +31,7 @@ enyo.kind({
 
 	/** @public */
 	published: {
-		/** @lends GTS.DecimalInput# */
+		/** @lends gts.DecimalInput# */
 
 		/**
 		 * Input type. This should be number unless issues with browser occur.
@@ -112,7 +112,7 @@ enyo.kind({
 	/**
 	 * @protected
 	 * @function
-	 * @name GTS.DecimalInput#rendered
+	 * @name gts.DecimalInput#rendered
 	 *
 	 * Called by Enyo when UI is rendered.
 	 */
@@ -129,7 +129,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.DecimalInput#minChanged
+	 * @name gts.DecimalInput#minChanged
 	 *
 	 * Called by Enyo when this.min is changed by host.
 	 */
@@ -141,7 +141,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.DecimalInput#maxChanged
+	 * @name gts.DecimalInput#maxChanged
 	 *
 	 * Called by Enyo when this.max is changed by host.
 	 */
@@ -156,7 +156,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.DecimalInput#stepChanged
+	 * @name gts.DecimalInput#stepChanged
 	 *
 	 * Called by Enyo when this.step is changed by host.
 	 */
@@ -168,7 +168,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.DecimalInput#precisionChanged
+	 * @name gts.DecimalInput#precisionChanged
 	 *
 	 * Called by Enyo when this.precision is changed by host.
 	 */
@@ -201,7 +201,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.DecimalInput#filterInput
+	 * @name gts.DecimalInput#filterInput
 	 *
 	 * Backup for the HTML5 type=number filter.
 	 * Restricts allowed characters to 0-9 and decimal point.
@@ -220,7 +220,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.DecimalInput#inputValueUpdated
+	 * @name gts.DecimalInput#inputValueUpdated
 	 *
 	 * Handles input being typed in.
 	 * If this.atm is true, will format number
@@ -265,7 +265,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.DecimalInput#inputValueChanged
+	 * @name gts.DecimalInput#inputValueChanged
 	 *
 	 * Handles input onChange event. Backup validation for max and min.
 	 *
@@ -290,7 +290,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.DecimalInput#inputFocused
+	 * @name gts.DecimalInput#inputFocused
 	 *
 	 * Handles input onfocus event. Sets type to number if that is what it was.
 	 * Also selects all content of input if this.selectAllOnFocus is true.
@@ -314,7 +314,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.DecimalInput#inputBlurred
+	 * @name gts.DecimalInput#inputBlurred
 	 *
 	 * Handles input onblur event. Sets type to text if it was number.
 	 *
@@ -334,7 +334,7 @@ enyo.kind({
 	/**
 	 * @public
 	 * @function
-	 * @name GTS.DecimalInput#getValueAsNumber
+	 * @name gts.DecimalInput#getValueAsNumber
 	 *
 	 * Returns the current value as a number. If NaN, returns zero.
 	 *

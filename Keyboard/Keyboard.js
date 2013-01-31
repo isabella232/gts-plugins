@@ -11,7 +11,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 */
 
 /**
- * GTS.Keyboard
+ * gts.Keyboard
  *
  * On screen keyboard for EnyoJS.
  * The keyboard acts as an on screen keyboard for the set component.
@@ -24,7 +24,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
  * @param component	[write]	Component to be interacted with by the keyboard
  */
 enyo.kind({
-	name: "GTS.Keyboard",
+	name: "gts.Keyboard",
 	kind: enyo.Control,
 
 	/** @private variables */

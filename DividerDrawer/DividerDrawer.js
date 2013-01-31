@@ -11,7 +11,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 */
 
 /**
- * @name GTS.DividerDrawer
+ * @name gts.DividerDrawer
  * @author Matthew Schott <glitchtechscience@gmail.com>
  *
  * Mimics Enyo 1.0 DividerDrawer functionality.
@@ -22,11 +22,11 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
  * @see http://enyojs.com
  */
 enyo.kind({
-	name: "GTS.DividerDrawer",
+	name: "gts.DividerDrawer",
 	classes: "gts-DividerDrawer",
 
 	published: {
-		/** @lends GTS.DividerDrawer# */
+		/** @lends gts.DividerDrawer# */
 
 		/**
 		 * caption of bar
@@ -48,7 +48,7 @@ enyo.kind({
 	 * Events sent by control
 	 */
 	events: {
-		/** @lends GTS.DividerDrawer# */
+		/** @lends gts.DividerDrawer# */
 
 		/**
 		 * Selected item changed
@@ -101,7 +101,7 @@ enyo.kind({
 	/**
 	 * @protected
 	 * @function
-	 * @name GTS.DividerDrawer#rendered
+	 * @name gts.DividerDrawer#rendered
 	 *
 	 * Called by Enyo when UI is rendered.
 	 */
@@ -116,7 +116,7 @@ enyo.kind({
 	/**
 	 * @protected
 	 * @function
-	 * @name GTS.DividerDrawer#reflow
+	 * @name gts.DividerDrawer#reflow
 	 *
 	 * Updates spacing on bar without resize event.
 	 */
@@ -128,7 +128,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.DividerDrawer#openChanged
+	 * @name gts.DividerDrawer#openChanged
 	 *
 	 * Called by Enyo when this.open is changed by host.
 	 * Opens/Closes the drawer and updates UI.
@@ -146,7 +146,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.DividerDrawer#captionChanged
+	 * @name gts.DividerDrawer#captionChanged
 	 *
 	 * Called by Enyo when this.open is changed by host.
 	 * Updates UI for caption.
@@ -162,7 +162,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name GTS.DividerDrawer#toggleOpen
+	 * @name gts.DividerDrawer#toggleOpen
 	 *
 	 * Handles toggling event.
 	 *

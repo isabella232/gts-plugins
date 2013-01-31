@@ -1,7 +1,7 @@
 /* Copyright © 2011-2012, GlitchTech Science */
 
 /**
- * @name GTS.EventMenu
+ * @name gts.EventMenu
  * @author Matthew Schott <glitchtechscience@gmail.com>
  *
  * Extends the Onyx Menu to allow for placement using a tap (or similar) event.
@@ -23,12 +23,12 @@
  * @see http://enyojs.com
  */
 enyo.kind({
-	name: "GTS.EventMenu",
+	name: "gts.EventMenu",
 	kind: "onyx.Menu",
 
 	/**
 	 * @protected
-	 * @name GTS.EventMenu#adjustPosition
+	 * @name gts.EventMenu#adjustPosition
 	 *
 	 * Overrides parent adjustPosition function.
 	 * That function is not needed for this use.
@@ -37,7 +37,7 @@ enyo.kind({
 
 	/**
 	 * @protected
-	 * @name GTS.EventMenu#showingChanged
+	 * @name gts.EventMenu#showingChanged
 	 *
 	 * Altered to use updatePosition.
 	 */
@@ -49,7 +49,7 @@ enyo.kind({
 
 	/**
 	 * @protected
-	 * @name GTS.EventMenu#resizeHandler
+	 * @name gts.EventMenu#resizeHandler
 	 *
 	 * Altered to use updatePosition.
 	 */

@@ -11,7 +11,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 */
 
 /**
- * GTS.Object
+ * gts.Object
  *
  * Helper kind for using Objects.
  *
@@ -20,7 +20,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
  * @requires Enyo (https://github.com/enyojs/enyo)
  */
 enyo.singleton({
-	name: "GTS.Object",
+	name: "gts.Object",
 	kind: "enyo.Component",
 
 	/**

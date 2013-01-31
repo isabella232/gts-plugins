@@ -11,7 +11,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 */
 
 /**
- * GTS.String
+ * gts.String
  *
  * Helper kind for using Strings. Aids in cleaning, viewing, validating, etc.
  *
@@ -20,12 +20,12 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
  * @requires Enyo (https://github.com/enyojs/enyo)
  */
 enyo.singleton({
-	name: "GTS.String",
+	name: "gts.String",
 	kind: "enyo.Component",
 
 	/** @public */
 	published: {
-		/** @lends GTS.String# */
+		/** @lends gts.String# */
 
 		/**
 		 * Array of 'dirty' string items
@@ -43,7 +43,7 @@ enyo.singleton({
 	/**
 	 * @public
 	 * @function
-	 * @name GTS.String#stripHTML
+	 * @name gts.String#stripHTML
 	 *
 	 * Removes HTML tags and content between them from string
 	 *
@@ -64,7 +64,7 @@ enyo.singleton({
 	/**
 	 * @public
 	 * @function
-	 * @name GTS.String#cleanString
+	 * @name gts.String#cleanString
 	 *
 	 * Replaces common 'bad' characters with safe equivalents
 	 *
@@ -90,7 +90,7 @@ enyo.singleton({
 	/**
 	 * @public
 	 * @function
-	 * @name GTS.String#dirtyString
+	 * @name gts.String#dirtyString
 	 *
 	 * Replaces safe equivalents with common 'bad' characters
 	 *
@@ -116,7 +116,7 @@ enyo.singleton({
 	/**
 	 * @public
 	 * @function
-	 * @name GTS.String#trim
+	 * @name gts.String#trim
 	 *
 	 * Removes all whitespace from start and end of string
 	 *
@@ -137,7 +137,7 @@ enyo.singleton({
 	/**
 	 * @public
 	 * @function
-	 * @name GTS.String#ucfirst
+	 * @name gts.String#ucfirst
 	 *
 	 * Makes a string's first character uppercase
 	 *
@@ -159,7 +159,7 @@ enyo.singleton({
 	/**
 	 * @public
 	 * @function
-	 * @name GTS.String#isBlank
+	 * @name gts.String#isBlank
 	 *
 	 * Checks if string is blank
 	 *
@@ -180,7 +180,7 @@ enyo.singleton({
 	/**
 	 * @public
 	 * @function
-	 * @name GTS.String#isJSON
+	 * @name gts.String#isJSON
 	 *
 	 * Checks if string is JSON formatted
 	 *
