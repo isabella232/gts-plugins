@@ -46,7 +46,34 @@ enyo.kind({
 	},
 
 	/**
-	 * @private
+	 * @protected
+	 * @constructs
+	 */
+	constructor: function() {
+
+		this.inherited( arguments );
+
+		this.binds = {
+			_requestData: enyo.bind( this, this._requestData )
+		};
+	},
+
+	/**
+	 * @public
+	 * @function
+	 * @name GTS.LazyList#lazyLoad
+	 *
+	 * Resets list position and fetches new data
+	 */
+	lazyLoad: function() {
+
+		this.lastLazyLoad = 0;
+
+		this._requestData();
+	},
+
+	/**
+	 * @protected
 	 * @function
 	 * @name GTS.LazyList#scroll
 	 * @extends enyo.AroundList#scroll
@@ -66,7 +93,7 @@ enyo.kind({
 
 				this.lastLazyLoad = this.pageCount;
 
-				this._requestData();
+				enyo.job( "gts.LazyList#_requestData", this.binds['_requestData'], 250 );
 			}
 		}
 
@@ -74,23 +101,9 @@ enyo.kind({
 	},
 
 	/**
-	 * @public
+	 * @protected
 	 * @function
-	 * @name GTS.LazyList#lazyLoad
-	 *
-	 * Resets list position and fetches new data
-	 */
-	lazyLoad: function() {
-
-		this.lastLazyLoad = 0;
-
-		this._requestData();
-	},
-
-	/**
-	 * @private
-	 * @function
-	 * @name GTS.LazyList#lazyLoad
+	 * @name GTS.LazyList#_requestData
 	 *
 	 * Request more data
 	 */
@@ -100,8 +113,6 @@ enyo.kind({
 				"page": this.lastLazyLoad,
 				"pageSize": this.pageSize
 			});
-
-		this.log( moreData, new Date() );
 
 		//show belowClient if moreData is true
 	},
