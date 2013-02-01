@@ -18,12 +18,13 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
  * @author Matthew Schott <glitchtechscience@gmail.com>
  *
  * @requires Enyo (https://github.com/enyojs/enyo)
- * @requires Phonegap-ChildBrowsers (if used on a mobile device)
+ * @requires Phonegap-InAppBrowser (if used on a mobile device)
  */
 enyo.kind({
 	name: "gts.Gapi",
 
 	nextSteps: {},
+	phonegapInAppBrowser: false,
 
 	/** @public */
 	published: {
@@ -243,7 +244,7 @@ enyo.kind({
 
 		this.nextSteps = options;
 
-		if( window.device && window.plugins.childBrowser && ( enyo.platform.android || enyo.platform.androidChrome ) ) {
+		if( window.device && ( enyo.platform.android || enyo.platform.androidChrome ) ) {
 			//Use custom authentication system (Android only for now)
 
 			var accessToken = this.getAuthToken();
@@ -256,7 +257,7 @@ enyo.kind({
 				this.getAuthToken( options );
 			} else {
 
-				this.log( "Phonegap-ChildBrowsers Auth" );
+				this.log( "Phonegap-InAppBrowser Auth" );
 
 				var authArgs = {
 						"client_id": encodeURIComponent( this.clientId ),
@@ -272,10 +273,13 @@ enyo.kind({
 				var authUri = this.gapiConfig['endpoint'] + "?" + Object.keys( authArgs ).map( function( x ) { return( x + "=" + authArgs[x] ); } ).join( "&" );
 
 				// Now open new browser
-				window.plugins.childBrowser.onClose = function() {};
-				window.plugins.childBrowser.onLocationChange = this._binds['_cbUrlChanged'];
+				if( this.phonegapInAppBrowser ) {
 
-				window.plugins.childBrowser.showWebPage( authUri, { "showLocationBar": false } );
+					this.phonegapInAppBrowser.close();
+				}
+
+				this.phonegapInAppBrowser = window.open( authUri, "_blank", "location=no" );
+				this.phonegapInAppBrowser.addEventListener( "loadstart", this._binds['_cbUrlChanged'] );
 			}
 		} else {
 			//This doesn't work in Android/Phonegap, wonder why.
@@ -291,34 +295,42 @@ enyo.kind({
 	 *
 	 * Gets called when the URL changes on OAuth authorization process
 	 *
-	 * @param {string} uriLocation The URI Location
+	 * @param {object} inEvent	Event object
+	 * @param {string} inEvent.url The URI Location
 	 */
-	cbUrlChanged: function( uriLocation ) {
+	cbUrlChanged: function( inEvent ) {
 
-		if( uriLocation.indexOf( "code=" ) != -1 ) {
+		if( inEvent.url.indexOf( "code=" ) != -1 ) {
 
 			this.log( "Authenticated" );
 
+			//close the browser
+			if( this.phonegapInAppBrowser ) {
+
+				this.phonegapInAppBrowser.close();
+				this.phonegapInAppBrowser = false;
+			}
+
 			/* Store the authCode temporarily */
-			var token = this.getParameterByName( "code", uriLocation );
+			var token = this.getParameterByName( "code", inEvent.url );
 
 			enyo.job( "refreshFromUrlChange", enyo.bind( this, this.getRefreshToken, token, this.nextSteps ), 1000 );
+		} else if( inEvent.url.indexOf( "error=" ) != -1 ) {
 
-			// close the childBrowser
-			window.plugins.childBrowser.close();
-		} else if( uriLocation.indexOf( "error=" ) != -1 ) {
+			// close the browser
+			if( this.phonegapInAppBrowser ) {
 
-			// close the childBrowser
-			window.plugins.childBrowser.close();
+				this.phonegapInAppBrowser.close();
+				this.phonegapInAppBrowser = false;
+			}
 
 			if( enyo.isFunction( this.nextSteps.onError ) ) {
 
-				this.nextSteps.onError( this.getParameterByName( "error", uriLocation ) );
-				return;
+				this.nextSteps.onError( this.getParameterByName( "error", inEvent.url ) );
 			}
 		} else {
 
-			this.log( "Status unknown: " + uriLocation );
+			this.log( "Status unknown: " + inEvent.url );
 		}
    },
 
