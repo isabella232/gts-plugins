@@ -85,14 +85,7 @@ enyo.kind({
 		 * @type boolean
 		 * @default false
 		 */
-		atm: false,
-
-		/**
-		 * Select all of the content on focus.
-		 * @type boolean
-		 * @default false
-		 */
-		selectAllOnFocus: false
+		atm: false
 	},
 
 	/**
@@ -102,11 +95,11 @@ enyo.kind({
 	handlers: {
 		onkeypress: "filterInput",
 
-		oninput: "inputValueUpdated",
+		oninput: "input",
 		onchange: "inputValueChanged",
 
-		onfocus: "inputFocused",
-		onblur: "inputBlurred"
+		onfocus: "focused",
+		onblur: "blurred"
 	},
 
 	/**
@@ -123,7 +116,7 @@ enyo.kind({
 		this.minChanged();
 		this.maxChanged();
 		this.precisionChanged();
-		this.inputBlurred();
+		this.blurred();
 	},
 
 	/**
@@ -220,7 +213,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name gts.DecimalInput#inputValueUpdated
+	 * @name gts.DecimalInput#input
 	 *
 	 * Handles input being typed in.
 	 * If this.atm is true, will format number
@@ -228,7 +221,9 @@ enyo.kind({
 	 * @param {object} inSender	The event sender
 	 * @param {object} inEvent	Event object
 	 */
-	inputValueUpdated: function( inSender, inEvent ) {
+	input: function( inSender, inEvent ) {
+
+		this.inherited( arguments );
 
 		if( this.atm ) {
 
@@ -290,7 +285,7 @@ enyo.kind({
 	/**
 	 * @private
 	 * @function
-	 * @name gts.DecimalInput#inputFocused
+	 * @name gts.DecimalInput#focused
 	 *
 	 * Handles input onfocus event. Sets type to number if that is what it was.
 	 * Also selects all content of input if this.selectAllOnFocus is true.
@@ -298,30 +293,27 @@ enyo.kind({
 	 * @param {object} inSender	The event sender
 	 * @param {object} inEvent	Event object
 	 */
-	inputFocused: function( inSender, inEvent ) {
+	focused: function( inSender, inEvent ) {
+
+		this.inherited( arguments );
 
 		if( this.oldType === "number" ) {
 
 			this.setType( this.oldType );
-		}
-
-		if( this.selectAllOnFocus && this.hasNode() ) {
-
-			this.hasNode().setSelectionRange( 0, this.getValue().length );
 		}
 	},
 
 	/**
 	 * @private
 	 * @function
-	 * @name gts.DecimalInput#inputBlurred
+	 * @name gts.DecimalInput#blurred
 	 *
 	 * Handles input onblur event. Sets type to text if it was number.
 	 *
 	 * @param {object} inSender	The event sender
 	 * @param {object} inEvent	Event object
 	 */
-	inputBlurred: function( inSender, inEvent ) {
+	blurred: function( inSender, inEvent ) {
 
 		this.oldType = this.type;
 
@@ -329,6 +321,8 @@ enyo.kind({
 
 			this.setType( "text" );
 		}
+
+		this.inherited( arguments );
 	},
 
 	/**
