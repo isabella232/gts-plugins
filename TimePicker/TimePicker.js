@@ -53,13 +53,15 @@ enyo.kind({
 				{
 					name: "label",
 					classes: "label"
+				}, {
+					owner: this
 				}
 			);
 
 		this.inherited( arguments );
 
-		enyo.job( "minuteIntervalChanged", enyo.bind( this, "minuteIntervalChanged" ), 100 );
-		enyo.job( "labelChanged", enyo.bind( this, "labelChanged" ), 100 );
+		this.minuteIntervalChanged();
+		this.labelChanged();
 	},
 
 	/**
