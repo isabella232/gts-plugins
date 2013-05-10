@@ -460,7 +460,7 @@ enyo.kind({
 
 	renderDoW: function() {
 
-		enyo.job( "renderDoW", enyo.bind( this, "_renderDoW" ), 100 );
+		this._renderDoW();
 	},
 
 	_renderDoW: function() {
@@ -478,7 +478,7 @@ enyo.kind({
 
 	renderCalendar: function() {
 
-		enyo.job( "renderCalendar", enyo.bind( this, "_renderCalendar" ), 100 );
+		this._renderCalendar();
 	},
 
 	_renderCalendar: function() {
