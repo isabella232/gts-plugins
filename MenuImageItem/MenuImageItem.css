@@ -1,6 +1,11 @@
 .gts-menuimageitem {
 }
 
+.gts-menuimageitem[disabled] {
+	opacity: 0.4;
+	filter: alpha( 40 );
+}
+
 .gts-menuimageitem.has-icon {
 	padding-top: 5px;
 	padding-bottom: 5px;

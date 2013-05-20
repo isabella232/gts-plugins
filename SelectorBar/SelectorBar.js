@@ -305,9 +305,9 @@ enyo.kind({
 
 				this.$['valueDisplay'].setContent( this.choices[i]['content'] );
 
-				if( this.choices[i]['icon'] ) {
+				if( this.choices[i]['icon'] || this.choices[i]['src'] ) {
 
-					this.$['valueIcon'].setSrc( this.choices[i]['icon'] );
+					this.$['valueIcon'].setSrc( this.choices[i]['icon'] || this.choices[i]['src'] );
 					this.$['valueIcon'].show();
 				} else {
 
