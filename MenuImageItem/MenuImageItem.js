@@ -1,15 +1,11 @@
 /**
- * @name gts.LazyList
- * @author Newness (Rafa Bernad)
+ * @name gts.MenuImageItem
  * @author Matthew Schott <glitchtechscience@gmail.com>
  *
- * Lazy loading list. Found in a merge request on the official enyo github.
- * Included in here to make use of it until an official solution is released.
- * Released under the gts namespace to prevent future conflicts. Code cleaned
- * up some and changed to my needs.
+ * Easily add icons to Menu Items. If there is no icon added, the menu item will look and behave as normal.
  *
  * @class
- * @extends enyo.AroundList
+ * @extends enyo.MenuItem
  * @see http://enyojs.com
  */
 enyo.kind({
@@ -26,7 +22,7 @@ enyo.kind({
 	components: [
 		{
 			name: "icon",
-			kind: "onyx.Icon",
+			kind: "onyx.IconButton",
 			src: "",
 			classes: "gts-mii-icon"
 		}, {
