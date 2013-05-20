@@ -1,0 +1,15 @@
+.gts-menuimageitem {
+}
+
+.gts-menuimageitem.has-icon {
+	padding: 0;
+}
+
+.gts-menuimageitem .gts-mii-icon {
+	height: 32px;
+	width: 32px;
+	margin-right: 0.5em;
+}
+
+.gts-menuimageitem .gts-mii-text {
+}
