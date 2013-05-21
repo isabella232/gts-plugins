@@ -1,4 +1,5 @@
 .gts-menuimageitem {
+	white-space: nowrap;
 }
 
 .gts-menuimageitem[disabled] {
@@ -17,4 +18,5 @@
 }
 
 .gts-menuimageitem .gts-mii-text {
+	white-space: normal;
 }
