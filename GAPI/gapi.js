@@ -112,6 +112,7 @@ enyo.kind({
 
 		this._binds = {
 				"_cbUrlChanged": enyo.bind( this, this.cbUrlChanged ),
+				"_exitIAB": enyo.bind( this, this.exitIAB ),
 				"_handleAuthResult": enyo.bind( this, this.handleAuthResult )
 			};
 	},
@@ -245,11 +246,11 @@ enyo.kind({
 		this.nextSteps = options;
 
 		if( window.device && ( enyo.platform.android || enyo.platform.androidChrome ) ) {
-			//Use custom authentication system (Android only for now)
+			//Use custom authentication system (Android only)
 
 			var accessToken = this.getAuthToken();
 
-			if( /* DISABLED PATH */ 1 == 2 /* DISABLED PATH */ && accessToken && accessToken['access_token'] ) {
+			if( /* DISABLED PATH */ 1 == 2 && /* DISABLED PATH */ accessToken && accessToken['access_token'] ) {
 				//Phonegap method doesn't like to restore token from memory
 
 				this.log( "Phonegap token refresh" );
@@ -263,29 +264,105 @@ enyo.kind({
 						"client_id": encodeURIComponent( this.clientId ),
 						"scope": encodeURIComponent( this.scope.join( " " ) ),
 
-						"redirect_uri": encodeURIComponent( this.gapiConfig['redirect_uri'] ),
-						"response_type": encodeURIComponent( this.gapiConfig['response_type'] ),
-						"state": encodeURIComponent( this.gapiConfig['state'] ),
-						"access_type": encodeURIComponent( this.gapiConfig['access_type'] ),
+						"redirect_uri": encodeURIComponent( this.gapiConfig.redirect_uri ),
+						"response_type": encodeURIComponent( this.gapiConfig.response_type ),
+						"state": encodeURIComponent( this.gapiConfig.state ),
+						"access_type": encodeURIComponent( this.gapiConfig.access_type ),
 						"approval_prompt": "force"
 					};
 
-				var authUri = this.gapiConfig['endpoint'] + "?" + Object.keys( authArgs ).map( function( x ) { return( x + "=" + authArgs[x] ); } ).join( "&" );
+				var authUri = this.gapiConfig.endpoint + "?" + Object.keys( authArgs ).map( function( x ) { return( x + "=" + authArgs[x] ); } ).join( "&" );
 
 				// Now open new browser
-				if( this.phonegapInAppBrowser ) {
-
-					this.phonegapInAppBrowser.close();
-				}
-
-				this.phonegapInAppBrowser = window.open( authUri, "_blank", "location=no" );
-				this.phonegapInAppBrowser.addEventListener( "loadstart", this._binds['_cbUrlChanged'] );
+				this.openIAB( authUri, "_blank", "location=no" );
 			}
 		} else {
 			//This doesn't work in Android/Phonegap, wonder why.
 
 			gapi.auth.authorize( { "client_id": this.clientId, "scope": this.scope.join( " " ), "immediate": true }, this._binds['_handleAuthResult'] );
 		}
+	},
+
+	/**
+	 * @private
+	 * @function
+	 * @name gts.Gapi#openIAB
+	 *
+	 * Opens new window and binds events
+	 */
+	openIAB: function( url, target, options ) {
+
+		this.closeIAB();
+
+		this.phonegapInAppBrowser = window.open( url, target, options );
+		this.bindIABEvents();
+	},
+
+	/**
+	 * @private
+	 * @function
+	 * @name gts.Gapi#closeIAB
+	 *
+	 * Closes additional window
+	 */
+	closeIAB: function() {
+
+		// Now open new browser
+		if( this.phonegapInAppBrowser ) {
+
+			this.phonegapInAppBrowser.close();
+		}
+	},
+
+	/**
+	 * @private
+	 * @function
+	 * @name gts.Gapi#exitIAB
+	 *
+	 * Handles exiting the new window
+	 */
+	exitIAB: function() {
+
+		this.unbindIABvents();
+		this.phonegapInAppBrowser = false;
+	},
+
+	/**
+	 * @private
+	 * @function
+	 * @name gts.Gapi#bindIABEvents
+	 *
+	 * Adds in app browser bindings
+	 */
+	bindIABEvents: function() {
+
+		if( !this.phonegapInAppBrowser ) {
+
+			return;
+		}
+
+		this.phonegapInAppBrowser.addEventListener( 'exit', this._binds['_exitIAB'] );
+		this.phonegapInAppBrowser.addEventListener( 'loadstart', this._binds['_cbUrlChanged'] );
+		//this.phonegapInAppBrowser.addEventListener( 'loadstop', this._binds['_cbUrlChanged'] );
+	},
+
+	/**
+	 * @private
+	 * @function
+	 * @name gts.Gapi#unbindIABEvents
+	 *
+	 * Removes in app browser bindings
+	 */
+	unbindIABEvents: function() {
+
+		if( !this.phonegapInAppBrowser ) {
+
+			return;
+		}
+
+		this.phonegapInAppBrowser.removeEventListener( 'exit', this._binds['_exitIAB'] );
+		this.phonegapInAppBrowser.removeEventListener( 'loadstart', this._binds['_cbUrlChanged'] );
+		//this.phonegapInAppBrowser.removeEventListener( 'loadstop', this._binds['_cbUrlChanged'] );
 	},
 
 	/**
@@ -300,16 +377,14 @@ enyo.kind({
 	 */
 	cbUrlChanged: function( inEvent ) {
 
+		this.log( arguments );
+
 		if( inEvent.url.indexOf( "code=" ) != -1 ) {
 
 			this.log( "Authenticated" );
 
 			//close the browser
-			if( this.phonegapInAppBrowser ) {
-
-				this.phonegapInAppBrowser.close();
-				this.phonegapInAppBrowser = false;
-			}
+			this.closeIAB();
 
 			/* Store the authCode temporarily */
 			var token = this.getParameterByName( "code", inEvent.url );
@@ -318,11 +393,7 @@ enyo.kind({
 		} else if( inEvent.url.indexOf( "error=" ) != -1 ) {
 
 			// close the browser
-			if( this.phonegapInAppBrowser ) {
-
-				this.phonegapInAppBrowser.close();
-				this.phonegapInAppBrowser = false;
-			}
+			this.closeIAB();
 
 			if( enyo.isFunction( this.nextSteps.onError ) ) {
 
@@ -334,7 +405,7 @@ enyo.kind({
 		}
    },
 
-   /**
+	/**
 	 * @private
 	 * @function
 	 * @name gts.Gapi#getParameterByName
@@ -384,7 +455,7 @@ enyo.kind({
 		var accessToken = this.getAuthToken();
 
 		//Is token still valid?
-		if( accessToken && accessToken['access_token'] && currentTime < ( accessToken['expires_in'] + this.gapiConfig['accessTokenExpireLimit'] ) ) {
+		if( accessToken && accessToken['access_token'] && currentTime < ( accessToken['expires_in'] + this.gapiConfig.accessTokenExpireLimit ) ) {
 
 			if( enyo.isFunction( options.onSuccess ) ) {
 
