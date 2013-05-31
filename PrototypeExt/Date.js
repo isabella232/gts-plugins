@@ -42,9 +42,16 @@ Date.prototype.format = function( dtFormat, locale ) {
 			}
 		}
 
-		var fmt = new enyo.g11n.DateFmt( dtFormat );
+		try {
 
-		return fmt.format( this );
+			var fmt = new enyo.g11n.DateFmt( dtFormat );
+
+			return fmt.format( this );
+		} catch( err ) {
+
+			enyo.error( "Date.prototype.format error: ", err );
+			return this.toString();
+		}
 	}
 
 	return "";
@@ -140,5 +147,5 @@ Date.deformat = function( inString ) {
  */
 Date.validDate = function( obj ) {
 
-	return Object.isDate( obj ) && !isNaN( obj.getTime() );
+	return gts.Object.isDate( obj ) && !isNaN( obj.getTime() );
 }
