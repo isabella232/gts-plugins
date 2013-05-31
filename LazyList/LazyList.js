@@ -86,8 +86,9 @@ enyo.kind({
 	scroll: function( inSender, inEvent ) {
 
 		var s = this.getStrategy().$.scrollMath;
+		var b = this.$['belowClient'].hasNode() ? this.$['belowClient'].getBounds() : { left: 0, top: 0, width: 0, height: 0 };
 
-		if( ( s.isInOverScroll() && s.y < 0 ) || ( s.y < ( s.bottomBoundary + this.$['belowClient'].hasNode().offsetHeight ) ) ) {
+		if( ( s.isInOverScroll() && s.y < 0 ) || ( s.y < ( s.bottomBoundary + b.height ) ) ) {
 
 			if( this.lastLazyLoad < this.pageCount ) {
 
