@@ -77,7 +77,14 @@ enyo.kind({
 		 * @type string
 		 * @default null
 		 */
-		labelWidth: null
+		labelWidth: null,
+
+		/**
+		 * Classes to be applied to the menu
+		 * @type string
+		 * @default ""
+		 */
+		menuClasses: ""
 	},
 
 	/**
@@ -156,6 +163,7 @@ enyo.kind({
 		this.disabledChanged();
 		this.labelWidthChanged();
 		this.maxHeightChanged();
+		this.menuClassesChanged();
 
 		enyo.asyncMethod( this, this.reflow );
 	},
@@ -262,6 +270,19 @@ enyo.kind({
 	labelWidthChanged: function() {
 
 		this.$['labelButton'].applyStyle( "width", this.labelWidth );
+	},
+
+	/**
+	 * @private
+	 * @function
+	 * @name gts.SelectorBar#menuClassesChanged
+	 *
+	 * Called by Enyo when this.menuClasses is changed by host.
+	 */
+	menuClassesChanged: function( inOld ) {
+
+		this.$['menu'].removeClass( inOld );
+		this.$['menu'].addClass( this.menuClasses );
 	},
 
 	/**
