@@ -197,14 +197,19 @@ enyo.kind({
 	 * @name gts.DecimalInput#filterInput
 	 *
 	 * Backup for the HTML5 type=number filter.
-	 * Restricts allowed characters to 0-9 and decimal point.
+	 * Restricts allowed characters to 0-9 and decimal point (when not in atm mode).
 	 *
 	 * @param {object} inSender	The event sender
 	 * @param {object} inEvent	Event object
 	 */
 	filterInput: function( inSender, inEvent ) {
 
-		if( !( inEvent.keyCode >= 48 && inEvent.keyCode <= 57 ) && inEvent.keyCode !== 46 ) {
+		if(
+			!( inEvent.keyCode >= 48 && inEvent.keyCode <= 57 ) &&
+			(
+				inEvent.keyCode !== 46 ||
+				( inEvent.keyCode === 46 && this.atm )
+			) ) {
 
 			inEvent.preventDefault();
 		}
