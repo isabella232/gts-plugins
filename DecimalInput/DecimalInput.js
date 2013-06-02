@@ -288,18 +288,21 @@ enyo.kind({
 	 * @name gts.DecimalInput#focused
 	 *
 	 * Handles input onfocus event. Sets type to number if that is what it was.
-	 * Also selects all content of input if this.selectAllOnFocus is true.
+	 * Also selects all content of input if this.selectOnFocus is true.
 	 *
 	 * @param {object} inSender	The event sender
 	 * @param {object} inEvent	Event object
 	 */
 	focused: function( inSender, inEvent ) {
 
-		this.inherited( arguments );
-
 		if( this.oldType === "number" ) {
 
 			this.setType( this.oldType );
+		}
+
+		if( this.selectOnFocus && !this.atm ) {
+
+			enyo.asyncMethod( this, "selectContents" );
 		}
 	},
 
@@ -321,8 +324,6 @@ enyo.kind({
 
 			this.setType( "text" );
 		}
-
-		this.inherited( arguments );
 	},
 
 	/**
