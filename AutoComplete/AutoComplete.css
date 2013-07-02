@@ -6,9 +6,7 @@
 .gts-autocomplete .search-icon {
 	position: absolute;
 	right: 5px;
-
-	height: 32px;
-	width: 32px;
+	top: 3px;
 
 	background-size: cover;
 	background-position: 0px 0px;

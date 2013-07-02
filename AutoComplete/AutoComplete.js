@@ -135,14 +135,16 @@ enyo.kind( {
 
 	/** @private */
 	components:[
-		{
+		{//Stealing focus and not letting values come from input field?
 			name: "options",
 			kind: "onyx.Menu",
-			floating: true
+			floating: true,
+			modal: false
 		}, {
 			name: "icon",
+			kind: "onyx.Icon",
 			classes: "search-icon"
-		},
+		}
 	],
 
 	/** @private */
@@ -188,7 +190,7 @@ enyo.kind( {
 	 */
 	iconChanged: function() {
 
-		this.$['icon'].applyStyle( "background-image", this.icon );
+		this.$['icon'].setSrc( this.icon );
 		this.$['icon'].setShowing( this.enabled && this.icon != "" );
 	},
 
@@ -226,7 +228,7 @@ enyo.kind( {
 
 		this.inputField = this.inputField || event.originator;
 
-		enyo.job( null, enyo.bind( this, "fireInputChanged" ), this.delay );
+		this.startJob( "AutoCompleteSuggestionEventFire", enyo.bind( this, "fireInputChanged" ), this.delay );
 	},
 
 	/**
@@ -248,7 +250,7 @@ enyo.kind( {
 			this.waterfall( "onRequestHideMenu", { activator: this } );
 
 			//Clear search history
-			this.searchValues.slice( 0, 0 );
+			this.searchValues = this.searchValues.slice( 0, 0 );
 			return;
 		}
 
@@ -269,13 +271,15 @@ enyo.kind( {
 		var len = this.searchValues.length;
 
 		//Most recent search value
-		if( len <= 0 || this.searchValues.indexOf( searchValue ) != ( len - 1 ) ) {
+		if( len <= 0 || this.searchValues.lastIndexOf( searchValue ) != ( len - 1 ) ) {
+
+			this.log( "not most recent" );
 
 			return;
 		}
 
 		//Clear search history
-		this.searchValues.slice( 0, 0 );
+		this.searchValues = this.searchValues.slice( 0, 0 );
 
 		this.values = this.values.slice( 0, this.limit );
 
@@ -320,6 +324,20 @@ enyo.kind( {
 		}
 
 		this.doValueSelected( enyo.mixin( inEvent, { "value": this.inputField.getValue() } ) );
+	},
+
+	/**
+	 * @protected
+	 * @function
+	 * @name gts.AutoComplete#receiveBlur
+	 *
+	 * Hides the menu if blur event is recieved
+	 */
+	receiveBlur:function() {
+
+		this.inherited( arguments );
+
+		this.startJob( "_receiveBlur", enyo.bind( this, function() { this.waterfall( "onRequestHideMenu", { activator: this } ); } ), 500 );
 	},
 
 	/** @private */
