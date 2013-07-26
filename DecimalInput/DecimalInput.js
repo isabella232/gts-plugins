@@ -85,7 +85,9 @@ enyo.kind({
 		 * @type boolean
 		 * @default false
 		 */
-		atm: false
+		atm: false,
+
+		swap: true
 	},
 
 	/**
@@ -300,9 +302,12 @@ enyo.kind({
 	 */
 	focused: function( inSender, inEvent ) {
 
-		if( this.oldType === "number" ) {
+		if( this.swap ) {
 
-			this.setType( this.oldType );
+			if( this.oldType === "number" ) {
+
+				this.setType( this.oldType );
+			}
 		}
 
 		if( this.selectOnFocus && !this.atm ) {
@@ -323,11 +328,14 @@ enyo.kind({
 	 */
 	blurred: function( inSender, inEvent ) {
 
-		this.oldType = this.type;
+		if( this.swap ) {
 
-		if( this.oldType === "number" ) {
+			this.oldType = this.type;
 
-			this.setType( "text" );
+			if( this.oldType === "number" ) {
+
+				this.setType( "text" );
+			}
 		}
 	},
 
