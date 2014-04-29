@@ -381,8 +381,14 @@ enyo.kind({
 	},
 
 	localeChanged: function() {
-        
-		// Fall back to en_us as default
+        //Fallback formats for non-g11n
+        this.months = {
+                "M": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+                "MM": ["01", "02", "03", "04", "05", "06", "07", "
+                08", "09", "10", "11", "12"],
+                "MMM": ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"],
+                "MMMM": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+            };
 		this.days = {
 				"weekstart": 0,
 				"medium": [ "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" ],
@@ -549,13 +555,12 @@ enyo.kind({
 		}
 
 		if( enyo.g11n ) {
-
 			var fmt = new enyo.g11n.DateFmt( this.monthFormat );
 
 			this.$['monthLabel'].setContent( fmt.format( currMonth ) );
 		} else {
-
-			this.$['monthLabel'].setContent( currMonth.getMonth() + " - " + currMonth.getFullYear() );
+            var month_labels = this.months[this.monthFormat.split(" ")[0]];
+			this.$['monthLabel'].setContent( month_labels[currMonth.getMonth()] + " - " + currMonth.getFullYear() );
 		}
 	},
 
