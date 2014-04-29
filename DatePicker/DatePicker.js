@@ -381,12 +381,12 @@ enyo.kind({
 	},
 
 	localeChanged: function() {
-
+        
 		// Fall back to en_us as default
 		this.days = {
 				"weekstart": 0,
-				"short": [ "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" ],
-				"full": [ "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" ]
+				"medium": [ "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" ],
+				"long": [ "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" ]
 			};
 
 		//Attempt to use the g11n lib (ie assume it is loaded)
