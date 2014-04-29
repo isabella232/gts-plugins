@@ -76,9 +76,16 @@ enyo.kind({
 		/**
 		 * Format of month in header (see enyo g11n)
 		 * @type string
-		 * @default "MMMM yyyy"
+		 * @default "MMMM"
 		 */
-		monthFormat: "MMMM yyyy"
+		monthFormat: "MMMM",
+
+        /**
+         * Format of year in header (see enyo g11n)
+         * @type string
+         * @default "yyyy"
+         */
+        yearFormat: "yyyy"
 	},
 
     statics: {
@@ -560,12 +567,22 @@ enyo.kind({
 		}
 
 		if( enyo.g11n ) {
-			var fmt = new enyo.g11n.DateFmt( this.monthFormat );
+			var fmt = new enyo.g11n.DateFmt( this.monthFormat + " " + this.yearFormat );
 
 			this.$['monthLabel'].setContent( fmt.format( currMonth ) );
 		} else {
-            var month_labels = gts.DatePicker.months[this.monthFormat.split(" ")[0]];
-			this.$['monthLabel'].setContent( month_labels[currMonth.getMonth()] + " - " + currMonth.getFullYear() );
+            //get a list of months using the fallback month formatting 
+            var month_labels = gts.DatePicker.months[this.monthFormat];
+
+            //format the year the same way g11n would
+            var year_value = currMonth.getFullYear();
+            if(this.yearFormat == "yy"){
+                year_value = year_value.toString().substring(2,4);
+            }
+
+			this.$['monthLabel'].setContent( 
+                month_labels[currMonth.getMonth()] + " - " + year_value
+            );
 		}
 	},
 
