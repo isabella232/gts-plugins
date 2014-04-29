@@ -384,8 +384,7 @@ enyo.kind({
         //Fallback formats for non-g11n
         this.months = {
                 "M": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-                "MM": ["01", "02", "03", "04", "05", "06", "07", "
-                08", "09", "10", "11", "12"],
+                "MM": ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"],
                 "MMM": ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"],
                 "MMMM": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
             };
