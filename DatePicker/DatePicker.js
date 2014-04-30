@@ -66,6 +66,23 @@ enyo.kind({
 		 */
 		viewDate: null,
 
+        /**
+         * List of specail date boxes that are colored or disabled.
+         * This should be formated as an array of objects whose keys
+         * indicate the css color code, start, and stop dates 
+         *(using yyy-mm-dd format).
+         * ex: 
+            this.specialDates = 
+                [{
+                    "color": "#FFFFFF", 
+                    "start": "1900-01-01", 
+                    "end": "1900-12-31"
+                ]};
+         * @type array
+         * @default null
+         */
+        specialDates: null,
+
 		/**
 		 * Format of day of week (see enyo g11n)
 		 * @type string
