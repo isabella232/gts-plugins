@@ -68,16 +68,21 @@ enyo.kind({
 
         /**
          * List of specail date boxes that are colored or disabled.
-         * This should be formated as an array of objects whose keys
-         * indicate the css color code, start, and stop dates 
-         *(using yyy-mm-dd format).
+         * This should be formated as an object whose keys are dates 
+         * represented as the number of miliseconds seconds since 
+         * 1 Janurary 1970, 00:00:00 UTC. Each of these keys should point to
+         * another object specifying desired color and indicating
+         * if the date button should be disabled.
          * ex: 
             this.specialDates = 
-                [{
-                    "color": "#FFFFFF", 
-                    "start": "1900-01-01", 
-                    "end": "1900-12-31"
-                ]};
+                {
+                    807937200000: {
+                        "color": "#FFFFFF", 
+                        "disabled" : false
+                    }
+                };
+         * There is a helper function addSpecialDates() that will accept a range
+         * of dates fromatted in a way that Date.parse() can interperate.
          * @type array
          * @default null
          */
@@ -394,6 +399,8 @@ enyo.kind({
 		this.value = this.value || new Date();
 		this.viewDate = this.viewDate || new Date();
 
+        this.specialDates = this.specialDates || [];
+
 		this.localeChanged();
 	},
 
@@ -474,6 +481,16 @@ enyo.kind({
 
 		this.renderCalendar();
 	},
+
+    addSpecialDates: function( newDates ) {
+
+        
+    },
+
+    specialDatesChanged: function( inValue ) {
+
+        this.renderCalendar();
+    }
 
 	renderDoW: function() {
 
