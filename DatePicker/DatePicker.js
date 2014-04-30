@@ -518,7 +518,7 @@ enyo.kind({
     */
     addSpecialDates: function( newDates ) {
         var startDate, endDate;
-        for(var range_i = 0 range_i < newDates.length; range_i++){
+        for(var range_i = 0; range_i < newDates.length; range_i++){
             startDate = Date.setTime(Date.Parse(newDates[range_i].start));
             if(!startDate){continue;}
 
@@ -546,7 +546,7 @@ enyo.kind({
     specialDatesChanged: function( inValue ) {
 
         this.renderCalendar();
-    }
+    },
 
 	renderDoW: function() {
 
