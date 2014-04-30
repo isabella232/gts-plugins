@@ -362,7 +362,10 @@ enyo.kind({
 					ontap: "resetDate"
 				}
 			]
-		}
+		},
+
+        /*Signals listeners*/,
+        {kind: "Signals", onresize:"resizeHandler"}
 	],
 
 	create: function() {
@@ -380,6 +383,12 @@ enyo.kind({
 		this.localeChanged();
 	},
 
+    resizeHandler: function() {
+        this.inherited(arguments);
+        this._renderDoW();
+        this._renderCalendar();
+    },
+    
 	localeChanged: function() {
 
 		// Fall back to en_us as default
