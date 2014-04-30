@@ -34,8 +34,8 @@ enyo.kind({
 
 	classes: "gts-calendar",
 
-	/** @public */
-	published: {
+    /** @public */
+    published: {
 		/** @lends gts.DatePicker# */
 
 		/**
@@ -76,10 +76,32 @@ enyo.kind({
 		/**
 		 * Format of month in header (see enyo g11n)
 		 * @type string
-		 * @default "MMMM yyyy"
+		 * @default "MMMM"
 		 */
-		monthFormat: "MMMM yyyy"
+		monthFormat: "MMMM",
+
+        /**
+         * Format of year in header (see enyo g11n)
+         * @type string
+         * @default "yyyy"
+         */
+        yearFormat: "yyyy"
 	},
+
+    statics: {
+        //Fallback formats for non-g11n
+        months: {
+                "M": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+                "MM": ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"],
+                "MMM": ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"],
+                "MMMM": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+            },
+        days: {
+                "weekstart": 0,
+                "medium": [ "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" ],
+                "long": [ "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" ]
+            }
+    },
 
 	events: {
 		onSelect: ""
@@ -381,33 +403,29 @@ enyo.kind({
 	},
 
 	localeChanged: function() {
-
-		// Fall back to en_us as default
-		this.days = {
-				"weekstart": 0,
-				"short": [ "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" ],
-				"full": [ "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" ]
-			};
+        var days;
 
 		//Attempt to use the g11n lib (ie assume it is loaded)
 		if( enyo.g11n ) {
 
 			var formats = new enyo.g11n.Fmts( { locale: new enyo.g11n.Locale( this.locale ) } );
 
-			this.days = {
+			days = {
 					"weekstart": formats.getFirstDayOfWeek(),
 					"medium": formats.dateTimeHash.medium.day,
 					"long": formats.dateTimeHash.long.day
 				};
-		}
+		} else {
+            days = gts.DatePicker.days;
+        }
 
-		this.$['sunday'].setContent( this.days[this.dowFormat][0] );
-		this.$['monday'].setContent( this.days[this.dowFormat][1] );
-		this.$['tuesday'].setContent( this.days[this.dowFormat][2] );
-		this.$['wednesday'].setContent( this.days[this.dowFormat][3] );
-		this.$['thursday'].setContent( this.days[this.dowFormat][4] );
-		this.$['friday'].setContent( this.days[this.dowFormat][5] );
-		this.$['saturday'].setContent( this.days[this.dowFormat][6] );
+		this.$['sunday'].setContent( days[this.dowFormat][0] );
+		this.$['monday'].setContent( days[this.dowFormat][1] );
+		this.$['tuesday'].setContent( days[this.dowFormat][2] );
+		this.$['wednesday'].setContent( days[this.dowFormat][3] );
+		this.$['thursday'].setContent( days[this.dowFormat][4] );
+		this.$['friday'].setContent( days[this.dowFormat][5] );
+		this.$['saturday'].setContent( days[this.dowFormat][6] );
 	},
 
 	rendered: function() {
@@ -549,13 +567,22 @@ enyo.kind({
 		}
 
 		if( enyo.g11n ) {
-
-			var fmt = new enyo.g11n.DateFmt( this.monthFormat );
+			var fmt = new enyo.g11n.DateFmt( this.monthFormat + " " + this.yearFormat );
 
 			this.$['monthLabel'].setContent( fmt.format( currMonth ) );
 		} else {
+            //get a list of months using the fallback month formatting 
+            var month_labels = gts.DatePicker.months[this.monthFormat];
 
-			this.$['monthLabel'].setContent( currMonth.getMonth() + " - " + currMonth.getFullYear() );
+            //format the year the same way g11n would
+            var year_value = currMonth.getFullYear();
+            if(this.yearFormat == "yy"){
+                year_value = year_value.toString().substring(2,4);
+            }
+
+			this.$['monthLabel'].setContent( 
+                month_labels[currMonth.getMonth()] + " - " + year_value
+            );
 		}
 	},
 
