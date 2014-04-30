@@ -517,23 +517,25 @@ enyo.kind({
         omitting the 'end' value.
     */
     addSpecialDates: function( newDates ) {
-        var startDate, endDate;
-        for(var range_i = 0; range_i < newDates.length; range_i++){
-            startDate = Date.setTime(Date.Parse(newDates[range_i].start));
-            if(!startDate){continue;}
+        var startDate = new Date(), 
+            endDate = new Date(),
+            tempDate = new Date(),
+            dString = "";
 
-            endDate = 
-                newDates[range_i].end ?
-                Date.setTime(Date.Parse(newDates[range_i].end)) :
-                startDate;
+        for(var range_i = 0; range_i < newDates.length; range_i++){
+            newDates[range_i].end = 
+                newDates[range_i].end || newDates[range_i].start
+
+            startDate.setTime(Date.parse(newDates[range_i].start));
+            endDate.setTime(Date.parse(newDates[range_i].end));
             
-            var dString;
             for(
                 var date_i = startDate.getTime(); 
                 date_i < endDate.getTime(); 
                 date_i += 86400000
             ){
-                dString = Date.setTime(date_i).toDateString();
+                tempDate.setTime(date_i);
+                dString = tempDate.toDateString();
                 this.specialDates[dString] = this.specialDates[dString] || {};
                 this.specialDates[dString].color = newDates[range_i].color;
                 this.specialDates[dString].disable = newDates[range_i].disable;
