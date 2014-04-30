@@ -69,21 +69,24 @@ enyo.kind({
         /**
          * List of specail date boxes that are colored or disabled.
          * This should be formated as an object whose keys are dates 
-         * represented as the number of miliseconds seconds since 
-         * 1 Janurary 1970, 00:00:00 UTC. Each of these keys should point to
+         * represented as an RFC2822 date. Each of these keys should point to
          * another object specifying desired color and indicating
          * if the date button should be disabled.
          * ex: 
             this.specialDates = 
                 {
-                    807937200000: {
-                        "color": "#FFFFFF", 
-                        "disabled" : false
+                    "June 06, 2009": {
+                        "color": "#000000", 
+                        "disable" : false
+                    },
+                    "Aug 18, 2011": {
+                        "color": "#FFFFFF",
+                        "disable" : true
                     }
                 };
          * There is a helper function addSpecialDates() that will accept a range
          * of dates fromatted in a way that Date.parse() can interperate.
-         * @type array
+         * @type object
          * @default null
          */
         specialDates: null,
@@ -399,7 +402,7 @@ enyo.kind({
 		this.value = this.value || new Date();
 		this.viewDate = this.viewDate || new Date();
 
-        this.specialDates = this.specialDates || [];
+        this.specialDates = this.specialDates || {};
 
 		this.localeChanged();
 	},
@@ -482,9 +485,44 @@ enyo.kind({
 		this.renderCalendar();
 	},
 
+    /*This function will accept an array of objects in the following format:
+        newDates = [
+            {
+                'start': <Start Date>,
+                'end': <End Date>,
+                'color': <Color Code>,
+                'disable': <Boolean>
+            }
+        ]
+        where <Start Date> and <End Date> are parseable by Date.parse()
+        and <Color Code> is a valid CSS color. A single date can be added by
+        omitting the 'end' value.
+    */
     addSpecialDates: function( newDates ) {
+        var startDate, endDate;
+        for(var range_i = 0 range_i < newDates.length; range_i++){
+            startDate = Date.setTime(Date.Parse(newDates[range_i].start));
+            if(!startDate){continue;}
 
+            endDate = 
+                newDates[range_i].end ?
+                Date.setTime(Date.Parse(newDates[range_i].end)) :
+                startDate;
+            
+            var dString;
+            for(
+                var date_i = startDate.getTime(); 
+                date_i < endDate.getTime(); 
+                date_i += 86400000
+            ){
+                dString = Date.setTime(date_i).toDateString();
+                this.specialDates[dString] = this.specialDates[dString] || {};
+                this.specialDates[dString].color = newDates[range_i].color;
+                this.specialDates[dString].disable = newDates[range_i].disable;
+            }
+        }
         
+        this.specialDatesChanged();
     },
 
     specialDatesChanged: function( inValue ) {
