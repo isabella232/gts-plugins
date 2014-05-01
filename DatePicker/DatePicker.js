@@ -594,29 +594,35 @@ enyo.kind({
 
 		var rowCount = 0;
 
-		var buttonType;
+		var buttonClass, buttonBgOverride;
+
+        var buttonDisabled;
+
+        var dispDateString;
 
 		while( rowCount < 6  ) {
 			//Always display 6 rows of date information
 
-			if( dispMonth.getDate() === this.value.getDate() &&
-				dispMonth.getMonth() === this.value.getMonth() &&
-				dispMonth.getFullYear() === this.value.getFullYear() ) {
+
+            //start with an enabled button by default
+            buttonDisabled = false;
+
+            dispDateString = dispMonth.toDateString();
+
+			if( dispDateString === this.value.toDateString() ) {
 				//Currently selected date
 
-				buttonType = "onyx-blue";
-			} else if( dispMonth.getDate() === today.getDate() &&
-				dispMonth.getMonth() === today.getMonth() &&
-				dispMonth.getFullYear() === today.getFullYear() ) {
+				buttonClass = "onyx-blue";
+			} else if( dispDateString === today.toDateString() ) {
 
-				buttonType = "onyx-affirmative";
+				buttonClass = "onyx-affirmative";
 			} else if( dispMonth.getMonth() !== currMonth.getMonth() ) {
 				//Month before or after focused one
 
-				buttonType = "onyx-dark";
+				buttonClass = "onyx-dark";
 			} else {
 
-				buttonType = "";
+				buttonClass = "";
 			}
 
 			this.$['row' + rowCount + 'col' + dispMonth.getDay()].applyStyle( "width", cellWidth + "px" );
@@ -627,7 +633,7 @@ enyo.kind({
 			this.$['row' + rowCount + 'col' + dispMonth.getDay()].removeClass( "onyx-dark" );
 
 			//Add proper class
-			this.$['row' + rowCount + 'col' + dispMonth.getDay()].addClass( buttonType );
+			this.$['row' + rowCount + 'col' + dispMonth.getDay()].addClass( buttonClass );
 
 			this.$['row' + rowCount + 'col' + dispMonth.getDay()].setContent( dispMonth.getDate() );
 			this.$['row' + rowCount + 'col' + dispMonth.getDay()].ts = dispMonth.getTime();//Used by ontap
