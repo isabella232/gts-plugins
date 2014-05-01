@@ -38,6 +38,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 .gts-calendar .date-row > * {
 	display: inline-block;
+    overflow: visible;
 }
 
 .gts-calendar .onyx-dark {
