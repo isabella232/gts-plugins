@@ -606,16 +606,20 @@ enyo.kind({
 
         var dispDateString;
 
+        var currCell ;
+
         var rowCount = 0;
 
 		while( rowCount < 6  ) {
 			//Always display 6 rows of date information
 
+            currCell = this.$['row' + rowCount + 'col' + dispMonth.getDay()];
             dispDateString = dispMonth.toDateString();
 
             //The buttons should be enabled by default
             buttonDisable = false;
 
+            //Figure out how to style the button
 			if( dispDateString === this.value.toDateString() ) {
 				//Currently selected date
 
@@ -637,23 +641,21 @@ enyo.kind({
 
 				buttonClass = "";
 			}
-
-			this.$['row' + rowCount + 'col' + dispMonth.getDay()].applyStyle( "width", cellWidth + "px" );
+			currCell.applyStyle( "width", cellWidth + "px" );
 
 			//Remove added classes
-			this.$['row' + rowCount + 'col' + dispMonth.getDay()].removeClass( "onyx-affirmative" );
-			this.$['row' + rowCount + 'col' + dispMonth.getDay()].removeClass( "onyx-blue" );
-			this.$['row' + rowCount + 'col' + dispMonth.getDay()].removeClass( "onyx-dark" );
+			currCell.removeClass( "onyx-affirmative" );
+			currCell.removeClass( "onyx-blue" );
+			currCell.removeClass( "onyx-dark" );
 
 			//Add proper class
-			this.$['row' + rowCount + 'col' + dispMonth.getDay()].addClass( buttonClass );
+			currCell.addClass( buttonClass );
 
             //Disable the button if needed
-            this.$['row' + rowCount + 'col' + dispMonth.getDay()].disabled = 
-                buttonDisable;
+            currCell.disabled = buttonDisable;
                 
-            this.$['row' + rowCount + 'col' + dispMonth.getDay()].setContent( dispMonth.getDate() );
-            this.$['row' + rowCount + 'col' + dispMonth.getDay()].ts = dispMonth.getTime();//Used by ontap
+            currCell.setContent( dispMonth.getDate() );
+            currCell.ts = dispMonth.getTime();//Used by ontap
 
 			dispMonth.setDate( dispMonth.getDate() + 1 );
 
