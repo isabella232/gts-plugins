@@ -91,6 +91,28 @@ enyo.kind({
          */
         specialDates: null,
 
+        /**
+         * Class of "today's" button 
+         * @type string
+         * @default "onyx-affirmative"
+         */
+        todayClass: "onyx-affirmative",
+
+        /**
+         * Class of selected button
+         * @type string
+         * @default "onyx-blue"
+         */
+        selectClass: "onyx-blue",
+
+
+        /**
+         * Class of out-of-month buttons
+         * @type string
+         * @default "onyx-dark"
+         */
+        otherMonthClass: "onyx-dark",
+
 		/**
 		 * Format of day of week (see enyo g11n)
 		 * @type string
@@ -133,11 +155,8 @@ enyo.kind({
 	},
 
 	/** @private */
-    dateClasses: {
-        "onyx-blue": "",
-        "onyx-dark": "",
-        "onyx-affirmative": ""
-    },
+    dateClasses: "",
+
 	components: [
 		{
 			kind: "FittableColumns",
@@ -432,6 +451,12 @@ enyo.kind({
 		this.value = this.value || new Date();
 		this.viewDate = this.viewDate || new Date();
 
+        //add the standard button classes to this.dateClasses
+        this.dateClasses = {};
+        this.dateClasses[this.todayClass] = "";
+        this.dateClasses[this.selectClass] = "";
+        this.dateClasses[this.otherMonthClass] = "";
+
         this.specialDates = this.specialDates || {};
 
 		this.localeChanged();
@@ -477,6 +502,18 @@ enyo.kind({
 		this.valueChanged();
 	},
 
+    todayClassChanged: function(){
+        this.renderCalendar()
+    },
+
+    selectClassChanged: function(){
+        this.renderCalendar()
+    },
+
+    otherMonthClassChanged: function(){
+        this.renderCalendar()
+    },
+
 	setValue: function( inValue ) {
 
 		if( enyo.isString( inValue ) ) {
@@ -517,17 +554,19 @@ enyo.kind({
 		this.renderCalendar();
 	},
 
-    /*This function will accept an array of objects in the following format:
-        newDates = [
+    /*This function will accept an object in the following format:
+        addSpecialDates(
             {
                 'start': <Start Date>,
                 'end': <End Date>,
                 'class': <Class Name>,
                 'disable': <Boolean>
             }
-        ]
+        )
         where <Start Date> and <End Date> are parseable by Date.parse()
         A single date can be added by omitting the 'end' value.
+
+        Alternatively, an array of these object may also be passed to the function.
     */
     addSpecialDates: function( newDates ) {
         var startDate = new Date(), 
@@ -537,7 +576,7 @@ enyo.kind({
 
         //make sure newDates is formed as an array
         newDates = [].concat(newDates);
-        
+
         for(var range_i = 0; range_i < newDates.length; range_i++){
             newDates[range_i].end = 
                 newDates[range_i].end || newDates[range_i].start
@@ -635,14 +674,14 @@ enyo.kind({
 			if( dispDateString === this.value.toDateString() ) {
 				//Currently selected date
 
-				currButton.addClass("onyx-blue");
+				currButton.addClass(this.selectClass);
 			} else if( dispDateString === today.toDateString() ) {
 
-				currButton.addClass("onyx-affirmative");
+				currButton.addClass(this.todayClass);
 			} else if( dispMonth.getMonth() !== currMonth.getMonth() ) {
 				//Month before or after focused one
 
-				currButton.addClass("onyx-dark");
+				currButton.addClass(this.otherMonthClass);
 			} else if( this.specialDates[dispDateString] ){
                 //This is a special date. Use a specail class and/or disable
 
