@@ -613,45 +613,47 @@ enyo.kind({
 
         var dispDateString;
 
-        var currCell ;
+        var currButton;
 
         var rowCount = 0;
 
 		while( rowCount < 6  ) {
 			//Always display 6 rows of date information
 
-            currCell = this.$['row' + rowCount + 'col' + dispMonth.getDay()];
+            currButton = this.$['row' + rowCount + 'col' + dispMonth.getDay()];
             dispDateString = dispMonth.toDateString();
 
             //Add proper class
-            for(var class_i in this.dateClasses){currCell.removeClass(class_i);}
+            for(var class_i in this.dateClasses){
+                currButton.removeClass(class_i);
+            }
             
             //Figure out how to style the button
 			if( dispDateString === this.value.toDateString() ) {
 				//Currently selected date
 
-				currCell.addClass("onyx-blue");
+				currButton.addClass("onyx-blue");
 			} else if( dispDateString === today.toDateString() ) {
 
-				currCell.addClass("onyx-affirmative");
+				currButton.addClass("onyx-affirmative");
 			} else if( dispMonth.getMonth() !== currMonth.getMonth() ) {
 				//Month before or after focused one
 
-				currCell.addClass("onyx-dark");
+				currButton.addClass("onyx-dark");
 			} else if( this.specialDates[dispDateString] ){
                 //This is a special date. Use a specail class and/or disable
 
-                currCell.addClass(
+                currButton.addClass(
                     this.specialDates[dispDateString].class || ""
                 );
-                currCell.disabled = 
+                currButton.disabled = 
                     (this.specialDates[dispDateString].disable === true);
             }
 
-			currCell.applyStyle( "width", cellWidth + "px" );
+			currButton.applyStyle( "width", cellWidth + "px" );
             
-            currCell.setContent( dispMonth.getDate() );
-            currCell.ts = dispMonth.getTime();//Used by ontap
+            currButton.setContent( dispMonth.getDate() );
+            currButton.ts = dispMonth.getTime();//Used by ontap
 
 			dispMonth.setDate( dispMonth.getDate() + 1 );
 
