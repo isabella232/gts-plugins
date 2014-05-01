@@ -70,17 +70,17 @@ enyo.kind({
          * List of specail date boxes that are colored or disabled.
          * This should be formated as an object whose keys are dates 
          * represented as an RFC2822 date. Each of these keys should point to
-         * another object specifying desired color and indicating
+         * another object specifying desired class and indicating
          * if the date button should be disabled.
          * ex: 
             this.specialDates = 
                 {
                     "Sat June 06, 2009": {
-                        "color": "#000000", 
+                        "class": "onyx-red", 
                         "disable" : false
                     },
                     "Thu Aug 18, 2011": {
-                        "color": "#FFFFFF",
+                        "class": "onyx-green",
                         "disable" : true
                     }
                 };
