@@ -611,8 +611,6 @@ enyo.kind({
 			dispMonth.setDate( dispMonth.getDate() - 7 );
 		}
 
-		var buttonClass;
-
         var dispDateString;
 
         var currCell ;
@@ -625,38 +623,32 @@ enyo.kind({
             currCell = this.$['row' + rowCount + 'col' + dispMonth.getDay()];
             dispDateString = dispMonth.toDateString();
 
-            //The buttons should be enabled by default
-            buttonDisable = false;
-
+            //Add proper class
+            for(var class_i in this.dateClasses){currCell.removeClass(class_i);}
+            
             //Figure out how to style the button
 			if( dispDateString === this.value.toDateString() ) {
 				//Currently selected date
 
-				buttonClass = "onyx-blue";
+				currCell.addClass("onyx-blue");
 			} else if( dispDateString === today.toDateString() ) {
 
-				buttonClass = "onyx-affirmative";
+				currCell.addClass("onyx-affirmative");
 			} else if( dispMonth.getMonth() !== currMonth.getMonth() ) {
 				//Month before or after focused one
 
-				buttonClass = "onyx-dark";
+				currCell.addClass("onyx-dark");
 			} else if( this.specialDates[dispDateString] ){
                 //This is a special date. Use a specail class and/or disable
 
-                buttonClass = this.specialDates[dispDateString].class || "";
+                currCell.addClass(
+                    this.specialDates[dispDateString].class || ""
+                );
                 currCell.disabled = 
                     (this.specialDates[dispDateString].disable === true);
-            } else {
+            }
 
-				buttonClass = "";
-			}
 			currCell.applyStyle( "width", cellWidth + "px" );
-
-			//Remove added classes
-            for(var class_i in this.dateClasses){currCell.removeClass(class_i);}
-			
-			//Add proper class
-			currCell.addClass( buttonClass );
             
             currCell.setContent( dispMonth.getDate() );
             currCell.ts = dispMonth.getTime();//Used by ontap
