@@ -613,8 +613,6 @@ enyo.kind({
 
 		var buttonClass;
 
-        var buttonDisable;
-
         var dispDateString;
 
         var currCell ;
@@ -646,7 +644,7 @@ enyo.kind({
                 //This is a special date. Use a specail class and/or disable
 
                 buttonClass = this.specialDates[dispDateString].class || "";
-                buttonDisable = 
+                currCell.disabled = 
                     (this.specialDates[dispDateString].disable === true);
             } else {
 
@@ -659,10 +657,7 @@ enyo.kind({
 			
 			//Add proper class
 			currCell.addClass( buttonClass );
-
-            //Disable the button if needed
-            currCell.disabled = buttonDisable;
-                
+            
             currCell.setContent( dispMonth.getDate() );
             currCell.ts = dispMonth.getTime();//Used by ontap
 
