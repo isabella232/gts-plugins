@@ -75,11 +75,11 @@ enyo.kind({
          * ex: 
             this.specialDates = 
                 {
-                    "June 06, 2009": {
+                    "Sat June 06, 2009": {
                         "color": "#000000", 
                         "disable" : false
                     },
-                    "Aug 18, 2011": {
+                    "Thu Aug 18, 2011": {
                         "color": "#FFFFFF",
                         "disable" : true
                     }
