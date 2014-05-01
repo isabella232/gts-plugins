@@ -508,13 +508,12 @@ enyo.kind({
             {
                 'start': <Start Date>,
                 'end': <End Date>,
-                'color': <Color Code>,
+                'class': <Class Name>,
                 'disable': <Boolean>
             }
         ]
         where <Start Date> and <End Date> are parseable by Date.parse()
-        and <Color Code> is a valid CSS color. A single date can be added by
-        omitting the 'end' value.
+        A single date can be added by omitting the 'end' value.
     */
     addSpecialDates: function( newDates ) {
         var startDate = new Date(), 
@@ -537,7 +536,7 @@ enyo.kind({
                 tempDate.setTime(date_i);
                 dString = tempDate.toDateString();
                 this.specialDates[dString] = this.specialDates[dString] || {};
-                this.specialDates[dString].color = newDates[range_i].color;
+                this.specialDates[dString].class = newDates[range_i].class;
                 this.specialDates[dString].disable = newDates[range_i].disable;
             }
         }
@@ -592,16 +591,21 @@ enyo.kind({
 			dispMonth.setDate( dispMonth.getDate() - 7 );
 		}
 
-		var rowCount = 0;
+		var buttonClass;
 
-		var buttonClass, buttonBgOverride;
+        var buttonDisable;
 
         var dispDateString;
+
+        var rowCount = 0;
 
 		while( rowCount < 6  ) {
 			//Always display 6 rows of date information
 
             dispDateString = dispMonth.toDateString();
+
+            //The buttons should be enabled by default
+            buttonDisable = false;
 
 			if( dispDateString === this.value.toDateString() ) {
 				//Currently selected date
@@ -614,7 +618,13 @@ enyo.kind({
 				//Month before or after focused one
 
 				buttonClass = "onyx-dark";
-			} else {
+			} else if( this.specialDates[dispDateString] ){
+                //This is a special date. Use a specail class and/or disable
+
+                buttonClass = this.specialDates[dispDateString].class || "";
+                buttonDisable = 
+                    (this.specialDates[dispDateString].disable === true);
+            } else {
 
 				buttonClass = "";
 			}
@@ -629,33 +639,10 @@ enyo.kind({
 			//Add proper class
 			this.$['row' + rowCount + 'col' + dispMonth.getDay()].addClass( buttonClass );
 
-
-            //Override the button class background 
-            //and disable the button if needed
-            if(this.specialDates[dispDateString]){
-
-                buttonBgOverride = this.specialDates[dispDateString].color;
-                if(buttonBgOverride && buttonBgOverride.trim() != ""){
-                    
-                    //override the fg color instead
-                    //if this specail date is selected
-                    if(buttonClass === "onyx-blue"){
-                        this.$['row' + rowCount + 'col' + dispMonth.getDay()]
-                        .applyStyle("color", buttonBgOverride);
-                        this.$['row' + rowCount + 'col' + dispMonth.getDay()]
-                        .applyStyle("background-color", "#35A8EE");
-                    }else{
-                        this.$['row' + rowCount + 'col' + dispMonth.getDay()]
-                        .applyStyle("color", "#F2F2F2");
-                        this.$['row' + rowCount + 'col' + dispMonth.getDay()]
-                        .applyStyle("background-color", buttonBgOverride);
-                    }
-                }
-
-                this.$['row' + rowCount + 'col' + dispMonth.getDay()]
-                    .disabled = this.specialDates[dispDateString].disable;
-            }
-
+            //Disable the button if needed
+            this.$['row' + rowCount + 'col' + dispMonth.getDay()].disabled = 
+                buttonDisable;
+                
             this.$['row' + rowCount + 'col' + dispMonth.getDay()].setContent( dispMonth.getDate() );
             this.$['row' + rowCount + 'col' + dispMonth.getDay()].ts = dispMonth.getTime();//Used by ontap
 
