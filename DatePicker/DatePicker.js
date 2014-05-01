@@ -629,22 +629,35 @@ enyo.kind({
 			//Add proper class
 			this.$['row' + rowCount + 'col' + dispMonth.getDay()].addClass( buttonClass );
 
-			this.$['row' + rowCount + 'col' + dispMonth.getDay()].setContent( dispMonth.getDate() );
-			this.$['row' + rowCount + 'col' + dispMonth.getDay()].ts = dispMonth.getTime();//Used by ontap
 
-            //Override the button class background and disable the button
-            //if needed
+            //Override the button class background 
+            //and disable the button if needed
             if(this.specialDates[dispDateString]){
+
                 buttonBgOverride = this.specialDates[dispDateString].color;
                 if(buttonBgOverride && buttonBgOverride.trim() != ""){
-                    this.$['row' + rowCount + 'col' + dispMonth.getDay()]
-                        .applyStyle( 
-                            "background-color", buttonBgOverride
-                        );
+                    
+                    //override the fg color instead
+                    //if this specail date is selected
+                    if(buttonClass === "onyx-blue"){
+                        this.$['row' + rowCount + 'col' + dispMonth.getDay()]
+                        .applyStyle("color", buttonBgOverride);
+                        this.$['row' + rowCount + 'col' + dispMonth.getDay()]
+                        .applyStyle("background-color", "#35A8EE");
+                    }else{
+                        this.$['row' + rowCount + 'col' + dispMonth.getDay()]
+                        .applyStyle("color", "#F2F2F2");
+                        this.$['row' + rowCount + 'col' + dispMonth.getDay()]
+                        .applyStyle("background-color", buttonBgOverride);
+                    }
                 }
+
                 this.$['row' + rowCount + 'col' + dispMonth.getDay()]
                     .disabled = this.specialDates[dispDateString].disable;
             }
+
+            this.$['row' + rowCount + 'col' + dispMonth.getDay()].setContent( dispMonth.getDate() );
+            this.$['row' + rowCount + 'col' + dispMonth.getDay()].ts = dispMonth.getTime();//Used by ontap
 
 			dispMonth.setDate( dispMonth.getDate() + 1 );
 
