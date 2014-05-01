@@ -133,6 +133,11 @@ enyo.kind({
 	},
 
 	/** @private */
+    dateClasses: {
+        "onyx-blue": "",
+        "onyx-dark": "",
+        "onyx-affirmative": ""
+    },
 	components: [
 		{
 			kind: "FittableColumns",
@@ -540,13 +545,19 @@ enyo.kind({
             for(
                 var date_i = startDate.getTime(); 
                 date_i <= endDate.getTime(); 
-                date_i += 86400000
+                date_i += 86400000 //one day of ms
             ){
                 tempDate.setTime(date_i);
                 dString = tempDate.toDateString();
                 this.specialDates[dString] = this.specialDates[dString] || {};
-                this.specialDates[dString].class = newDates[range_i].class;
                 this.specialDates[dString].disable = newDates[range_i].disable;
+                
+                if(newDates[range_i].class){
+                    this.specialDates[dString].class = newDates[range_i].class;
+
+                    //save this specail date's class for easy removal later
+                    this.dateClasses[newDates[range_i].class] = "";
+                }
             }
         }
         
@@ -644,10 +655,8 @@ enyo.kind({
 			currCell.applyStyle( "width", cellWidth + "px" );
 
 			//Remove added classes
-			currCell.removeClass( "onyx-affirmative" );
-			currCell.removeClass( "onyx-blue" );
-			currCell.removeClass( "onyx-dark" );
-
+            for(var class_i in this.dateClasses){currCell.removeClass(class_i);}
+			
 			//Add proper class
 			currCell.addClass( buttonClass );
 
