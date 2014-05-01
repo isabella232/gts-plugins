@@ -596,16 +596,10 @@ enyo.kind({
 
 		var buttonClass, buttonBgOverride;
 
-        var buttonDisabled;
-
         var dispDateString;
 
 		while( rowCount < 6  ) {
 			//Always display 6 rows of date information
-
-
-            //start with an enabled button by default
-            buttonDisabled = false;
 
             dispDateString = dispMonth.toDateString();
 
@@ -637,6 +631,20 @@ enyo.kind({
 
 			this.$['row' + rowCount + 'col' + dispMonth.getDay()].setContent( dispMonth.getDate() );
 			this.$['row' + rowCount + 'col' + dispMonth.getDay()].ts = dispMonth.getTime();//Used by ontap
+
+            //Override the button class background and disable the button
+            //if needed
+            if(this.specialDates[dispDateString]){
+                buttonBgOverride = this.specialDates[dispDateString].color;
+                if(buttonBgOverride && buttonBgOverride.trim() != ""){
+                    this.$['row' + rowCount + 'col' + dispMonth.getDay()]
+                        .applyStyle( 
+                            "background-color", buttonBgOverride
+                        );
+                }
+                this.$['row' + rowCount + 'col' + dispMonth.getDay()]
+                    .disabled = this.specialDates[dispDateString].disable;
+            }
 
 			dispMonth.setDate( dispMonth.getDate() + 1 );
 
