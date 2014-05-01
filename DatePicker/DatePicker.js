@@ -539,7 +539,7 @@ enyo.kind({
             
             for(
                 var date_i = startDate.getTime(); 
-                date_i < endDate.getTime(); 
+                date_i <= endDate.getTime(); 
                 date_i += 86400000
             ){
                 tempDate.setTime(date_i);
