@@ -535,6 +535,9 @@ enyo.kind({
             tempDate = new Date(),
             dString = "";
 
+        //make sure newDates is formed as an array
+        newDates = [].concat(newDates);
+        
         for(var range_i = 0; range_i < newDates.length; range_i++){
             newDates[range_i].end = 
                 newDates[range_i].end || newDates[range_i].start
