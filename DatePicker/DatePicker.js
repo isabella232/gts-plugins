@@ -66,6 +66,53 @@ enyo.kind({
 		 */
 		viewDate: null,
 
+        /**
+         * List of specail date boxes that are colored or disabled.
+         * This should be formated as an object whose keys are dates 
+         * represented as an RFC2822 date. Each of these keys should point to
+         * another object specifying desired class and indicating
+         * if the date button should be disabled.
+         * ex: 
+            this.specialDates = 
+                {
+                    "Sat June 06, 2009": {
+                        "class": "onyx-red", 
+                        "disable" : false
+                    },
+                    "Thu Aug 18, 2011": {
+                        "class": "onyx-green",
+                        "disable" : true
+                    }
+                };
+         * There is a helper function addSpecialDates() that will accept a range
+         * of dates fromatted in a way that Date.parse() can interperate.
+         * @type object
+         * @default null
+         */
+        specialDates: null,
+
+        /**
+         * Class of "today's" button 
+         * @type string
+         * @default "onyx-affirmative"
+         */
+        todayClass: "onyx-affirmative",
+
+        /**
+         * Class of selected button
+         * @type string
+         * @default "onyx-blue"
+         */
+        selectClass: "onyx-blue",
+
+
+        /**
+         * Class of out-of-month buttons
+         * @type string
+         * @default "onyx-dark"
+         */
+        otherMonthClass: "onyx-dark",
+
 		/**
 		 * Format of day of week (see enyo g11n)
 		 * @type string
@@ -108,6 +155,8 @@ enyo.kind({
 	},
 
 	/** @private */
+    dateClasses: "",
+
 	components: [
 		{
 			kind: "FittableColumns",
@@ -402,6 +451,14 @@ enyo.kind({
 		this.value = this.value || new Date();
 		this.viewDate = this.viewDate || new Date();
 
+        //add the standard button classes to this.dateClasses
+        this.dateClasses = {};
+        this.dateClasses[this.todayClass] = "";
+        this.dateClasses[this.selectClass] = "";
+        this.dateClasses[this.otherMonthClass] = "";
+
+        this.specialDates = this.specialDates || {};
+
 		this.localeChanged();
 	},
 
@@ -445,6 +502,18 @@ enyo.kind({
 		this.valueChanged();
 	},
 
+    todayClassChanged: function(){
+        this.renderCalendar()
+    },
+
+    selectClassChanged: function(){
+        this.renderCalendar()
+    },
+
+    otherMonthClassChanged: function(){
+        this.renderCalendar()
+    },
+
 	setValue: function( inValue ) {
 
 		if( enyo.isString( inValue ) ) {
@@ -484,6 +553,63 @@ enyo.kind({
 
 		this.renderCalendar();
 	},
+
+    /*This function will accept an object in the following format:
+        addSpecialDates(
+            {
+                'start': <Start Date>,
+                'end': <End Date>,
+                'class': <Class Name>,
+                'disable': <Boolean>
+            }
+        )
+        where <Start Date> and <End Date> are parseable by Date.parse()
+        A single date can be added by omitting the 'end' value.
+
+        Alternatively, an array of these object may also be passed to the function.
+    */
+    addSpecialDates: function( newDates ) {
+        var startDate = new Date(), 
+            endDate = new Date(),
+            tempDate = new Date(),
+            dString = "";
+
+        //make sure newDates is formed as an array
+        newDates = [].concat(newDates);
+
+        for(var range_i = 0; range_i < newDates.length; range_i++){
+            newDates[range_i].end = 
+                newDates[range_i].end || newDates[range_i].start
+
+            startDate.setTime(Date.parse(newDates[range_i].start));
+            endDate.setTime(Date.parse(newDates[range_i].end));
+            
+            for(
+                var date_i = startDate.getTime(); 
+                date_i <= endDate.getTime(); 
+                date_i += 86400000 //one day of ms
+            ){
+                tempDate.setTime(date_i);
+                dString = tempDate.toDateString();
+                this.specialDates[dString] = this.specialDates[dString] || {};
+                this.specialDates[dString].disable = newDates[range_i].disable;
+                
+                if(newDates[range_i].class){
+                    this.specialDates[dString].class = newDates[range_i].class;
+
+                    //save this specail date's class for easy removal later
+                    this.dateClasses[newDates[range_i].class] = "";
+                }
+            }
+        }
+        
+        this.specialDatesChanged();
+    },
+
+    specialDatesChanged: function( inValue ) {
+
+        this.renderCalendar();
+    },
 
 	renderDoW: function() {
 
@@ -527,45 +653,49 @@ enyo.kind({
 			dispMonth.setDate( dispMonth.getDate() - 7 );
 		}
 
-		var rowCount = 0;
+        var dispDateString;
 
-		var buttonType;
+        var currButton;
+
+        var rowCount = 0;
 
 		while( rowCount < 6  ) {
 			//Always display 6 rows of date information
 
-			if( dispMonth.getDate() === this.value.getDate() &&
-				dispMonth.getMonth() === this.value.getMonth() &&
-				dispMonth.getFullYear() === this.value.getFullYear() ) {
+            currButton = this.$['row' + rowCount + 'col' + dispMonth.getDay()];
+            dispDateString = dispMonth.toDateString();
+
+            //Add proper class
+            for(var class_i in this.dateClasses){
+                currButton.removeClass(class_i);
+            }
+            
+            //Figure out how to style the button
+			if( dispDateString === this.value.toDateString() ) {
 				//Currently selected date
 
-				buttonType = "onyx-blue";
-			} else if( dispMonth.getDate() === today.getDate() &&
-				dispMonth.getMonth() === today.getMonth() &&
-				dispMonth.getFullYear() === today.getFullYear() ) {
+				currButton.addClass(this.selectClass);
+			} else if( dispDateString === today.toDateString() ) {
 
-				buttonType = "onyx-affirmative";
+				currButton.addClass(this.todayClass);
 			} else if( dispMonth.getMonth() !== currMonth.getMonth() ) {
 				//Month before or after focused one
 
-				buttonType = "onyx-dark";
-			} else {
+				currButton.addClass(this.otherMonthClass);
+			} else if( this.specialDates[dispDateString] ){
+                //This is a special date. Use a specail class and/or disable
 
-				buttonType = "";
-			}
+                currButton.addClass(
+                    this.specialDates[dispDateString].class || ""
+                );
+                currButton.disabled = 
+                    (this.specialDates[dispDateString].disable === true);
+            }
 
-			this.$['row' + rowCount + 'col' + dispMonth.getDay()].applyStyle( "width", cellWidth + "px" );
-
-			//Remove added classes
-			this.$['row' + rowCount + 'col' + dispMonth.getDay()].removeClass( "onyx-affirmative" );
-			this.$['row' + rowCount + 'col' + dispMonth.getDay()].removeClass( "onyx-blue" );
-			this.$['row' + rowCount + 'col' + dispMonth.getDay()].removeClass( "onyx-dark" );
-
-			//Add proper class
-			this.$['row' + rowCount + 'col' + dispMonth.getDay()].addClass( buttonType );
-
-			this.$['row' + rowCount + 'col' + dispMonth.getDay()].setContent( dispMonth.getDate() );
-			this.$['row' + rowCount + 'col' + dispMonth.getDay()].ts = dispMonth.getTime();//Used by ontap
+			currButton.applyStyle( "width", cellWidth + "px" );
+            
+            currButton.setContent( dispMonth.getDate() );
+            currButton.ts = dispMonth.getTime();//Used by ontap
 
 			dispMonth.setDate( dispMonth.getDate() + 1 );
 
