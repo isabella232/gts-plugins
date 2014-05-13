@@ -59,6 +59,13 @@ enyo.kind({
 		 */
 		disabled: false,
 
+        /**
+         * Disables disabled the out-of-month buttons
+         * @type boolean
+         * @default false
+         */
+        disableExtraDays: false,
+
 		/**
 		 * Currently shown month
 		 * @type Date object
@@ -690,6 +697,10 @@ enyo.kind({
 				//Month before or after focused one
 
 				currButton.addClass(this.otherMonthClass);
+
+                //disable the out-of-month button if needed
+                currButton.setDisabled(this.disableExtraDays);
+
 			} else if( this.specialDates[dispDateString] ){
                 //This is a special date. Use a specail class and/or disable
 
