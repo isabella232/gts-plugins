@@ -59,6 +59,13 @@ enyo.kind({
 		 */
 		disabled: false,
 
+        /**
+         * Disables disabled the out-of-month buttons
+         * @type boolean
+         * @default false
+         */
+        disableExtraDays: false,
+
 		/**
 		 * Currently shown month
 		 * @type Date object
