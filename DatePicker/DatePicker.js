@@ -603,10 +603,18 @@ enyo.kind({
             }
         }
         
-        this.specialDatesChanged();
+        this.renderCalendar();
     },
 
-    specialDatesChanged: function( inValue ) {
+    setSpecialDates: function( newDates ) {
+        this.specialDates = newDates;
+        //make sure the dates classes are properly stored 
+        //so they can be removed later
+        for(var date_i in this.specialDates){
+            if(newDates[date_i].class){
+                this.dateClasses[newDates[date_i].class] = "";
+            }
+        }
 
         this.renderCalendar();
     },
