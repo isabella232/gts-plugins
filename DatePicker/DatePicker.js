@@ -1,5 +1,5 @@
 /*
-Copyright © 2012, GlitchTech Science
+Copyright ï¿½ 2012, GlitchTech Science
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
@@ -517,13 +517,8 @@ enyo.kind({
 	dateHandler: function( inSender, inEvent ) {
 		//Date button pressed
 
-		var newDate = new Date();
-		newDate.setTime( inSender.ts );
-
-		this.value.setDate( newDate.getDate() );
-		this.value.setMonth( newDate.getMonth() );
-		this.value.setFullYear( newDate.getFullYear() );
-
+		this.setValue(inSender.ts);
+		this.setHours(0,0,0,0);
 		if( this.value.getMonth() != this.viewDate.getMonth() ) {
 
 			this.viewDate = new Date( this.value.getFullYear(), this.value.getMonth(), 1 );
