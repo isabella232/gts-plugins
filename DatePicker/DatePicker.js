@@ -523,8 +523,8 @@ enyo.kind({
 		//Date button pressed
 		//begin xTuple modifications
 
-		this.setValue(inSender.ts);
-		this.setHours(0,0,0,0);
+		this.value.setTime(inSender.ts);
+		this.value.setHours(0,0,0,0);
 		if( this.value.getMonth() != this.viewDate.getMonth() ) {
 
 			this.viewDate = new Date( this.value.getFullYear(), this.value.getMonth(), 1 );
