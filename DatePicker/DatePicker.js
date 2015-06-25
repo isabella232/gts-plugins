@@ -1,5 +1,5 @@
 /*
-Copyright © 2012, GlitchTech Science
+Copyright ï¿½ 2012, GlitchTech Science
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
@@ -9,161 +9,54 @@ Redistribution and use in source and binary forms, with or without modification,
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
+/*
+-- Copyright (c) 1999-2015 by OpenMFG LLC, d/b/a xTuple.
+-- See www.xtuple.com/CPAL for the full text of the software license.
+-- Annotated modifications from original source from GlitchTechScience
+*/
 
 /**
- * @name gts.DatePicker
- *
+ * @name GTS.DatePicker
  * @author Matthew Schott <glitchtechscience@gmail.com>
  *
  * Calendar date picker for EnyoJS. Shows a calendar.
- * When the selected date changes, the onSelect event is called with the current values as a date object.
+ * When the selected date changes, the onChange event is called with the current values as a date object.
  * Using getValue or setValue will get or set the datetime with a Date object. Setting a new value will change the view date.
  * Using getViewDate or setViewDate will get or set the display datetime with a Date object.
  *
+ * @param {date}	[dateObj]	Initial date object set; defaults to current date
+ * @param {viewDate}	[dateObj]	Initial viewing date; defaults to current date
+ *
  * @class
- * @version 2.2 (2012/11/10)
+ * @version 2.1 (2012/07/18)
  *
  * @requies Enyo (https://github.com/enyojs/enyo)
  * @requies Onyx (https://github.com/enyojs/onyx)
- * @requies g11n (https://github.com/enyojs/g11n)
  * @requies Layout/Fittable (https://github.com/enyojs/layout)
+ * @see http://enyojs.com
+ *
+ * @requies http://blog.stevenlevithan.com/archives/date-time-format
  */
 enyo.kind({
-	name: "gts.DatePicker",
+	name: "GTS.DatePicker",
 	kind: "enyo.Control",
 
 	classes: "gts-calendar",
 
-    /** @public */
-    published: {
-		/** @lends gts.DatePicker# */
-
-		/**
-		 * Currently selected date
-		 * @type Date object
-		 * @default current date
-		 */
+	/** @public */
+	published: {
 		value: null,
-
-		/**
-		 * Current locale used for formatting (see enyo g11n)
-		 * @type string
-		 * @default g11n locale detection
-		 */
-		locale: "",
-
-		/**
-		 * Disables changing the value (NYI)
-		 * @type boolean
-		 * @default false
-		 */
-		disabled: false,
-
-        /**
-         * Disables disabled the out-of-month buttons
-         * @type boolean
-         * @default false
-         */
-        disableExtraDays: false,
-
-		/**
-		 * Currently shown month
-		 * @type Date object
-		 * @default current date
-		 */
 		viewDate: null,
 
-        /**
-         * List of specail date boxes that are colored or disabled.
-         * This should be formated as an object whose keys are dates 
-         * represented as an RFC2822 date. Each of these keys should point to
-         * another object specifying desired class and indicating
-         * if the date button should be disabled.
-         * ex: 
-            this.specialDates = 
-                {
-                    "Sat June 06, 2009": {
-                        "class": "onyx-red", 
-                        "disable" : false
-                    },
-                    "Thu Aug 18, 2011": {
-                        "class": "onyx-green",
-                        "disable" : true
-                    }
-                };
-         * There is a helper function addSpecialDates() that will accept a range
-         * of dates fromatted in a way that Date.parse() can interperate.
-         * @type object
-         * @default null
-         */
-        specialDates: null,
-
-        /**
-         * Class of "today's" button 
-         * @type string
-         * @default "onyx-affirmative"
-         */
-        todayClass: "onyx-affirmative",
-
-        /**
-         * Class of selected button
-         * @type string
-         * @default "onyx-blue"
-         */
-        selectClass: "onyx-blue",
-
-
-        /**
-         * Class of out-of-month buttons
-         * @type string
-         * @default "onyx-dark"
-         */
-        otherMonthClass: "onyx-dark",
-
-		/**
-		 * Format of day of week (see enyo g11n)
-		 * @type string
-		 * @default "medium"
-		 */
-		dowFormat: "medium",
-
-		/**
-		 * Format of month in header (see enyo g11n)
-		 * @type string
-		 * @default "MMMM"
-		 */
-		monthFormat: "MMMM",
-
-        /**
-         * Format of year in header (see enyo g11n)
-         * @type string
-         * @default "yyyy"
-         */
-        yearFormat: "yyyy"
+		dowFormat: "ddd",
+		monthFormat: "mmmm yyyy"
 	},
 
-    statics: {
-        //Fallback formats for non-g11n
-        months: {
-                "M": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-                "MM": ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"],
-                "MMM": ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"],
-                "MMMM": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-            },
-        days: {
-                "weekstart": 0,
-                "medium": [ "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" ],
-                "long": [ "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" ]
-            }
-    },
-
 	events: {
-		onSelect: ""
+		onChange: ""
 	},
 
 	/** @private */
-    dateClasses: "",
-
 	components: [
 		{
 			kind: "FittableColumns",
@@ -190,7 +83,7 @@ enyo.kind({
 
 		//Calendar week header
 		{
-			classes: "date-row day-of-week",
+			kind: "FittableColumns",
 			components: [
 				{
 					name: "sunday",
@@ -227,7 +120,7 @@ enyo.kind({
 
 		//Calendar dates (6 rows of 7 cols)
 		{
-			classes: "date-row",
+			kind: "FittableColumns",
 			components: [
 				{
 					name: "row0col0",
@@ -260,7 +153,7 @@ enyo.kind({
 				}
 			]
 		}, {
-			classes: "date-row",
+			kind: "FittableColumns",
 			components: [
 				{
 					name: "row1col0",
@@ -293,7 +186,7 @@ enyo.kind({
 				}
 			]
 		}, {
-			classes: "date-row",
+			kind: "FittableColumns",
 			components: [
 				{
 					name: "row2col0",
@@ -326,7 +219,7 @@ enyo.kind({
 				}
 			]
 		}, {
-			classes: "date-row",
+			kind: "FittableColumns",
 			components: [
 				{
 					name: "row3col0",
@@ -359,7 +252,7 @@ enyo.kind({
 				}
 			]
 		}, {
-			classes: "date-row",
+			kind: "FittableColumns",
 			components: [
 				{
 					name: "row4col0",
@@ -392,7 +285,7 @@ enyo.kind({
 				}
 			]
 		}, {
-			classes: "date-row",
+			kind: "FittableColumns",
 			components: [
 				{
 					name: "row5col0",
@@ -440,198 +333,51 @@ enyo.kind({
 					ontap: "resetDate"
 				}
 			]
-		},
-
-        /*Signals listeners*/,
-        {kind: "Signals", onresize:"resizeHandler"}
+		}
 	],
 
-	create: function() {
+	/**
+	 * @protected
+	 * @constructs
+	 */
+	constructor: function() {
 
 		this.inherited( arguments );
 
-		if( enyo.g11n && this.locale == "" ) {
-
-			this.locale = enyo.g11n.currentLocale().getLocale();
-		}
-
-		this.value = this.value || new Date();
 		this.viewDate = this.viewDate || new Date();
-
-        //add the standard button classes to this.dateClasses
-        this.dateClasses = {};
-        this.dateClasses[this.todayClass] = "";
-        this.dateClasses[this.selectClass] = "";
-        this.dateClasses[this.otherMonthClass] = "";
-
-        this.specialDates = this.specialDates || {};
-
-		this.localeChanged();
+		this.value = this.value || new Date();
 	},
 
-    resizeHandler: function() {
-        this.inherited(arguments);
-        this._renderDoW();
-        this._renderCalendar();
-    },
-    
-	localeChanged: function() {
-        var days;
-
-		//Attempt to use the g11n lib (ie assume it is loaded)
-		if( enyo.g11n ) {
-
-			var formats = new enyo.g11n.Fmts( { locale: new enyo.g11n.Locale( this.locale ) } );
-
-			days = {
-					"weekstart": formats.getFirstDayOfWeek(),
-					"medium": formats.dateTimeHash.medium.day,
-					"long": formats.dateTimeHash.long.day
-				};
-		} else {
-            days = gts.DatePicker.days;
-        }
-
-		this.$['sunday'].setContent( days[this.dowFormat][0] );
-		this.$['monday'].setContent( days[this.dowFormat][1] );
-		this.$['tuesday'].setContent( days[this.dowFormat][2] );
-		this.$['wednesday'].setContent( days[this.dowFormat][3] );
-		this.$['thursday'].setContent( days[this.dowFormat][4] );
-		this.$['friday'].setContent( days[this.dowFormat][5] );
-		this.$['saturday'].setContent( days[this.dowFormat][6] );
-	},
-
+	/** @protected */
 	rendered: function() {
 
 		this.inherited( arguments );
 
-		this.renderDoW();
-		this.valueChanged();
-	},
+		if( dateFormat ) {
 
-    todayClassChanged: function(){
-        this.renderCalendar()
-    },
+			//Build Day Of Week items
+			var dowDate = new Date( 2011, 4, 1 );//Sunday, May 1, 2011
 
-    selectClassChanged: function(){
-        this.renderCalendar()
-    },
+			this.$['sunday'].setContent( dateFormat( dowDate, this.dowFormat ) );
 
-    otherMonthClassChanged: function(){
-        this.renderCalendar()
-    },
+			dowDate.setDate( dowDate.getDate() + 1 );
+			this.$['monday'].setContent( dateFormat( dowDate, this.dowFormat ) );
 
-	setValue: function( inValue ) {
+			dowDate.setDate( dowDate.getDate() + 1 );
+			this.$['tuesday'].setContent( dateFormat( dowDate, this.dowFormat ) );
 
-		if( enyo.isString( inValue ) ) {
+			dowDate.setDate( dowDate.getDate() + 1 );
+			this.$['wednesday'].setContent( dateFormat( dowDate, this.dowFormat ) );
 
-			inValue = new Date( inValue );
+			dowDate.setDate( dowDate.getDate() + 1 );
+			this.$['thursday'].setContent( dateFormat( dowDate, this.dowFormat ) );
+
+			dowDate.setDate( dowDate.getDate() + 1 );
+			this.$['friday'].setContent( dateFormat( dowDate, this.dowFormat ) );
+
+			dowDate.setDate( dowDate.getDate() + 1 );
+			this.$['saturday'].setContent( dateFormat( dowDate, this.dowFormat ) );
 		}
-
-		this.value = inValue;
-
-		this.valueChanged();
-	},
-
-	valueChanged: function() {
-
-		if( Object.prototype.toString.call( this.value ) !== "[object Date]" || isNaN( this.value.getTime() ) ) {
-			//Not actually a date object
-
-			this.value = new Date();
-		}
-
-		this.setViewDate( this.value );
-	},
-
-	setViewDate: function( inViewDate ) {
-
-		if( enyo.isString( inViewDate ) ) {
-
-			inViewDate = new Date( inViewDate );
-		}
-
-		this.viewDate = inViewDate;
-
-		this.viewDateChanged();
-	},
-
-	viewDateChanged: function() {
-
-		this.renderCalendar();
-	},
-
-    /*This function will accept an object in the following format:
-        addSpecialDates(
-            {
-                'start': <Start Date>,
-                'end': <End Date>,
-                'class': <Class Name>,
-                'disable': <Boolean>
-            }
-        )
-        where <Start Date> and <End Date> are parseable by Date.parse()
-        A single date can be added by omitting the 'end' value.
-
-        Alternatively, an array of these object may also be passed to the function.
-    */
-    addSpecialDates: function( newDates ) {
-        var startDate = new Date(), 
-            endDate = new Date(),
-            tempDate = new Date(),
-            dString = "";
-
-        //make sure newDates is formed as an array
-        newDates = [].concat(newDates);
-
-        for(var range_i = 0; range_i < newDates.length; range_i++){
-            newDates[range_i].end = 
-                newDates[range_i].end || newDates[range_i].start
-
-            startDate.setTime(Date.parse(newDates[range_i].start));
-            endDate.setTime(Date.parse(newDates[range_i].end));
-            
-            for(
-                var date_i = startDate.getTime(); 
-                date_i <= endDate.getTime(); 
-                date_i += 86400000 //one day of ms
-            ){
-                tempDate.setTime(date_i);
-                dString = tempDate.toDateString();
-                this.specialDates[dString] = this.specialDates[dString] || {};
-                this.specialDates[dString].disable = newDates[range_i].disable;
-                
-                if(newDates[range_i].class){
-                    this.specialDates[dString].class = newDates[range_i].class;
-
-                    //save this specail date's class for easy removal later
-                    this.dateClasses[newDates[range_i].class] = "";
-                }
-            }
-        }
-        
-        this.renderCalendar();
-    },
-
-    setSpecialDates: function( newDates ) {
-        this.specialDates = newDates;
-        //make sure the dates classes are properly stored 
-        //so they can be removed later
-        for(var date_i in this.specialDates){
-            if(newDates[date_i].class){
-                this.dateClasses[newDates[date_i].class] = "";
-            }
-        }
-
-        this.renderCalendar();
-    },
-
-	renderDoW: function() {
-
-		this._renderDoW();
-	},
-
-	_renderDoW: function() {
 
 		var cellWidth = Math.round( 10 * this.getBounds()['width'] / 7 ) / 10;
 
@@ -642,14 +388,33 @@ enyo.kind({
 		this.$['thursday'].applyStyle( "width", cellWidth + "px" );
 		this.$['friday'].applyStyle( "width", cellWidth + "px" );
 		this.$['saturday'].applyStyle( "width", cellWidth + "px" );
+
+		//Build everything else
+		this.valueChanged();
 	},
 
+	/** @protected */
+	valueChanged: function() {
+
+		if( Object.prototype.toString.call( this.value ) !== "[object Date]" || isNaN( this.value.getTime() ) ) {
+			//Not actually a date object
+
+			this.value = new Date();
+		}
+
+		this.viewDate.setTime( this.value.getTime() );
+
+		this.renderCalendar();
+	},
+
+	/** @protected */
+	viewDateChanged: function() {
+
+		this.renderCalendar();
+	},
+
+	/** @protected */
 	renderCalendar: function() {
-
-		this._renderCalendar();
-	},
-
-	_renderCalendar: function() {
 
 		var cellWidth = Math.round( 10 * this.getBounds()['width'] / 7 ) / 10;
 		var today = new Date();
@@ -668,53 +433,45 @@ enyo.kind({
 			dispMonth.setDate( dispMonth.getDate() - 7 );
 		}
 
-        var dispDateString;
+		var rowCount = 0;
 
-        var currButton;
-
-        var rowCount = 0;
+		var buttonType;
 
 		while( rowCount < 6  ) {
 			//Always display 6 rows of date information
 
-            currButton = this.$['row' + rowCount + 'col' + dispMonth.getDay()];
-            dispDateString = dispMonth.toDateString();
-
-            //Add proper class
-            for(var class_i in this.dateClasses){
-                currButton.removeClass(class_i);
-            }
-            
-            //Figure out how to style the button
-			if( dispDateString === this.value.toDateString() ) {
+			if( dispMonth.getDate() === this.value.getDate() &&
+				dispMonth.getMonth() === this.value.getMonth() &&
+				dispMonth.getFullYear() === this.value.getFullYear() ) {
 				//Currently selected date
 
-				currButton.addClass(this.selectClass);
-			} else if( dispDateString === today.toDateString() ) {
+				buttonType = "onyx-blue";
+			} else if( dispMonth.getDate() === today.getDate() &&
+				dispMonth.getMonth() === today.getMonth() &&
+				dispMonth.getFullYear() === today.getFullYear() ) {
 
-				currButton.addClass(this.todayClass);
+				buttonType = "onyx-affirmative";
 			} else if( dispMonth.getMonth() !== currMonth.getMonth() ) {
 				//Month before or after focused one
 
-				currButton.addClass(this.otherMonthClass);
+				buttonType = "onyx-dark";
+			} else {
 
-                //disable the out-of-month button if needed
-                currButton.setDisabled(this.disableExtraDays);
+				buttonType = "";
+			}
 
-			} else if( this.specialDates[dispDateString] ){
-                //This is a special date. Use a specail class and/or disable
+			this.$['row' + rowCount + 'col' + dispMonth.getDay()].applyStyle( "width", cellWidth + "px" );
 
-                currButton.addClass(
-                    this.specialDates[dispDateString].class || ""
-                );
-                currButton.disabled = 
-                    (this.specialDates[dispDateString].disable === true);
-            }
+			//Remove added classes
+			this.$['row' + rowCount + 'col' + dispMonth.getDay()].removeClass( "onyx-affirmative" );
+			this.$['row' + rowCount + 'col' + dispMonth.getDay()].removeClass( "onyx-blue" );
+			this.$['row' + rowCount + 'col' + dispMonth.getDay()].removeClass( "onyx-dark" );
 
-			currButton.applyStyle( "width", cellWidth + "px" );
-            
-            currButton.setContent( dispMonth.getDate() );
-            currButton.ts = dispMonth.getTime();//Used by ontap
+			//Add proper class
+			this.$['row' + rowCount + 'col' + dispMonth.getDay()].addClass( buttonType );
+
+			this.$['row' + rowCount + 'col' + dispMonth.getDay()].setContent( dispMonth.getDate() );
+			this.$['row' + rowCount + 'col' + dispMonth.getDay()].ts = dispMonth.getTime();//Used by ontap
 
 			dispMonth.setDate( dispMonth.getDate() + 1 );
 
@@ -724,26 +481,16 @@ enyo.kind({
 			}
 		}
 
-		if( enyo.g11n ) {
-			var fmt = new enyo.g11n.DateFmt( this.monthFormat + " " + this.yearFormat );
+		if( dateFormat ) {
 
-			this.$['monthLabel'].setContent( fmt.format( currMonth ) );
+			this.$['monthLabel'].setContent( dateFormat( currMonth, this.monthFormat ) );
 		} else {
-            //get a list of months using the fallback month formatting 
-            var month_labels = gts.DatePicker.months[this.monthFormat];
 
-            //format the year the same way g11n would
-            var year_value = currMonth.getFullYear();
-            if(this.yearFormat == "yy"){
-                year_value = year_value.toString().substring(2,4);
-            }
-
-			this.$['monthLabel'].setContent( 
-                month_labels[currMonth.getMonth()] + " - " + year_value
-            );
+			this.$['monthLabel'].setContent( this.getMonthString( currMonth.getMonth() ) );
 		}
 	},
 
+	/** @protected */
 	monthBack: function() {
 
 		this.viewDate.setMonth( this.viewDate.getMonth() - 1 );
@@ -751,6 +498,7 @@ enyo.kind({
 		this.renderCalendar();
 	},
 
+	/** @protected */
 	monthForward: function() {
 
 		this.viewDate.setMonth( this.viewDate.getMonth() + 1 );
@@ -758,6 +506,7 @@ enyo.kind({
 		this.renderCalendar();
 	},
 
+	/** @protected */
 	resetDate: function() {
 		//Reset button pressed
 
@@ -766,25 +515,60 @@ enyo.kind({
 
 		this.renderCalendar();
 
-		this.doSelect( { "date": this.value } );
+		this.doChange( this.value );
 	},
 
+	/** @protected */
 	dateHandler: function( inSender, inEvent ) {
 		//Date button pressed
+		//begin xTuple modifications
 
-		var newDate = new Date();
-		newDate.setTime( inSender.ts );
-
-		this.value.setDate( newDate.getDate() );
-		this.value.setMonth( newDate.getMonth() );
-		this.value.setFullYear( newDate.getFullYear() );
-
+		this.value.setTime(inSender.ts);
+		this.value.setHours(0,0,0,0);
 		if( this.value.getMonth() != this.viewDate.getMonth() ) {
 
 			this.viewDate = new Date( this.value.getFullYear(), this.value.getMonth(), 1 );
 		}
 
-		this.doSelect( { "date": this.value } );
+		this.doChange( this.value );
 		this.renderCalendar();
+		//end xTuple modifications
+	},
+
+	/** @public */
+	getMonthString: function( jsIndex ) {
+
+		return(
+				[
+					"January",
+					"February",
+					"March",
+					"April",
+					"May",
+					"June",
+					"July",
+					"August",
+					"September",
+					"October",
+					"November",
+					"December"
+				][jsIndex]
+			);
+	},
+
+	/** @public */
+	getDayString: function( jsIndex ) {
+
+		return(
+				[
+					"Sunday",
+					"Monday",
+					"Tuesday",
+					"Wednesday",
+					"Thursday",
+					"Friday",
+					"Saturday"
+				][jsIndex]
+			);
 	}
 });
